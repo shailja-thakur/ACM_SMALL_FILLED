@@ -1,0 +1,586 @@
+
+% Journals
+
+% First the Full Name is given, then the abbreviation used in the AMS Math
+% Reviews, with an indication if it could not be found there.
+% Note the 2nd overwrites the 1st, so swap them if you want the full name.
+
+ %{AMS}
+ @String{AMSTrans = "American Mathematical Society Translations" }
+ @String{AMSTrans = "Amer. Math. Soc. Transl." }
+ @String{BullAMS = "Bulletin of the American Mathematical Society" }
+ @String{BullAMS = "Bull. Amer. Math. Soc." }
+ @String{ProcAMS = "Proceedings of the American Mathematical Society" }
+ @String{ProcAMS = "Proc. Amer. Math. Soc." }
+ @String{TransAMS = "Transactions of the American Mathematical Society" }
+ @String{TransAMS = "Trans. Amer. Math. Soc." }
+
+ %ACM
+ @String{CACM = "Communications of the {ACM}" }
+ @String{CACM = "Commun. {ACM}" }
+ @String{CompServ = "Comput. Surveys" }
+ @String{JACM = "J. ACM" }
+ @String{ACMMathSoft = "{ACM} Transactions on Mathematical Software" }
+ @String{ACMMathSoft = "{ACM} Trans. Math. Software" }
+ @String{SIGNUM = "{ACM} {SIGNUM} Newsletter" }
+ @String{SIGNUM = "{ACM} {SIGNUM} Newslett." }
+
+ @String{AmerSocio = "American Journal of Sociology" }
+ @String{AmerStatAssoc = "Journal of the American Statistical Association" }
+ @String{AmerStatAssoc = "J. Amer. Statist. Assoc." }
+ @String{ApplMathComp = "Applied Mathematics and Computation" }
+ @String{ApplMathComp = "Appl. Math. Comput." }
+ @String{AmerMathMonthly = "American Mathematical Monthly" }
+ @String{AmerMathMonthly = "Amer. Math. Monthly" }
+ @String{BIT = "{BIT}" }
+ @String{BritStatPsych = "British Journal of Mathematical and Statistical
+          Psychology" }
+ @String{BritStatPsych = "Brit. J. Math. Statist. Psych." }
+ @String{CanMathBull = "Canadian Mathematical Bulletin" }
+ @String{CanMathBull = "Canad. Math. Bull." }
+ @String{CompApplMath = "Journal of Computational and Applied Mathematics" }
+ @String{CompApplMath = "J. Comput. Appl. Math." }
+ @String{CompPhys = "Journal of Computational Physics" }
+ @String{CompPhys = "J. Comput. Phys." }
+ @String{CompStruct = "Computers and Structures" }
+ @String{CompStruct = "Comput. \& Structures" }
+ @String{CompJour = "The Computer Journal" }
+ @String{CompJour = "Comput. J." }
+ @String{CompSysSci = "Journal of Computer and System Sciences" }
+ @String{CompSysSci = "J. Comput. System Sci." }
+ @String{Computing = "Computing" }
+ @String{ContempMath = "Contemporary Mathematics" }
+ @String{ContempMath = "Contemp. Math." }
+ @String{Crelle = "Crelle's Journal" }
+ @String{GiornaleMath = "Giornale di Mathematiche" }
+ @String{GiornaleMath = "Giorn. Mat." } % didn't find in AMS MR., ibid.
+
+ %IEEE
+ @String{Computer = "{IEEE} Computer" }
+ @String{IEEETransComp = "{IEEE} Transactions on Computers" }
+ @String{IEEETransComp = "{IEEE} Trans. Comput." }
+ @String{IEEETransAC = "{IEEE} Transactions on Automatic Control" }
+ @String{IEEETransAC = "{IEEE} Trans. Automat. Control" }
+ @String{IEEESpec = "{IEEE} Spectrum" } % didn't find in AMS MR
+ @String{ProcIEEE = "Proceedings of the {IEEE}" }
+ @String{ProcIEEE = "Proc. {IEEE}" } % didn't find in AMS MR
+ @String{IEEETransAeroElec = "{IEEE} Transactions on Aerospace and Electronic
+     Systems" }
+ @String{IEEETransAeroElec = "{IEEE} Trans. Aerospace Electron. Systems" }
+
+ @String{IMANumerAna = "{IMA} Journal of Numerical Analysis" }
+ @String{IMANumerAna = "{IMA} J. Numer. Anal." }
+ @String{InfProcLet = "Information Processing Letters" }
+ @String{InfProcLet = "Inform. Process. Lett." }
+ @String{InstMathApp = "Journal of the Institute of Mathematics and
+     its Applications" }
+ @String{InstMathApp = "J. Inst. Math. Appl." }
+ @String{IntControl = "International Journal of Control" }
+ @String{IntControl = "Internat. J. Control" }
+ @String{IntNumerEng = "International Journal for Numerical Methods in
+     Engineering" }
+ @String{IntNumerEng = "Internat. J. Numer. Methods Engrg." }
+ @String{IntSuper = "International Journal of Supercomputing Applications" }
+ @String{IntSuper = "Internat. J. Supercomputing Applic." } % didn't find
+%% in AMS MR
+ @String{Kibernetika = "Kibernetika" }
+ @String{JResNatBurStand = "Journal of Research of the National Bureau
+     of Standards" }
+ @String{JResNatBurStand = "J. Res. Nat. Bur. Standards" }
+ @String{LinAlgApp = "Linear Algebra and its Applications" }
+ @String{LinAlgApp = "Linear Algebra Appl." }
+ @String{MathAnaAppl = "Journal of Mathematical Analysis and Applications" }
+ @String{MathAnaAppl = "J. Math. Anal. Appl." }
+ @String{MathAnnalen = "Mathematische Annalen" }
+ @String{MathAnnalen = "Math. Ann." }
+ @String{MathPhys = "Journal of Mathematical Physics" }
+ @String{MathPhys = "J. Math. Phys." }
+ @String{MathComp = "Mathematics of Computation" }
+ @String{MathComp = "Math. Comp." }
+ @String{MathScand = "Mathematica Scandinavica" }
+ @String{MathScand = "Math. Scand." }
+ @String{TablesAidsComp = "Mathematical Tables and Other Aids to Computation" }
+ @String{TablesAidsComp = "Math. Tables Aids Comput." }
+ @String{NumerMath = "Numerische Mathematik" }
+ @String{NumerMath = "Numer. Math." }
+ @String{PacificMath = "Pacific Journal of Mathematics" }
+ @String{PacificMath = "Pacific J. Math." }
+ @String{ParDistComp = "Journal of Parallel and Distributed Computing" }
+ @String{ParDistComp = "J. Parallel and Distrib. Comput." } % didn't find
+%% in AMS MR
+ @String{ParComputing = "Parallel Computing" }
+ @String{ParComputing = "Parallel Comput." }
+ @String{PhilMag = "Philosophical Magazine" }
+ @String{PhilMag = "Philos. Mag." }
+ @String{ProcNAS = "Proceedings of the National Academy of Sciences
+                    of the USA" }
+ @String{ProcNAS = "Proc. Nat. Acad. Sci. U. S. A." }
+ @String{Psychometrika = "Psychometrika" }
+ @String{QuartMath = "Quarterly Journal of Mathematics, Oxford, Series (2)" }
+ @String{QuartMath = "Quart. J. Math. Oxford Ser. (2)" }
+ @String{QuartApplMath = "Quarterly of Applied Mathematics" }
+ @String{QuartApplMath = "Quart. Appl. Math." }
+ @String{RevueInstStat = "Review of the International Statisical Institute" }
+ @String{RevueInstStat = "Rev. Inst. Internat. Statist." }
+
+ %SIAM
+ @String{JSIAM = "Journal of the Society for Industrial and Applied
+     Mathematics" }
+ @String{JSIAM = "J. Soc. Indust. Appl. Math." }
+ @String{JSIAMB = "Journal of the Society for Industrial and Applied
+     Mathematics, Series B, Numerical Analysis" }
+ @String{JSIAMB = "J. Soc. Indust. Appl. Math. Ser. B Numer. Anal." }
+ @String{SIAMAlgMeth = "{SIAM} Journal on Algebraic and Discrete Methods" }
+ @String{SIAMAlgMeth = "{SIAM} J. Algebraic Discrete Methods" }
+ @String{SIAMAppMath = "{SIAM} Journal on Applied Mathematics" }
+ @String{SIAMAppMath = "{SIAM} J. Appl. Math." }
+ @String{SIAMComp = "{SIAM} Journal on Computing" }
+ @String{SIAMComp = "{SIAM} J. Comput." }
+ @String{SIAMMatrix = "{SIAM} Journal on Matrix Analysis and Applications" }
+ @String{SIAMMatrix = "{SIAM} J. Matrix Anal. Appl." }
+ @String{SIAMNumAnal = "{SIAM} Journal on Numerical Analysis" }
+ @String{SIAMNumAnal = "{SIAM} J. Numer. Anal." }
+ @String{SIAMReview = "{SIAM} Review" }
+ @String{SIAMReview = "{SIAM} Rev." }
+ @String{SIAMSciStat = "{SIAM} Journal on Scientific and Statistical
+     Computing" }
+ @String{SIAMSciStat = "{SIAM} J. Sci. Statist. Comput." }
+
+ @String{SoftPracExp = "Software Practice and Experience" }
+ @String{SoftPracExp = "Software Prac. Experience" } % didn't find in AMS MR
+ @String{StatScience = "Statistical Science" }
+ @String{StatScience = "Statist. Sci." }
+ @String{Techno = "Technometrics" }
+ @String{USSRCompMathPhys = "{USSR} Computational Mathematics and Mathematical
+     Physics" }
+ @String{USSRCompMathPhys = "{U. S. S. R.} Comput. Math. and Math. Phys." }
+ @String{VLSICompSys = "Journal of {VLSI} and Computer Systems" }
+ @String{VLSICompSys = "J. {VLSI} Comput. Syst." }
+ @String{ZAngewMathMech = "Zeitschrift fur Angewandte Mathematik und
+     Mechanik" }
+ @String{ZAngewMathMech = "Z. Angew. Math. Mech." }
+ @String{ZAngewMathPhys = "Zeitschrift fur Angewandte Mathematik und Physik" }
+ @String{ZAngewMathPhys = "Z. Angew. Math. Phys." }
+
+% Publishers % ================================================= |
+
+ @String{Academic = "Academic Press" }
+ @String{ACMPress = "{ACM} Press" }
+ @String{AdamHilger = "Adam Hilger" }
+ @String{AddisonWesley = "Addison-Wesley" }
+ @String{AllynBacon = "Allyn and Bacon" }
+ @String{AMS = "American Mathematical Society" }
+ @String{Birkhauser = "Birkh{\"a}user" }
+ @String{CambridgePress = "Cambridge University Press" }
+ @String{Chelsea = "Chelsea" }
+ @String{ClaredonPress = "Claredon Press" }
+ @String{DoverPub = "Dover Publications" }
+ @String{Eyolles = "Eyolles" }
+ @String{HoltRinehartWinston = "Holt, Rinehart and Winston" }
+ @String{Interscience = "Interscience" }
+ @String{JohnsHopkinsPress = "The Johns Hopkins University Press" }
+ @String{JohnWileySons = "John Wiley and Sons" }
+ @String{Macmillan = "Macmillan" }
+ @String{MathWorks = "The Math Works Inc." }
+ @String{McGrawHill = "McGraw-Hill" }
+ @String{NatBurStd = "National Bureau of Standards" }
+ @String{NorthHolland = "North-Holland" }
+ @String{OxfordPress = "Oxford University Press" }  %address Oxford or London?
+ @String{PergamonPress = "Pergamon Press" }
+ @String{PlenumPress = "Plenum Press" }
+ @String{PrenticeHall = "Prentice-Hall" }
+ @String{SIAMPub = "{SIAM} Publications" }
+ @String{Springer = "Springer-Verlag" }
+ @String{TexasPress = "University of Texas Press" }
+ @String{VanNostrand = "Van Nostrand" }
+ @String{WHFreeman = "W. H. Freeman and Co." }
+
+%Entries
+@book{em:86,
+  editor  = "Engelmore, Robert and Morgan, Anthony",
+  title   = "Blackboard Systems",
+  year    = 1986,
+  address = "Reading, Mass.",
+  publisher = "Addison-Wesley",
+}
+
+@inproceedings{c:83,
+  author  = "Clancey, William J.",
+  year    = 1983,
+  title   = "{Communication, Simulation, and Intelligent
+Agents: Implications of Personal Intelligent Machines
+for Medical Education}",
+  booktitle="Proceedings of the Eighth International Joint Conference on Artificial Intelligence {(IJCAI-83)}", 
+  pages   = "556-560",
+  address = "Menlo Park, Calif",
+  publisher = "{IJCAI Organization}",
+}
+
+@misc{ding2024semcodertrainingcodelanguage,
+      title={SemCoder: Training Code Language Models with Comprehensive Semantics Reasoning}, 
+      author={Yangruibo Ding and Jinjun Peng and Marcus J. Min and Gail Kaiser and Junfeng Yang and Baishakhi Ray},
+      year={2024},
+      eprint={2406.01006},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2406.01006}, 
+}
+
+
+@misc{turpin2023languagemodelsdontsay,
+      title={Language Models Don't Always Say What They Think: Unfaithful Explanations in Chain-of-Thought Prompting}, 
+      author={Miles Turpin and Julian Michael and Ethan Perez and Samuel R. Bowman},
+      year={2023},
+      eprint={2305.04388},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2305.04388}, 
+}
+
+@misc{beger2025coconutstructuralcodeunderstanding,
+      title={CoCoNUT: Structural Code Understanding does not fall out of a tree}, 
+      author={Claas Beger and Saikat Dutta},
+      year={2025},
+      eprint={2501.16456},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2501.16456}, 
+}
+
+@inproceedings{c:84,
+  author  = "Clancey, William J.",
+  year    = 1984,
+  title   = "{Classification Problem Solving}",
+  booktitle = "Proceedings of the Fourth National 
+              Conference on Artificial Intelligence",
+  pages   = "45-54",
+  address = "Menlo Park, Calif.",
+  publisher="AAAI Press",
+}
+@article{r:80,
+  author = {Robinson, Arthur L.},
+  title = {New Ways to Make Microcircuits Smaller},
+  volume = {208},
+  number = {4447},
+  pages = {1019--1022},
+  year = {1980},
+  doi = {10.1126/science.208.4447.1019},
+  publisher = {American Association for the Advancement of Science},
+  issn = {0036-8075},
+  URL = {https://science.sciencemag.org/content/208/4447/1019},
+  eprint = {https://science.sciencemag.org/content/208/4447/1019.full.pdf},
+  journal = {Science},
+}
+@article{r:80x,
+  author  = "Robinson, Arthur L.",
+  year    = 1980,
+  title   = "{New Ways to Make Microcircuits Smaller---Duplicate Entry}",
+  journal = "Science",
+  volume  =  208,
+  pages   = "1019-1026",
+}
+@article{hcr:83,
+title = {Strategic explanations for a diagnostic consultation system},
+journal = {International Journal of Man-Machine Studies},
+volume = {20},
+number = {1},
+pages = {3-19},
+year = {1984},
+issn = {0020-7373},
+doi = {https://doi.org/10.1016/S0020-7373(84)80003-6},
+url = {https://www.sciencedirect.com/science/article/pii/S0020737384800036},
+author = {Diane Warner Hasling and William J. Clancey and Glenn Rennels},
+abstract = {This article examines the problem of automatte explanation of reasoning, especially as it relates to expert systems. By explanation we mean the ability of a program to discuss what it is doing in some understandable way. We first present a general framework in which to view explanation and review some of the research done in this area. We then focus on the explanation system for NEOMYCIN, a medical consultation program. A consultation program interactively helps a user to solve a problem. Our goal is to have NEOMYCIN explain its problem-solving strategies. An explanation of strategy describes the plan the program is using to reach a solution. Such an explanation is usually concrete, referring to aspects of the current problem situation. Abstract explanations articulate a general principle, which can be applied in different situations; such explanations are useful in teaching and in explaining by analogy. We describe the aspects of NEOMYCIN that make abstract strategic explanations possible—the representation of strategic knowledge explicitly and separately from domain knowledge— and demonstrate how this representation can be used to generate explanations.}
+}
+@article{hcrt:83,
+  author  = "Hasling, Diane Warner and Clancey, William J. and Rennels, Glenn R. and Test, Thomas",
+  year    = 1983,
+  title   = "{Strategic Explanations in Consultation---Duplicate}",
+  journal = "The International Journal of Man-Machine Studies",
+  volume  = 20,
+  number  = 1,
+  pages   = "3-19",
+}
+@techreport{r:86,
+  author  = "Rice, James",
+  year    = 1986,
+  title   = "{Poligon: A System for Parallel Problem Solving}",
+  type    = "Technical Report", 
+  number  = "KSL-86-19", 
+  institution = "Dept.\ of Computer Science, Stanford Univ.",
+}
+@phdthesis{c:79,
+  author  = "Clancey, William J.",
+  year    = 1979,
+  title   = "{Transfer of Rule-Based Expertise
+through a Tutorial Dialogue}",
+  type    = "{Ph.D.} diss.",
+  school  = "Dept.\ of Computer Science, Stanford Univ.",
+  address = "Stanford, Calif.",
+}
+@unpublished{c:21,
+  author  = "Clancey, William J.",
+  title   = "{The Engineering of Qualitative Models}",
+  year    = 2021,
+  note    = "Forthcoming",
+}
+@misc{c:22,
+      title={Attention Is All You Need}, 
+      author={Ashish Vaswani and Noam Shazeer and Niki Parmar and Jakob Uszkoreit and Llion Jones and Aidan N. Gomez and Lukasz Kaiser and Illia Polosukhin},
+      year={2017},
+      eprint={1706.03762},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL}
+}
+@misc{c:23,
+  title        = "Pluto: The 'Other' Red Planet",
+  author       = "{NASA}",
+  howpublished = "\url{https://www.nasa.gov/nh/pluto-the-other-red-planet}",
+  year         = 2015,
+  note         = "Accessed: 2018-12-06"
+}
+
+@misc{starcoder2-doc,
+  author = {StarCoder2-Documentation},
+  title = {StarCoder 2 and The Stack v2: The Next Generation},
+  year = {2024},
+  howpublished = {\url{https://huggingface.co/datasets/SivilTaram/starcoder2-documentation}}
+}
+
+@misc{granite3.3-base,
+  author = {IBM-Granite},
+  title = {Granite-3.3-8B-Base},
+  year = {2025},
+  howpublished = {\url{https://huggingface.co/ibm-granite/granite-3.3-8b-base}}
+}
+
+@article{hui2024qwen2,
+      title={Qwen2.5-Coder Technical Report},
+      author={Hui, Binyuan and Yang, Jian and Cui, Zeyu and Yang, Jiaxi and Liu, Dayiheng and Zhang, Lei and Liu, Tianyu and Zhang, Jiajun and Yu, Bowen and Dang, Kai and others},
+      journal={arXiv preprint arXiv:2409.12186},
+      year={2024}
+}
+
+@article{jain2024livecodebench,
+    title={LiveCodeBench: Holistic and Contamination Free Evaluation of Large Language Models for Code},
+    author={Jain, Naman and Han, King and Gu, Alex and Li, Wen-Ding and Yan, Fanjia and Zhang, Tianjun and Wang, Sida and Solar-Lezama, Armando and Sen, Koushik and Stoica, Ion},
+    journal={arXiv preprint arXiv:2403.07974},
+    year={2024}
+}
+
+@inproceedings{wei2022chain,
+  title={Chain-of-Thought Prompting Elicits Reasoning in Large Language Models},
+  author={Wei, Jason and Wang, Xuezhi and Schuurmans, Dale and Bosma, Maarten and Ichter, Brian and Xia, Fei and Chi, Ed H. and Le, Quoc V. and Zhou, Denny},
+  booktitle={Advances in Neural Information Processing Systems},
+  volume={35},
+  pages={24824--24837},
+  year={2022}
+}
+
+@misc{chen2022codetcodegenerationgenerated,
+      title={CodeT: Code Generation with Generated Tests}, 
+      author={Bei Chen and Fengji Zhang and Anh Nguyen and Daoguang Zan and Zeqi Lin and Jian-Guang Lou and Weizhu Chen},
+      year={2022},
+      eprint={2207.10397},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2207.10397}, 
+}
+
+@article{chen2022program,
+  title={Program of Thoughts Prompting: Disentangling Computation from Reasoning for Numerical Reasoning Tasks},
+  author={Chen, Wenhu and Ma, Xueguang and Wang, Xinyi and Cohen, William W.},
+  journal={arXiv preprint arXiv:2211.12588},
+  year={2022}
+}
+
+@article{li2025codeio,
+  title={CodeI/O: Condensing Reasoning Patterns via Code Input-Output Prediction},
+  author={Li, Junlong and Guo, Daya and Yang, Dejian and Xu, Runxin and Wu, Yu and He, Junxian},
+  journal={arXiv preprint arXiv:2502.07316},
+  year={2025}
+}
+
+@inproceedings{ding2024traced,
+  title={TRACED: Execution-aware Pre-training for Source Code},
+  author={Ding, Yangruibo and Steenhoek, Benjamin and Pei, Kexin and Kaiser, Gail and Le, Wei and Ray, Baishakhi},
+  booktitle={Proceedings of the IEEE/ACM 46th International Conference on Software Engineering (ICSE)},
+  pages={1--12},
+  year={2024}
+}
+
+@article{armengol2025execution,
+  title={What I cannot execute, I do not understand: Training and Evaluating LLMs on Program Execution Traces},
+  author={Armengol-Estap{\'e}, Jordi and Woodhead, Jackson and Tiotto, Emilio and Migliore, Luke and Rozière, Baptiste and Scarlatos, Alexander and Goyal, Akhil and Dinan, Emily and Lomeli, Maria},
+  journal={arXiv preprint arXiv:2503.05703},
+  year={2025}
+}
+
+@misc{liu2025rstarcoderscalingcompetitivecode,
+      title={rStar-Coder: Scaling Competitive Code Reasoning with a Large-Scale Verified Dataset}, 
+      author={Yifei Liu and Li Lyna Zhang and Yi Zhu and Bingcheng Dong and Xudong Zhou and Ning Shang and Fan Yang and Mao Yang},
+      year={2025},
+      eprint={2505.21297},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2505.21297}, 
+}
+
+@misc{jung2025codeexecutiongroundedsupervision,
+      title={Code Execution as Grounded Supervision for LLM Reasoning}, 
+      author={Dongwon Jung and Wenxuan Zhou and Muhao Chen},
+      year={2025},
+      eprint={2506.10343},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2506.10343}, 
+}
+
+
+@article{bouzenia2023tracefixer,
+  title={TraceFixer: Execution Trace-Driven Program Repair},
+  author={Bouzenia, Islem and Ding, Yangruibo and Pei, Kexin and Ray, Baishakhi and Pradel, Michael},
+  journal={arXiv preprint arXiv:2304.12743},
+  year={2023}
+}
+
+@article{haque2025execution,
+  title={Towards Effectively Leveraging Execution Traces for Program Repair with Code LLMs},
+  author={Haque, Mirazul and Ahmad, Wasi Uddin and Lourentzou, Ismini and Brown, Chris},
+  journal={arXiv preprint arXiv:2505.04441},
+  year={2025}
+}
+
+@article{agrawal2024predex,
+  title={Blended Analysis for Predictive Execution},
+  author={Agrawal, Hiralal and Dhulipala, Hridya and Yadavally, Aashish and Nguyen, Tien N.},
+  journal={Proceedings of the ACM on Software Engineering},
+  year={2024}
+}
+
+@article{jiang2024forward,
+  title={Forward-Backward Reasoning in Large Language Models for Mathematical Verification},
+  author={Jiang, Weisen and Shi, Han and Yu, Longhui and Liu, Zhengying and Zhang, Yu and Li, Zhenguo and Kwok, James T.},
+  journal={arXiv preprint arXiv:2308.07758},
+  year={2024}
+}
+
+@article{chen2024reverse,
+  title={Reverse Thinking Makes LLMs Stronger Reasoners},
+  author={Chen, Justin Chih-Yao and Wang, Zifeng and Palangi, Hamid and Han, Rujun and Ebrahimi, Sayna and Le, Long T. and Perot, Vincent and Mishra, Swaroop and Bansal, Mohit and Lee, Chen-Yu and Pfister, Tomas},
+  journal={arXiv preprint arXiv:2411.19865},
+  year={2024}
+}
+
+@article{weng2023large,
+  title={Large Language Models are Better Reasoners with Self-Verification},
+  author={Weng, Yixuan and Zhu, Minjun and Xia, Fei and Li, Bin and He, Shizhu and Liu, Shengping and Sun, Bin and Liu, Kang and Zhao, Jun},
+  journal={arXiv preprint arXiv:2212.09561},
+  year={2023}
+}
+
+@article{xue2023rcot,
+  title={RCoT: Detecting and Rectifying Factual Inconsistency in Reasoning by Reversing Chain-of-Thought},
+  author={Xue, Tianci and Wang, Ziqi and Wang, Zhenhailong and Han, Chi and Yu, Pengfei and Ji, Heng},
+  journal={arXiv preprint arXiv:2305.11499},
+  year={2023}
+}
+
+@inproceedings{west2022symbolic,
+  title={Symbolic Knowledge Distillation: from general language models to commonsense models},
+  author={West, Peter and Bhagavatula, Chandra and Hessel, Jack and Hwang, Jena and Jiang, Liwei and Bras, Ronan Le and Lu, Ximing and Welleck, Sean and Choi, Yejin},
+  booktitle={Proceedings of the 2022 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies},
+  pages={4602--4625},
+  year={2022}
+}
+
+@inproceedings{li2023symbolic,
+  title={Symbolic Chain-of-Thought Distillation: Small models can also "think" step-by-step},
+  author={Li, Liunian Harold and Hessel, Jack and Yu, Youngjae and Ren, Xiang and Chang, Kai-Wei and Choi, Yejin},
+  booktitle={Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics},
+  pages={2665--2679},
+  year={2023}
+}
+
+@inproceedings{yu2024metamath,
+  title={MetaMath: Bootstrap your own mathematical questions for large language models},
+  author={Yu, Longhui and Jiang, Weisen and Shi, Han and Yu, Jincheng and Liu, Zhengying and Zhang, Yu and Kwok, James T. and Li, Zhenguo and Weller, Adrian and Liu, Weiyang},
+  booktitle={The Twelfth International Conference on Learning Representations},
+  year={2024}
+}
+
+@inproceedings{lu2024mathgenie,
+  title={MathGenie: Generating Synthetic Data with Question Back-translation for Enhancing Mathematical Reasoning of LLMs},
+  author={Lu, Zimu and Zhou, Aojun and Cheng, Houxing and Zhang, Ke and Shi, Shaochen and Chai, Yue and Li, Junting and Wang, Tao and Li, Hongjia and Zhang, Zhengzhong},
+  booktitle={Proceedings of the 62nd Annual Meeting of the Association for Computational Linguistics},
+  year={2024}
+}
+
+@article{li2024common,
+  title={Common 7B Language Models Already Possess Strong Math Capabilities},
+  author={Li, Chen and Wang, Weiqi and Hu, Jingcheng and Wei, Yixuan and Zheng, Nanning and Hu, Han and Zhang, Zheng and Peng, Houwen},
+  journal={arXiv preprint arXiv:2403.04706},
+  year={2024}
+}
+
+@article{chen2021evaluating,
+  title={Evaluating Large Language Models Trained on Code},
+  author={Chen, Mark and Tworek, Jerry and Jun, Heewoo and Yuan, Qiming and Pinto, Henrique Pond{\'e} de Oliveira and Kaplan, Jared and Edwards, Harri and Burda, Yura and Joseph, Nicholas and Brockman, Greg and others},
+  journal={arXiv preprint arXiv:2107.03374},
+  year={2021}
+}
+
+@inproceedings{austin2021program,
+  title={Program Synthesis with Large Language Models},
+  author={Austin, Jacob and Odena, Augustus and Nye, Maxwell and Bosma, Maarten and Michalewski, Henryk and Dohan, David and Jiang, Ellen and Cai, Carrie and Terry, Michael and Le, Quoc and others},
+  journal={arXiv preprint arXiv:2108.07732},
+  year={2021}
+}
+
+@article{gu2024cruxeval,
+  title={CRUXEval: A Benchmark for Code Reasoning, Understanding and Execution},
+  author={Gu, Alex and Baptiste, Baptiste and Rozière, Baptiste and Lachaux, Marie-Anne and Wu, Chunting and Elsayed, Mostafa and Ganapathy, Arya and Haziza, Daniel and Crabbé, Benoit and Sauvage, Joanna and others},
+  journal={arXiv preprint arXiv:2401.03065},
+  year={2024}
+}
+
+@misc{gu2024cruxevalbenchmarkcodereasoning,
+      title={CRUXEval: A Benchmark for Code Reasoning, Understanding and Execution}, 
+      author={Alex Gu and Baptiste Rozière and Hugh Leather and Armando Solar-Lezama and Gabriel Synnaeve and Sida I. Wang},
+      year={2024},
+      eprint={2401.03065},
+      archivePrefix={arXiv},
+      primaryClass={cs.SE},
+      url={https://arxiv.org/abs/2401.03065}, 
+}
+
+
+@misc{jain2024livecodebenchholisticcontaminationfree,
+      title={LiveCodeBench: Holistic and Contamination Free Evaluation of Large Language Models for Code}, 
+      author={Naman Jain and King Han and Alex Gu and Wen-Ding Li and Fanjia Yan and Tianjun Zhang and Sida Wang and Armando Solar-Lezama and Koushik Sen and Ion Stoica},
+      year={2024},
+      eprint={2403.07974},
+      archivePrefix={arXiv},
+      primaryClass={cs.SE},
+      url={https://arxiv.org/abs/2403.07974}, 
+}
+
+@misc{mishra2024granitecodemodelsfamily,
+      title={Granite Code Models: A Family of Open Foundation Models for Code Intelligence}, 
+      author={Mayank Mishra and Matt Stallone and Gaoyuan Zhang and Yikang Shen and Aditya Prasad and Adriana Meza Soria and Michele Merler and Parameswaran Selvam and Saptha Surendran and Shivdeep Singh and Manish Sethi and Xuan-Hong Dang and Pengyuan Li and Kun-Lung Wu and Syed Zawad and Andrew Coleman and Matthew White and Mark Lewis and Raju Pavuluri and Yan Koyfman and Boris Lublinsky and Maximilien de Bayser and Ibrahim Abdelaziz and Kinjal Basu and Mayank Agarwal and Yi Zhou and Chris Johnson and Aanchal Goyal and Hima Patel and Yousaf Shah and Petros Zerfos and Heiko Ludwig and Asim Munawar and Maxwell Crouse and Pavan Kapanipathi and Shweta Salaria and Bob Calio and Sophia Wen and Seetharami Seelam and Brian Belgodere and Carlos Fonseca and Amith Singhee and Nirmit Desai and David D. Cox and Ruchir Puri and Rameswar Panda},
+      year={2024},
+      eprint={2405.04324},
+      archivePrefix={arXiv},
+      primaryClass={cs.AI},
+      url={https://arxiv.org/abs/2405.04324}, 
+}
+
+@misc{qwen2025qwen25technicalreport,
+      title={Qwen2.5 Technical Report}, 
+      author={Qwen and : and An Yang and Baosong Yang and Beichen Zhang and Binyuan Hui and Bo Zheng and Bowen Yu and Chengyuan Li and Dayiheng Liu and Fei Huang and Haoran Wei and Huan Lin and Jian Yang and Jianhong Tu and Jianwei Zhang and Jianxin Yang and Jiaxi Yang and Jingren Zhou and Junyang Lin and Kai Dang and Keming Lu and Keqin Bao and Kexin Yang and Le Yu and Mei Li and Mingfeng Xue and Pei Zhang and Qin Zhu and Rui Men and Runji Lin and Tianhao Li and Tianyi Tang and Tingyu Xia and Xingzhang Ren and Xuancheng Ren and Yang Fan and Yang Su and Yichang Zhang and Yu Wan and Yuqiong Liu and Zeyu Cui and Zhenru Zhang and Zihan Qiu},
+      year={2025},
+      eprint={2412.15115},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2412.15115}, 
+}
