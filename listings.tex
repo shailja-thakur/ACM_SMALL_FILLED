@@ -425,22 +425,26 @@ get_encoding(self)
   \toprule
   \textit{Correct Format} \textcolor{correctgreen}{\cmark} & \textit{Prohibited Format} \textcolor{errorred}{\xmark} \\
   \midrule
-  \colorbox{correctgreen!10}{\parbox{0.95\linewidth}{
-  \begin{lstlisting}[style=pythoncode, basicstyle=\ttfamily\scriptsize]
-def test_basic():
-  # Test basic case
-  assert solution([1,2,3], 2) == [1]
-\end{lstlisting}
-  }}
+  \begin{minipage}[t]{0.47\columnwidth}
+  \colorbox{correctgreen!10}{\begin{minipage}{0.95\linewidth}
+  \vspace{0.1cm}
+  \texttt{\color{blue}def} \texttt{test\textunderscore basic():}\\
+  \texttt{~~\color{green!60!black}\# Test basic case}\\
+  \texttt{~~\color{blue}assert} \texttt{solution([1,2,3], 2) == [1]}
+  \vspace{0.1cm}
+  \end{minipage}}
+  \end{minipage}
   &
-  \colorbox{errorred!10}{\parbox{0.95\linewidth}{
-  \begin{lstlisting}[style=pythoncode, basicstyle=\ttfamily\scriptsize]
-def test_wrong():
-  # Variable outside assert
-  lst = [1, 2, 3]
-  assert solution(lst, 2) == [1]
-\end{lstlisting}
-  }}
+  \begin{minipage}[t]{0.47\columnwidth}
+  \colorbox{errorred!10}{\begin{minipage}{0.95\linewidth}
+  \vspace{0.1cm}
+  \texttt{\color{blue}def} \texttt{test\textunderscore wrong():}\\
+  \texttt{~~\color{green!60!black}\# Variable outside assert}\\
+  \texttt{~~lst = [1, 2, 3]}\\
+  \texttt{~~\color{blue}assert} \texttt{solution(lst, 2) == [1]}
+  \vspace{0.1cm}
+  \end{minipage}}
+  \end{minipage}
   \\
   \bottomrule
   \end{tabular}
