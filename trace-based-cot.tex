@@ -110,6 +110,33 @@
 \usepackage{newfloat}
 \usepackage{listings}
 
+%% Python syntax highlighting configuration
+\lstdefinestyle{pythoncode}{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue}\bfseries,
+    stringstyle=\color{red!70!black},
+    commentstyle=\color{green!60!black}\itshape,
+    numberstyle=\tiny\color{gray},
+    showstringspaces=false,
+    breaklines=true,
+    frame=none,
+    captionpos=b,
+    tabsize=4,
+    morekeywords={self,True,False,None},
+}
+
+\lstdefinestyle{tracestyle}{
+    basicstyle=\ttfamily\scriptsize,
+    backgroundcolor=\color{gray!10},
+    frame=none,
+    showstringspaces=false,
+    breaklines=true,
+}
+
+%% Command for highlighting key technical terms
+\newcommand{\techterm}[1]{\textcolor{rationaleblue}{\textbf{#1}}}
+
 %%
 %% Submission ID.
 %% Use this when submitting an article to a sponsored event. You'll
@@ -305,7 +332,7 @@ This challenge is especially acute in code reasoning, where small logical errors
 \begin{tcolorbox}[enhanced, colback=errorred!8, colframe=errorred!80, title=\textbf{LLM-Generated CoT (Contains Hallucination)}, fonttitle=\bfseries, coltitle=white, colbacktitle=errorred!90, boxrule=0.8pt]
 \small
 \textbf{Code:}
-\begin{lstlisting}[language=Python, basicstyle=\ttfamily\footnotesize, frame=none]
+\begin{lstlisting}[style=pythoncode, basicstyle=\ttfamily\footnotesize]
 def countdown(n):
     count = n
     while count > 0:
@@ -325,7 +352,7 @@ def countdown(n):
 \begin{tcolorbox}[enhanced, colback=correctgreen!8, colframe=correctgreen!80, title=\textbf{Our Trace-Grounded CoT (Verifiable)}, fonttitle=\bfseries, coltitle=white, colbacktitle=correctgreen!90, boxrule=0.8pt]
 \small
 \textbf{Execution Trace:}
-\begin{lstlisting}[language=Python, basicstyle=\ttfamily\scriptsize, frame=none, backgroundcolor=\color{gray!10}]
+\begin{lstlisting}[style=tracestyle]
 Line 2: count = 5
 Line 3: while count > 0: (True)
 Line 4: count -= 1  ->  count: 5 -> 4
