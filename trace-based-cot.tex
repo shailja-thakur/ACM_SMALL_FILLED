@@ -699,22 +699,32 @@ Figure~\ref{fig:consensus_heatmap} shows a heatmap of the percentage of problems
 \subsubsection{Alignment with Ground Truth}
 Figure~\ref{fig:consensus_accuracy} demonstrates that high consensus scores correlate strongly with correctness. We computed the consensus rate (fraction of selected solutions matching ground truth) and plotted it against alignment with benchmark solutions. The results show a monotonic relationship: as consensus rate increases from 20\% to 90\%, alignment with ground truth increases from 30\% to 95\% (with 95\% confidence intervals shown as error bars). This provides empirical evidence that Dual Agreement's scoring mechanism effectively separates correct from incorrect artifacts. Based on this analysis, we set our selection threshold to require minimum cluster size $|C_i| \geq 3$ and test coverage $|T_p| \geq 5$, which yields 92\% alignment with ground truth in our validation set.
 
-\subsubsection{Comparison to Alternative Verification Methods}
-To contextualize the effectiveness of Dual Agreement, we compare it to alternative verification strategies on the same 5k validation set. As shown in Table~\ref{tab:verification_comparison}, Dual Agreement achieves 92\% alignment with ground truth, substantially outperforming single execution (67\% accuracy, brittle to flaky tests), while remaining practical at scale unlike formal verification (computationally prohibitive for 85k problems). Compared to LLM-as-Judge, our approach is deterministic (execution results are reproducible) and grounded in operational semantics rather than model intuition. Importantly, while CodeT~\cite{chen2022codetcodegenerationgenerated} uses Dual Agreement to verify \textit{code solutions}, we extend this by generating CoT rationales from execution traces, thereby verifying the \textit{reasoning process itself}. Figure~\ref{fig:consensus_heatmap} and Figure~\ref{fig:consensus_accuracy} provide detailed breakdowns of consensus score scaling and ground-truth alignment across different parameter settings.
+\subsubsection{Alternative Verification Strategies}
+To contextualize the effectiveness of Dual Agreement, we compare it against four alternative verification strategies for synthetic data generation:
+
+\textbf{Single Execution Verification.} The simplest approach executes each generated solution against a single randomly selected test case. If the solution passes, it is accepted; otherwise, it is rejected. This is fast and deterministic but highly brittle: a single flaky test (due to floating-point precision, randomness, or environmental dependencies) causes false rejections, while a weak test allows buggy solutions through.
+
+\textbf{Formal Verification.} Formal methods use mathematical proofs to guarantee program correctness. Techniques like symbolic execution or SMT solvers can provide ironclad guarantees by exploring all possible execution paths. However, these methods are computationally expensive (often requiring minutes per program), struggle with complex control flow or library calls, and are impractical for large-scale data synthesis (85k problems).
+
+\textbf{LLM-as-Judge.} An alternative is prompting a powerful LLM to analyze the code and judge whether it is correct. This is scalable and flexible but suffers from two critical limitations: (1) \textit{Non-deterministic}: Different sampling runs may yield different judgments, making reproducibility challenging. (2) \textit{Unsound}: The LLM may hallucinate correctness for plausible-looking but incorrect code, lacking grounding in actual execution.
+
+\textbf{CodeT (Outcome-Only Dual Agreement).} CodeT~\cite{chen2022codetcodegenerationgenerated} applies Dual Agreement to verify that generated \textit{code solutions} pass tests, achieving high accuracy through statistical consensus. However, it only verifies the final outcome, not the reasoning process. We extend this principle by generating CoT rationales from execution traces, thereby verifying the \textit{reasoning steps themselves}.
+
+\textbf{Comparison Results.} Table~\ref{tab:verification_comparison} compares these approaches on our 5k validation set. Dual Agreement achieves 92\% accuracy while remaining scalable and deterministic, substantially outperforming single execution (67\%) and LLM-as-Judge (74\%), while being practical at scale unlike formal verification. Figure~\ref{fig:consensus_heatmap} and Figure~\ref{fig:consensus_accuracy} provide detailed breakdowns showing how consensus scores scale with candidate diversity and correlate with ground-truth correctness.
 
 \begin{table}[h!]
 \centering
-\caption{Comparison of verification methods on 5k validation set. Dual Agreement achieves high accuracy while remaining scalable.}
+\caption{Comparison of verification methods on 5k validation set. Dual Agreement achieves high accuracy while remaining scalable and deterministic.}
 \label{tab:verification_comparison}
 \begin{tabular}{lccc}
 \toprule
 \textbf{Verification Method} & \textbf{Accuracy} & \textbf{Scalable} & \textbf{Deterministic} \\
 \midrule
 Single Execution & 67\% & \cmark & \cmark \\
-Dual Agreement (Ours) & \textbf{92\%} & \cmark & \cmark \\
 LLM-as-Judge & 74\% & \cmark & \xmark \\
-Formal Verification & $>$95\% & \xmark & \cmark \\
 CodeT (Outcome Only) & 89\% & \cmark & \cmark \\
+Dual Agreement (Ours) & \textbf{92\%} & \cmark & \cmark \\
+Formal Verification & $>$95\% & \xmark & \cmark \\
 \bottomrule
 \end{tabular}
 \end{table}
