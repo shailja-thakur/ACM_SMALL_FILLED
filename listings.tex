@@ -341,7 +341,7 @@
       before upper={\setlength{\parskip}{1pt}},
   ]
 
-  \colorbox{lightblue}{\parbox{\dimexpr\linewidth-2\fboxsep}{%
+  \colorbox{lightblue}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{%
   {\color{promptblue}\textbf{<Instruction>}}
 
   Given a weighted graph, find the most cost-effective path between two nodes.
@@ -357,7 +357,7 @@
 
   \vspace{2pt}
 
-  \colorbox{lightgreen}{\parbox{\dimexpr\linewidth-2\fboxsep}{%
+  \colorbox{lightgreen}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{%
   {\color{promptblue}\textbf{<CoT>}}
   \begin{enumerate}[leftmargin=8pt, itemsep=1pt, parsep=0pt]
   \item Initialize distances: 'A' to 0, all others to infinity. Priority queue `pq` starts with `('A', 0)`.
@@ -397,7 +397,7 @@
       before upper={\setlength{\parskip}{1pt}},
   ]
 
-  \colorbox{lightblue}{\parbox{\dimexpr\linewidth-2\fboxsep}{%
+  \colorbox{lightblue}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{%
   {\color{promptblue}\textbf{<Instruction>}}
 
   Given a weighted graph, find a starting node for a cost-effective path.
@@ -413,7 +413,7 @@
 
   \vspace{2pt}
 
-  \colorbox{lightgreen}{\parbox{\dimexpr\linewidth-2\fboxsep}{%
+  \colorbox{lightgreen}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{%
   {\color{promptblue}\textbf{<CoT>}}
   \begin{enumerate}[leftmargin=8pt, itemsep=1pt, parsep=0pt]
   \item The final path to 'F' has a cost of 7. To deduce the start, we must trace predecessors backwards.
