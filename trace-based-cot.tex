@@ -519,6 +519,20 @@ The effectiveness of Dual Agreement relies critically on generating multiple div
 
 \textbf{Consensus as Quality Signal.} Large $|C_i|$ (solution agreement) and large $|T_p(C_i)|$ (test coverage) provide two independent signals of correctness. A cluster with $|C_i| = 1$ (single solution) provides no consensus; a cluster with $|T_p| = 1$ (single passing test) provides weak validation. Only clusters with \textit{both} high $|C_i|$ and high $|T_p|$ survive the scoring threshold, filtering out isolated or weakly-validated artifacts.
 
+\textbf{Mathematical Formulation of Noise Reduction.} We can formalize why this scoring creates clear separation between correct and incorrect clusters. Let $C_{correct}$ be the cluster of correct solutions and $C_{error}$ be any cluster of incorrect solutions. For the correct cluster:
+\[
+\mathbb{E}[\text{Score}(C_{correct})] = \mathbb{E}[|C_{correct}|] \times n_{valid}
+\]
+where $n_{valid}$ is the number of valid tests (all pass correct solutions). For an incorrect cluster:
+\[
+\mathbb{E}[\text{Score}(C_{error})] \leq \mathbb{E}[|C_{error}|] \times n_{valid} \times (1 - \delta)
+\]
+where $\delta > 0$ represents the fraction of tests that expose the bug. The key insight is that incorrect solutions typically fail at least some tests ($\delta > 0$), creating a score gap. When we have $K$ diverse candidate solutions with $m$ correct among them, the expected score ratio becomes:
+\[
+\frac{\mathbb{E}[\text{Score}(C_{correct})]}{\mathbb{E}[\text{Score}(C_{error})]} \geq \frac{m \cdot n_{valid}}{(K-m) \cdot n_{valid} \cdot (1-\delta)} = \frac{m}{(K-m)(1-\delta)}
+\]
+As $K$ increases with sufficient diversity (more independent implementations), $m$ (correct solutions) grows while incorrect solutions fragment into multiple small clusters with different error patterns, each with low $|C_{error}|$. This multiplicative scoring creates exponential separation, allowing correct clusters to dominate even with noisy candidates.
+
 \textbf{Why This Requires Diversity.} Generating diverse candidates (via temperature sampling, prompt variation, and varied computational approaches in Stage A) is essential. If all candidates implement the same algorithm with the same bug, they will cluster together with high $|C_i|$ but fail the same tests, yielding low $|T_p|$. Diversity ensures that correct implementations converge to the same cluster while incorrect ones fragment. The effectiveness of this approach is empirically validated in Section~\ref{sec:dual_agreement_validation}.
 
 \subsubsection{Scale and Filtering Results}
