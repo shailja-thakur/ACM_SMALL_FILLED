@@ -322,12 +322,12 @@ This challenge is especially acute in code reasoning, where small logical errors
 
 \begin{figure*}[t]
 \centering
-\small
-\begin{tabular}{@{}p{0.31\textwidth}@{\hspace{0.02\textwidth}}p{0.31\textwidth}@{\hspace{0.02\textwidth}}p{0.31\textwidth}@{}}
+\footnotesize
+\begin{tabular}{@{}p{0.29\textwidth}@{\hspace{0.01\textwidth}|}@{\hspace{0.01\textwidth}}p{0.33\textwidth}@{\hspace{0.01\textwidth}|}@{\hspace{0.01\textwidth}}p{0.33\textwidth}@{}}
 \toprule
-\textbf{Code} & \textbf{LLM-Generated (Hallucinated)} & \textbf{Ours (Trace-Grounded)} \\
+\textit{Code} & \textit{LLM-Generated CoT (Hallucinated)} & \textit{Ours (Trace-Grounded)} \\
 \midrule
-\begin{lstlisting}[style=pythoncode, basicstyle=\ttfamily\scriptsize]
+\begin{lstlisting}[style=pythoncode, basicstyle=\ttfamily\footnotesize]
 def countdown(n):
   count = n
   while count > 0:
@@ -335,41 +335,43 @@ def countdown(n):
   return count
 \end{lstlisting}
 &
-\colorbox{errorred!10}{\parbox{0.95\linewidth}{\scriptsize
-\textbf{Step 1:} Initialize count=5\\
-\textbf{Step 2:} Loop \textcolor{errorred}{\textbf{increments}} count each iteration\\
-\textbf{Step 3:} Continue until count=10\\
-\textbf{Step 4:} Return 10
-
+\colorbox{errorred!8}{\parbox{0.98\linewidth}{\footnotesize
 \vspace{0.1cm}
-\textcolor{errorred}{\textbf{\xmark\ WRONG}}: Claims increment!
+1. Initialize count=5\\
+2. Loop \textcolor{errorred}{\textbf{increments}} count\\
+3. Continue until count=10\\
+4. Return 10\\[0.1cm]
+\textcolor{errorred}{\xmark\ Incorrect logic}
+\vspace{0.1cm}
 }}
 &
-\colorbox{correctgreen!10}{\parbox{0.95\linewidth}{\scriptsize
-\textbf{Trace:}\\
-\ttfamily\tiny
-\begin{tabular}{@{}l@{}}
-count = 5\\
-count: 5 -> 4\\
-count: 4 -> 3\\
-...\\
-return: 0
-\end{tabular}
-
-\vspace{0.1cm}
-\normalfont\scriptsize
-\textbf{Step 1:} Initialize count=5\\
-\textbf{Step 2:} Loop \textcolor{correctgreen}{\textbf{decrements}} count\\
-\textbf{Step 3:} Continue until count=0\\
-\textbf{Step 4:} Return 0
-
+\parbox{0.98\linewidth}{
+\colorbox{gray!12}{\parbox{0.98\linewidth}{\ttfamily\scriptsize
 \vspace{0.05cm}
-\textcolor{correctgreen}{\textbf{\cmark\ VERIFIED}}
+count = 5\\
+count: 5 $\rightarrow$ 4\\
+count: 4 $\rightarrow$ 3\\
+count: 3 $\rightarrow$ 2\\
+count: 2 $\rightarrow$ 1\\
+count: 1 $\rightarrow$ 0\\
+return: 0
+\vspace{0.05cm}
+}}\\[0.1cm]
+\colorbox{correctgreen!8}{\parbox{0.98\linewidth}{\footnotesize
+\vspace{0.1cm}
+1. Initialize count=5\\
+2. Loop \textcolor{correctgreen}{\textbf{decrements}} count\\
+3. Continue until count=0\\
+4. Return 0\\[0.1cm]
+\textcolor{correctgreen}{\cmark\ Verified by trace}
+\vspace{0.1cm}
 }}
+}
 \\
 \bottomrule
 \end{tabular}
-\caption{LLM-generated CoT hallucinates (claims increment), while our trace-grounded approach is verifiable.}
+\vspace{-0.1cm}
+\caption{LLM-generated CoT hallucinates the loop logic (claims increment instead of decrement), while our trace-grounded approach produces rationales verifiable against actual execution traces.}
 \label{fig:motivation}
 \end{figure*}
 
