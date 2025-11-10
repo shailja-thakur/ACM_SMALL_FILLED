@@ -261,7 +261,7 @@
 %% The abstract is a short summary of the work to be presented in the
 %% article.
 \begin{abstract}
-  Large language models now power conversational code assistants, but struggle with multi-step reasoning tasks like debugging and program comprehension. Chain-of-Thought (CoT) fine-tuning—where models learn from step-by-step reasoning traces—has emerged as a solution, but faces a critical challenge: the inability to verify the logical integrity of reasoning steps, leading to models trained on plausible but incorrect "hallucinated" logic. Existing methods validate only final program outputs, leaving intermediate reasoning steps unverified and unsound. We introduce the first system to achieve \textbf{rationale-step verification} at scale by generating CoT rationales directly from program execution traces, making them \textbf{correct by construction}. Each reasoning step is verifiable: variable values match recorded runtime states, state transitions reflect actual semantic operations, and control flow describes executed branches. This approach eliminates logical hallucinations that plague LLM-generated explanations. We systematically create 54,000 high-fidelity, bi-directional rationales that teach models to reason both forward (input→output) and backward (output→input), a capability essential for debugging and program comprehension. Models fine-tuned on our verified data achieve substantial improvements: \textbf{+14.4 points} on CruxEval-Input and \textbf{+21.9 points} on LiveCodeBench-Exec, demonstrating that verification quality directly determines reasoning capabilities. The complete synthesis pipeline will be open-sourced.
+  Chain-of-Thought (CoT) fine-tuning teaches language models to reason through step-by-step traces, but generating such training data for code faces a critical challenge: the inability to verify the logical integrity of reasoning steps, leading to models trained on plausible but incorrect "hallucinated" logic. Existing methods validate only final program outputs—leaving intermediate reasoning steps unverified and unsound. We introduce the first system to achieve \textbf{rationale-step verification} at scale by generating CoT rationales directly from program execution traces, making them \textbf{correct by construction}. Each reasoning step is verifiable against the trace: variable values match recorded runtime states, state transitions reflect actual semantic operations, and control flow describes executed branches. Our concept-first synthesis strategy extracts problems from technical literature, ensuring diverse algorithmic coverage. We systematically generate 54,000 high-fidelity, bi-directional rationales that teach models to reason both forward (input$\rightarrow$output) and backward (output$\rightarrow$input), capabilities essential for debugging and program comprehension. Models fine-tuned on our trace-grounded data achieve substantial improvements: \textbf{+14.4 points} on CruxEval-Input and \textbf{+21.9 points} on LiveCodeBench-Exec, demonstrating that verification quality directly determines reasoning capabilities. The complete synthesis pipeline will be open-sourced.
 \end{abstract>
 
 %%
@@ -339,9 +339,9 @@ def countdown(n):
 &
 \colorbox{errorred!10}{\parbox{0.95\linewidth}{\scriptsize
 \textbf{Step 1:} Initialize count=5\\
-\textbf{Step 2:} Loop} \textcolor{errorred}{\textbf{increments}} \textit{count each iteration\\
+\textbf{Step 2:} Loop \textcolor{errorred}{\textbf{increments}} count each iteration\\
 \textbf{Step 3:} Continue until count=10\\
-\textbf{Step 4:} Return 10}
+\textbf{Step 4:} Return 10
 
 \vspace{0.1cm}
 \textcolor{errorred}{\textbf{\xmark\ WRONG}}: Claims increment!
