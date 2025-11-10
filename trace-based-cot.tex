@@ -491,22 +491,22 @@ This score captures two dimensions: (1) \textit{Solution agreement} ($|C_i|$): I
 \caption{Dual Agreement Clustering}
 \label{alg:dual_agreement}
 \begin{algorithmic}[1]
-\Require Solutions $S = \{s_1, \ldots, s_m\}$, Tests $T = \{t_1, \ldots, t_n\}$
-\Ensure Verified solution $s^*$ and test suite $T^*$
-\State Execute all $m \times n$ pairs to build matrix $M \in \{0,1\}^{m \times n}$
-\State $\textit{clusters} \gets \emptyset$
-\For{each solution $s_i \in S$}
-    \State $\textit{pattern}_i \gets M[i, :]$ \Comment{Test pass/fail pattern}
-    \State Add $s_i$ to cluster with matching pattern in \textit{clusters}
-\EndFor
-\For{each cluster $C_i \in \textit{clusters}$}
-    \State $T_p(C_i) \gets \{t_j : \forall s \in C_i, M[s, j] = 1\}$ \Comment{Commonly passed tests}
-    \State $\textit{Score}(C_i) \gets |C_i| \times |T_p(C_i)|$
-\EndFor
-\State $C^* \gets \arg\max_{C_i} \textit{Score}(C_i)$ \Comment{Highest-scoring cluster}
-\State $s^* \gets$ Select canonical solution from $C^*$ (shortest/most readable)
-\State $T^* \gets T_p(C^*)$
-\State \Return $(s^*, T^*)$
+\REQUIRE Solutions $S = \{s_1, \ldots, s_m\}$, Tests $T = \{t_1, \ldots, t_n\}$
+\ENSURE Verified solution $s^*$ and test suite $T^*$
+\STATE Execute all $m \times n$ pairs to build matrix $M \in \{0,1\}^{m \times n}$
+\STATE $\textit{clusters} \gets \emptyset$
+\FOR{each solution $s_i \in S$}
+    \STATE $\textit{pattern}_i \gets M[i, :]$ // Test pass/fail pattern
+    \STATE Add $s_i$ to cluster with matching pattern in \textit{clusters}
+\ENDFOR
+\FOR{each cluster $C_i \in \textit{clusters}$}
+    \STATE $T_p(C_i) \gets \{t_j : \forall s \in C_i, M[s, j] = 1\}$ // Commonly passed tests
+    \STATE $\textit{Score}(C_i) \gets |C_i| \times |T_p(C_i)|$
+\ENDFOR
+\STATE $C^* \gets \arg\max_{C_i} \textit{Score}(C_i)$ // Highest-scoring cluster
+\STATE $s^* \gets$ Select canonical solution from $C^*$ (shortest/most readable)
+\STATE $T^* \gets T_p(C^*)$
+\STATE \textbf{return} $(s^*, T^*)$
 \end{algorithmic}
 \end{algorithm}
 
