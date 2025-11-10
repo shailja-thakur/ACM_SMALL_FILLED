@@ -232,10 +232,11 @@
 \begin{abstract}
   Chain-of-Thought (CoT) fine-tuning for code suffers from a critical flaw: the reasoning steps in synthetic
      datasets are often plausible but unverified "logical hallucinations," training models to replicate flawed logic.
-     We solve this by introducing a pipeline that generates \textbf{Trace-Grounded Rationales}: CoT datasets where
-     every reasoning step is a verifiable, factual account of a program's actual execution. Our approach generates
-     rationales by directly translating execution traces into natural language, making them correct by construction
-     and eliminating logical hallucinations. The pipeline combines a concept-first synthesis strategy—extracting
+     Existing execution-aware methods perform only outcome verification (validating final outputs), while formal
+     verification is computationally prohibitive. We solve this by introducing a pipeline that achieves
+     \textbf{rationale-step verification}—validating each reasoning step in the CoT chain—at scale. Our approach
+     generates rationales by directly translating program execution traces into natural language, making them correct
+     by construction and eliminating logical hallucinations. The pipeline combines a concept-first synthesis strategy—extracting
      problems from technical literature spanning diverse algorithmic and mathematical domains—with execution-grounded
      verification at scale. We systematically create 54,000 high-fidelity, bi-directional (input-to-output and
      output-to-input) rationales. Through extensive evaluations, we demonstrate that models trained on our data achieve
@@ -322,16 +323,11 @@ This challenge is especially acute in code reasoning, where small logical errors
 %      entire reasoning chain.
 % This challenge is especially acute in code reasoning, where small logical errors can cascade into a flawed understanding. For instance, a model may correctly identify a function's purpose but hallucinate the logic for its intermediate steps or edge cases. Such errors then propagate during training, teaching the model to follow plausible but incorrect logical patterns.
 
-Other related lines of work use execution to evaluate model outputs, not to generate training data. For instance, benchmarks like HumanEval~\cite{chen2021evaluating} and MBPP~\cite{austin2021program} rely on executing generated code against unit tests to verify the correctness of the final answer. This validates the outcome but provides no insight into the intermediate reasoning steps. Similarly, highly relevant methods like SemCoder~\cite{ding2024semcodertrainingcodelanguage} generate CoT explanations for fine-tuning, but their execution-based verification is limited to the final outcome, leaving the logical integrity of the intermediate reasoning steps themselves unchecked. \textbf{Two critical gaps exist:} First, there is no method for generating CoT where every reasoning step is verifiably correct. Second, there is no pipeline that provides fine-grained control over the complexity and diversity of synthetic data.
+Existing execution-aware methods perform only \textit{outcome verification}—validating the final program output against expected results (e.g., HumanEval~\cite{chen2021evaluating}, SemCoder~\cite{ding2024semcodertrainingcodelanguage}). This validates whether the answer is correct, but provides no guarantee about the logical integrity of intermediate reasoning steps. In contrast, \textit{formal verification} using mathematical proofs (e.g., symbolic execution, SMT solvers) can guarantee correctness but is computationally prohibitive at scale. \textbf{A critical gap exists:} there is no practical method for \textit{rationale-step verification}—validating each reasoning step in the CoT chain—that scales to large-scale training data generation. Additionally, existing pipelines lack fine-grained control over the complexity and diversity of synthetic data.
 
 Furthermore, effective code reasoning requires both forward inference (predicting outputs from inputs) and backward reasoning (understanding how outputs arose from inputs)~\cite{li2025codeio}. This bi-directional capability is essential for debugging, code comprehension, and robust program analysis. However, current synthetic data generation methods do not systematically address this requirement, leading to models with asymmetric reasoning capabilities.
 
-In this work, we bridge these gaps by introducing a new paradigm for data synthesis that is grounded in program
-      execution. We have developed a complete synthesis pipeline that generates CoT rationales by \textit{narrating
-      verifiable program execution traces}. Specifically, we instrument a program to capture its dynamic execution
-      state (e.g., variable values after each statement) and use this log as an immutable ground truth. This ensures
-      that the resulting reasoning chain is \textbf{correct by construction}, eliminating the logical hallucinations
-      that plague other methods.
+In this work, we bridge these gaps by introducing a new paradigm for data synthesis that achieves \textit{rationale-step verification} at scale. We have developed a complete synthesis pipeline that generates CoT rationales by directly translating program execution traces into natural language. Specifically, we instrument a program to capture its dynamic execution state (e.g., variable values after each statement) and use this trace as an immutable ground truth from which rationales are derived. This ensures that the resulting reasoning chain is \textbf{correct by construction}, eliminating the logical hallucinations that plague other methods.
 
 Furthermore, our \textit{concept-first} pipeline provides fine-grained control over data quality. Rather than
       relying on existing code corpora, it synthesizes problems from abstract programming concepts (e.g.,
@@ -345,7 +341,7 @@ Furthermore, our \textit{concept-first} pipeline provides fine-grained control o
 Our contributions are fivefold:
 
 \begin{enumerate}
-    \item \textbf{An Execution-Grounded Synthesis Pipeline} that generates factually correct and verifiable CoT data directly from execution traces.
+    \item \textbf{An Execution-Grounded Synthesis Pipeline} that achieves rationale-step verification at scale, generating factually correct CoT data by directly translating execution traces into natural language.
     \item \textbf{A Concept-First Generation Approach} providing fine-grained control over the complexity and diversity of the synthesized data.
     \item \textbf{A Novel Bi-Directional CoT Dataset} that teaches both forward (input-to-output) and backward (output-to-input) reasoning.
     \item \textbf{A Systematic Investigation of Data Utility} through targeted SFT experiments and evaluation to identify optimal training configurations.
@@ -576,7 +572,13 @@ Raw \texttt{pysnooper} logs contain formatting artifacts unsuitable for model co
 Before generating CoT rationales, we establish the precise input and output for each test case. For simple test functions like \texttt{def test\_basic(): assert solution([1, 2], 2) == [1]}, we use regex parsing to extract \texttt{input = [1, 2], 2} and \texttt{expected\_output = [1]}. For complex tests involving setup logic, we prompt an LLM to analyze the test code and extract the effective input/output pair. With ground-truth I/O established, we then prompt an LLM to generate a pair of natural language questions: (1) \textbf{Forward question:} "Given the input \texttt{[1, 2, 3]} and \texttt{target=2}, what does the function return?", and (2) \textbf{Backward question:} "What input would cause the function to return \texttt{[1]}?" The prompt explicitly instructs natural phrasing to add linguistic diversity to the dataset.
 
 \subsubsection{Step 4: Trace-Grounded Chain-of-Thought Generation}
-This is the core of Stage C, where we use the sanitized trace as the factual basis for generating reasoning chains. For forward CoT, we prompt an LLM with the instruction, function code, forward question, and sanitized trace, instructing it to narrate the trace step-by-step, translating how the input transforms into the output. For backward CoT, we prompt the model to perform deductive reasoning: given the final output state in the trace, explain how this output could only have been reached from the initial input. Critically, the model is \textit{not generating an explanation from scratch}; it is \textit{translating} a factual trace into natural language. This eliminates hallucination: variable values, control flow, and return values are all factual records from runtime execution, making every claim in the rationale verifiable against the trace.
+This is the core of Stage C, where we use the sanitized trace as the factual basis for generating reasoning chains.
+
+\textbf{Forward CoT Generation: Narrating the Trace.} We prompt an LLM with: (1) the instruction and function code, (2) the forward question, and (3) the sanitized execution trace. The prompt instructs: "Narrate the execution trace step-by-step, explaining how the input is transformed into the output. Extract the \texttt{<Predicted Output>} you deduce from the trace." Critically, the model is \textit{not generating an explanation from scratch}; it is \textit{translating} a factual trace into natural language, ensuring the rationale is verifiable against the trace.
+
+\textbf{Backward CoT Generation: Deductive Reasoning from the Trace.} For the backward direction, we prompt the model with the same trace but ask it to perform deductive reasoning: "Given the final output state in the trace, explain how this output could only have been reached from the initial input. Extract the \texttt{<Predicted Input>} you derive." This forces the model to reason backwards through the trace, explaining how the final state constrains the initial input.
+
+\textbf{Why This Trace-Grounding Eliminates Hallucination.} Traditional self-instruct methods prompt an LLM to explain code without execution, leading to "plausible hallucinations" where the explanation sounds correct but contains subtle factual errors. By anchoring the rationale in a trace, we guarantee factual correctness: (1) variable values are factual (recorded at runtime), (2) control flow is factual (showing which branches executed), and (3) return values are factual (captured from actual execution).
 
 \subsubsection{Step 5: Final Assembly into Conversational Format}
 The generated components (questions, CoTs, predicted I/O) are assembled into structured training examples. We create three versions of the dataset: (1) \textbf{Forward-only:} Each sample contains \texttt{<Instruction>}, \texttt{<Function>}, \texttt{<Forward Question>}, \texttt{<CoT>}, \texttt{<Predicted Output>}; (2) \textbf{Backward-only:} Each sample contains \texttt{<Instruction>}, \texttt{<Function>}, \texttt{<Backward Question>}, \texttt{<CoT>}, \texttt{<Predicted Input>}; (3) \textbf{Bi-directional:} Each sample contains both forward and backward turns in a single multi-turn conversation, teaching the model to reason in both directions.
