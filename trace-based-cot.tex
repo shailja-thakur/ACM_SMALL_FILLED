@@ -323,6 +323,9 @@ This challenge is especially acute in code reasoning, where small logical errors
 \begin{figure*}[t]
 \centering
 \footnotesize
+\definecolor{initcolor}{RGB}{255,240,245}
+\definecolor{processcolor}{RGB}{240,248,255}
+\definecolor{finalcolor}{RGB}{240,255,240}
 \begin{tabular}{@{}p{0.29\textwidth}@{\hspace{0.01\textwidth}|}@{\hspace{0.01\textwidth}}p{0.33\textwidth}@{\hspace{0.01\textwidth}|}@{\hspace{0.01\textwidth}}p{0.33\textwidth}@{}}
 \toprule
 \textit{Code} & \textit{LLM-Generated CoT (Hallucinated)} & \textit{Ours (Trace-Grounded)} \\
@@ -343,35 +346,34 @@ def find_peak(arr):
 \vspace{0.1cm}
 1. Initialize left=0, right=4\\
 2. Calculate mid=2\\
-3. Compare arr[2] with arr[1]\\
+3. Compare arr[2] with \textcolor{errorred}{\textbf{arr[1]}}\\
 4. Since arr[2] \textcolor{errorred}{\textbf{>}} arr[1], move \textcolor{errorred}{\textbf{right}}\\
 5. Continue until left=right\\
 6. Return peak index\\[0.1cm]
-\textcolor{errorred}{\xmark\ Wrong comparison \& direction}
+\textcolor{errorred}{\xmark\ Wrong: compares wrong indices, wrong direction}
 \vspace{0.1cm}
 }}
 &
 \parbox{0.98\linewidth}{
-\colorbox{gray!12}{\parbox{0.98\linewidth}{\ttfamily\scriptsize
+\colorbox{gray!15}{\parbox{0.98\linewidth}{\ttfamily\scriptsize
 \vspace{0.05cm}
-arr = [1,3,5,4,2], left = 0, right = 4\\
-mid = 2\\
-arr[2] = 5, arr[3] = 4\\
-5 $>$ 4, so right = 2\\
-mid = 1, arr[1] = 3, arr[2] = 5\\
-3 $<$ 5, so left = 2\\
-left == right, return 2
+\colorbox{initcolor}{arr=[1,3,5,4,2], left=0, right=4}\\
+\colorbox{processcolor}{mid=2, arr[2]=5, arr[3]=4}\\
+\colorbox{processcolor}{5>4 $\Rightarrow$ right=2}\\
+\colorbox{processcolor}{mid=1, arr[1]=3, arr[2]=5}\\
+\colorbox{processcolor}{3<5 $\Rightarrow$ left=2}\\
+\colorbox{finalcolor}{left==right, return 2}
 \vspace{0.05cm}
 }}\\[0.1cm]
 \colorbox{correctgreen!8}{\parbox{0.98\linewidth}{\footnotesize
 \vspace{0.1cm}
-1. Initialize left=0, right=4\\
-2. Calculate mid=2, arr[2]=5\\
-3. Compare arr[2] with arr[3]\\
-4. Since 5 \textcolor{correctgreen}{\textbf{>}} 4, move \textcolor{correctgreen}{\textbf{left}}\\
-5. Converge at index 2\\
-6. Return 2 (peak value 5)\\[0.1cm]
-\textcolor{correctgreen}{\cmark\ Verified by trace}
+\colorbox{initcolor}{\parbox{0.96\linewidth}{1. \textbf{Init:} left=0, right=4, arr=[1,3,5,4,2]}}\\[0.05cm]
+\colorbox{processcolor}{\parbox{0.96\linewidth}{2. \textbf{Iter 1:} mid=2, compare arr[2]=5 with arr[3]=4}}\\
+\colorbox{processcolor}{\parbox{0.96\linewidth}{3. Since 5\textcolor{correctgreen}{\textbf{>}}4, peak in left half $\Rightarrow$ right=2}}\\
+\colorbox{processcolor}{\parbox{0.96\linewidth}{4. \textbf{Iter 2:} mid=1, compare arr[1]=3 with arr[2]=5}}\\
+\colorbox{processcolor}{\parbox{0.96\linewidth}{5. Since 3\textcolor{correctgreen}{\textbf{<}}5, peak in right half $\Rightarrow$ left=2}}\\[0.05cm]
+\colorbox{finalcolor}{\parbox{0.96\linewidth}{6. \textbf{Done:} left==right==2, return 2}}\\[0.05cm]
+\textcolor{correctgreen}{\cmark\ Each step verified by trace values}
 \vspace{0.1cm}
 }}
 }
@@ -379,7 +381,7 @@ left == right, return 2
 \bottomrule
 \end{tabular}
 \vspace{-0.1cm}
-\caption{LLM-generated CoT hallucinates the comparison logic and search direction, while our trace-grounded approach produces rationales verifiable against actual execution traces.}
+\caption{Visual mapping between execution trace and CoT reasoning. In our trace-grounded approach (right), colored boxes show how trace sections map to CoT: \colorbox{initcolor}{pink=initialization}, \colorbox{processcolor}{blue=loop iterations}, \colorbox{finalcolor}{green=final state}. Variable values in CoT exactly match trace. LLM-generated CoT (middle) hallucinates wrong array indices and search direction with no grounding.}
 \label{fig:motivation}
 \end{figure*}
 
