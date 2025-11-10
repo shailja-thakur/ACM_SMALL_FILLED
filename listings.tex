@@ -387,28 +387,29 @@
   \toprule
   \textit{Function Signature} & \textit{Class Signature} \\
   \midrule
-  \begin{minipage}[t]{0.45\columnwidth}
-  \scriptsize\ttfamily
-  Function: solution(\\
-  \hspace*{1em}freq\textunderscore list: \\
-  \hspace*{2em}list[tuple[\\
-  \hspace*{3em}str, int]]) \\
-  \hspace*{1em}-> dict[str, str]
-  \end{minipage}
+  \begin{lstlisting}[style=pythoncode, basicstyle=\ttfamily\scriptsize]
+Function: solution(
+  freq_list:
+    list[tuple[
+      str, int]])
+  -> dict[str, str]
+\end{lstlisting}
   &
-  \begin{minipage}[t]{0.45\columnwidth}
-  \scriptsize\ttfamily
-  Class: HuffmanTree;\\[0.1cm]
-  \textunderscore\textunderscore init\textunderscore\textunderscore(self,\\
-  \hspace*{1em}freq\textunderscore list:\\
-  \hspace*{2em}list[tuple[\\
-  \hspace*{3em}str, int]])\\
-  \hspace*{1em}-> None;\\[0.1cm]
-  build\textunderscore tree(self)\\
-  \hspace*{1em}-> tuple;\\[0.1cm]
-  get\textunderscore encoding(self)\\
-  \hspace*{1em}-> dict[str, str]
-  \end{minipage}
+  \begin{lstlisting}[style=pythoncode, basicstyle=\ttfamily\scriptsize]
+Class: HuffmanTree;
+
+__init__(self,
+  freq_list:
+    list[tuple[
+      str, int]])
+  -> None;
+
+build_tree(self)
+  -> tuple;
+
+get_encoding(self)
+  -> dict[str, str]
+\end{lstlisting}
   \\
   \bottomrule
   \end{tabular}
@@ -419,28 +420,26 @@
 
 \begin{figure}[t!]
   \centering
-  \footnotesize
+  \scriptsize
   \begin{tabular}{@{}p{0.48\columnwidth}@{\hspace{0.01\columnwidth}|}@{\hspace{0.01\columnwidth}}p{0.48\columnwidth}@{}}
   \toprule
   \textit{Correct Format} \textcolor{correctgreen}{\cmark} & \textit{Prohibited Format} \textcolor{errorred}{\xmark} \\
   \midrule
-  \colorbox{correctgreen!10}{\parbox{0.95\linewidth}{\ttfamily\scriptsize
-  def test\_basic(): \\
-  \hspace*{1em}\# Test basic \\
-  \hspace*{1em}assert \\
-  \hspace*{2em}solution([1, \\
-  \hspace*{3em}2, 3], 2) \\
-  \hspace*{2em}== [1]
+  \colorbox{correctgreen!10}{\parbox{0.95\linewidth}{
+  \begin{lstlisting}[style=pythoncode, basicstyle=\ttfamily\scriptsize]
+def test_basic():
+  # Test basic case
+  assert solution([1,2,3], 2) == [1]
+\end{lstlisting}
   }}
   &
-  \colorbox{errorred!10}{\parbox{0.95\linewidth}{\ttfamily\scriptsize
-  def test\_wrong(): \\
-  \hspace*{1em}\# Variable \\
-  \hspace*{1em}\# outside assert \\
-  \hspace*{1em}lst = [1, 2, 3] \\
-  \hspace*{1em}assert \\
-  \hspace*{2em}solution(lst, \\
-  \hspace*{3em}2) == [1]
+  \colorbox{errorred!10}{\parbox{0.95\linewidth}{
+  \begin{lstlisting}[style=pythoncode, basicstyle=\ttfamily\scriptsize]
+def test_wrong():
+  # Variable outside assert
+  lst = [1, 2, 3]
+  assert solution(lst, 2) == [1]
+\end{lstlisting}
   }}
   \\
   \bottomrule
