@@ -382,42 +382,44 @@
 
 \begin{figure}[t!]
   \centering
-  \tiny
-  \begin{tabular}{@{}p{0.48\columnwidth}@{\hspace{0.01\columnwidth}|}@{\hspace{0.01\columnwidth}}p{0.48\columnwidth}@{}}
+  \scriptsize
+  \begin{tabular}{@{}m{0.48\columnwidth}@{\hspace{0.01\columnwidth}|}@{\hspace{0.01\columnwidth}}m{0.48\columnwidth}@{}}
   \toprule
   \textit{Function Signature} & \textit{Class Signature} \\
   \midrule
+  \begin{minipage}[t]{0.46\columnwidth}
   \begin{lstlisting}[style=pythoncode, basicstyle=\ttfamily\tiny]
-Function: solution(
-  freq_list: list[tuple[str, int]])
-  -> dict[str, str]
+solution(freq_list: list[tuple[str,int]])
+  -> encoding: dict[str, str]
 \end{lstlisting}
-\vspace{-0.15cm}
-\textbf{Extracted Metadata:}\\
+\vspace{-0.1cm}
+{\tiny\textbf{Metadata:}}\\
+{\tiny
 \textbullet~Name: \texttt{solution}\\
-\textbullet~Params: \texttt{freq\_list}\\
-\textbullet~Input type: \texttt{list[tuple[str,int]]}\\
-\textbullet~Output type: \texttt{dict[str,str]}
+\textbullet~Input: \texttt{freq\_list: list[tuple[str,int]]}\\
+\textbullet~Output: \texttt{encoding: dict[str,str]}}
+  \end{minipage}
   &
+  \begin{minipage}[t]{0.46\columnwidth}
   \begin{lstlisting}[style=pythoncode, basicstyle=\ttfamily\tiny]
-Class: HuffmanTree;
-__init__(self, freq_list:
-  list[tuple[str, int]]) -> None;
-build_tree(self) -> tuple;
-get_encoding(self) -> dict[str, str]
+Class HuffmanTree:
+  __init__(self, freq_list: list[tuple[str,int]])
+    -> None
+  build_tree(self) -> tree: tuple
+  get_encoding(self) -> codes: dict[str,str]
 \end{lstlisting}
-\vspace{-0.15cm}
-\textbf{Extracted Metadata:}\\
+\vspace{-0.1cm}
+{\tiny\textbf{Metadata:}}\\
+{\tiny
 \textbullet~Class: \texttt{HuffmanTree}\\
-\textbullet~Constructor: \texttt{\_\_init\_\_}\\
-\textbullet~Methods: \texttt{build\_tree}, \texttt{get\_encoding}\\
-\textbullet~Member params: \texttt{freq\_list}\\
-\textbullet~Return types: \texttt{None}, \texttt{tuple}, \texttt{dict}
+\textbullet~Methods: \texttt{\_\_init\_\_}, \texttt{build\_tree}, \texttt{get\_encoding}\\
+\textbullet~Returns: None, \texttt{tree:tuple}, \texttt{codes:dict}}
+  \end{minipage}
   \\
   \bottomrule
   \end{tabular}
   \vspace{-0.1cm}
-  \caption{Signature format templates with extracted metadata. The LLM generates formal signatures specifying types and names. We extract and store this metadata (function/class names, parameters, input/output types) to validate generated code and tests for naming consistency and type correctness, preventing hallucinated function names or type mismatches.}
+  \caption{Signature format templates with extracted metadata. Generated signatures specify function/class names, parameter names and types, and return variable names with types (e.g., \texttt{tree: tuple}, \texttt{codes: dict}). This metadata is stored to validate code/test consistency and prevent hallucinated names or type mismatches.}
   \label{fig:signature-formats}
 \end{figure}
 

@@ -326,59 +326,62 @@ This challenge is especially acute in code reasoning, where small logical errors
 \definecolor{initcolor}{RGB}{255,250,205}
 \definecolor{processcolor}{RGB}{230,240,255}
 \definecolor{finalcolor}{RGB}{230,255,230}
-\begin{tabular}{@{}p{0.29\textwidth}@{\hspace{0.01\textwidth}|}@{\hspace{0.01\textwidth}}p{0.33\textwidth}@{\hspace{0.01\textwidth}|}@{\hspace{0.01\textwidth}}p{0.33\textwidth}@{}}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}m{0.32\textwidth}@{\hspace{0.01\textwidth}|}@{\hspace{0.01\textwidth}}m{0.32\textwidth}@{\hspace{0.01\textwidth}|}@{\hspace{0.01\textwidth}}m{0.32\textwidth}@{}}
 \toprule
-\textit{Code} & \textit{LLM-Generated CoT (Hallucinated)} & \textit{Ours (Trace-Grounded)} \\
+\textit{Code} & \textit{LLM-Generated CoT} & \textit{Ours: Trace $\rightarrow$ CoT} \\
 \midrule
 \begin{lstlisting}[style=pythoncode, basicstyle=\ttfamily\scriptsize]
 def find_peak(arr):
   left = 0
-  right = len(arr) - 1
+  right = len(arr)-1
   while left < right:
-    mid = (left+right)//2
+    mid=(left+right)//2
     if arr[mid]<arr[mid+1]:
       left = mid + 1
     else:
       right = mid
   return left
+# Call: find_peak([1,3,5,4,2])
 \end{lstlisting}
 &
-\colorbox{errorred!8}{\parbox{0.98\linewidth}{\scriptsize
-\vspace{0.05cm}
-The function starts by setting up search boundaries with left=0 and right=4 to span the entire array. Then it enters a loop to narrow down where the peak element is located. In each iteration, it calculates the midpoint and checks whether we're on an ascending or descending slope. When we compare arr[2] with \textcolor{errorred}{\textbf{arr[1]}}, since arr[2] is larger, this indicates we're climbing upward, so the peak must be to the \textcolor{errorred}{\textbf{right}}. The algorithm continues adjusting the boundaries until they converge at the peak location.\\[0.05cm]
-\textcolor{errorred}{\xmark\ Hallucinates wrong indices \& direction}
-\vspace{0.05cm}
+\colorbox{errorred!8}{\parbox{0.96\linewidth}{\scriptsize
+\vspace{0.1cm}
+The function begins by initializing search boundaries spanning the array. With left=0 and right=4, we start looking for the peak. In the loop, we calculate the midpoint and check if we're ascending or descending. At mid=2, we compare arr[2] with \textcolor{errorred}{\textbf{arr[1]}} to determine direction. Since arr[2] is greater, we're still climbing, meaning the peak lies to the \textcolor{errorred}{\textbf{right}}, so we adjust our boundary accordingly. We repeat until the boundaries meet at the peak index.\\[0.1cm]
+\textcolor{errorred}{\xmark\ Hallucinates indices \& direction}
+\vspace{0.1cm}
 }}
 &
-\parbox{0.98\linewidth}{
-\colorbox{gray!15}{\parbox{0.98\linewidth}{\ttfamily\tiny
-\vspace{0.03cm}
-\colorbox{initcolor}{Line 2~~left = 0}\\
-\colorbox{initcolor}{Line 3~~right = 4}\\
-\colorbox{processcolor}{Line 5~~mid = 2}\\
-\colorbox{processcolor}{Line 6~~arr[2] = 5, arr[3] = 4}\\
-\colorbox{processcolor}{Line 9~~right: 4 -> 2}\\
-\colorbox{processcolor}{Line 5~~mid = 1}\\
-\colorbox{processcolor}{Line 6~~arr[1] = 3, arr[2] = 5}\\
-\colorbox{processcolor}{Line 7~~left: 0 -> 2}\\
-\colorbox{finalcolor}{Line 10~return 2}
-\vspace{0.03cm}
+\parbox{0.96\linewidth}{
+\colorbox{gray!15}{\parbox{0.96\linewidth}{\ttfamily\tiny
+\vspace{0.05cm}
+\colorbox{initcolor}{\textbf{Initialization}}\\
+Line 2: left = 0\\
+Line 3: right = 4\\[0.05cm]
+\colorbox{processcolor}{\textbf{Loop Iteration 1}}\\
+Line 5: mid = 2\\
+Line 6: arr[2]=5, arr[3]=4\\
+Line 9: right: 4$\rightarrow$2\\[0.05cm]
+\colorbox{processcolor}{\textbf{Loop Iteration 2}}\\
+Line 5: mid = 1\\
+Line 6: arr[1]=3, arr[2]=5\\
+Line 7: left: 0$\rightarrow$2\\[0.05cm]
+\colorbox{finalcolor}{\textbf{Return}}\\
+Line 10: return 2
+\vspace{0.05cm}
 }}\\[0.08cm]
-\colorbox{correctgreen!8}{\parbox{0.98\linewidth}{\scriptsize
-\vspace{0.05cm}
-\colorbox{initcolor}{\parbox{0.96\linewidth}{\scriptsize We begin with left=0 and right=4, covering the full array [1,3,5,4,2].}}\\[0.03cm]
-\colorbox{processcolor}{\parbox{0.96\linewidth}{\scriptsize First iteration: midpoint is index 2 (value 5). Comparing with arr[3]=4 shows we're past the peak, so we search the left portion by setting right=2.}}\\[0.03cm]
-\colorbox{processcolor}{\parbox{0.96\linewidth}{\scriptsize Second iteration: midpoint is now index 1 (value 3). Comparing with arr[2]=5 shows the peak is ahead, so we move left=2.}}\\[0.03cm]
-\colorbox{finalcolor}{\parbox{0.96\linewidth}{\scriptsize The boundaries converge at index 2, which contains our peak value of 5.}}\\[0.03cm]
-\textcolor{correctgreen}{\cmark\ Each step matches trace}
-\vspace{0.05cm}
+\colorbox{correctgreen!8}{\parbox{0.96\linewidth}{\scriptsize
+\vspace{0.1cm}
+Starting with the full array [1,3,5,4,2], we initialize left=0 and right=4. The first iteration finds the midpoint at index 2 with value 5. Since arr[3]=4 is smaller, we know the peak is in the left half, so right becomes 2. Next iteration has mid=1 with value 3. Since arr[2]=5 is larger, the peak is ahead, so left moves to 2. Now left equals right at index 2, which holds our peak value 5.\\[0.1cm]
+\textcolor{correctgreen}{\cmark\ Verified step-by-step}
+\vspace{0.1cm}
 }}
 }
 \\
 \bottomrule
 \end{tabular}
 \vspace{-0.1cm}
-\caption{Comparison of LLM-hallucinated vs trace-grounded CoT. Our approach (right) grounds each reasoning step in actual execution: the pysnooper-style trace shows line numbers and variable states, which are then narrated naturally. The colored boxes map trace sections (yellow=init, blue=iterations, green=final) to CoT. LLM-generated CoT (middle) produces plausible-sounding but factually wrong reasoning about array indices and search direction.}
+\caption{Comparison of hallucinated vs trace-grounded CoT. Our approach translates pysnooper execution trace (showing line numbers, variable states, state transitions) into natural language reasoning. Color mapping shows trace sections: \colorbox{initcolor}{yellow=init}, \colorbox{processcolor}{blue=iterations}, \colorbox{finalcolor}{green=return}. LLM hallucinates wrong comparison (arr[2] vs arr[1] instead of arr[3]) and wrong search direction.}
 \label{fig:motivation}
 \end{figure*}
 
