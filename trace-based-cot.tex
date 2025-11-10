@@ -344,7 +344,7 @@ def countdown(n):
 \textit{"Starting with count=5, the loop} \textcolor{errorred}{\textbf{increments}} \textit{count until reaching 10, then returns 10."}
 
 \vspace{0.1cm}
-\textcolor{errorred}{\textbf{✗ HALLUCINATION}}: Claims increment when code decrements!
+\textcolor{errorred}{\textbf{\xmark\ HALLUCINATION}}: Claims increment when code decrements!
 \end{tcolorbox}
 
 \vspace{0.25cm}
@@ -363,10 +363,10 @@ Line 5: return count  ->  return: 0
 \end{lstlisting}
 \vspace{-0.1cm}
 \textbf{Our Generated Explanation:}\\
-\textit{"Starting with count=5, the loop} \textcolor{correctgreen}{\textbf{decrements}} \textit{count (5→4→3→2→1→0) until reaching 0, then returns 0."}
+\textit{"Starting with count=5, the loop} \textcolor{correctgreen}{\textbf{decrements}} \textit{count (5$\rightarrow$4$\rightarrow$3$\rightarrow$2$\rightarrow$1$\rightarrow$0) until reaching 0, then returns 0."}
 
 \vspace{0.1cm}
-\textcolor{correctgreen}{\textbf{✓ CORRECT}}: Variable values, state transitions, and control flow match trace!
+\textcolor{correctgreen}{\textbf{\cmark\ CORRECT}}: Variable values, state transitions, and control flow match trace!
 \end{tcolorbox}
 
 \caption{Comparison of LLM-generated vs trace-grounded CoT. Traditional CoT generation produces plausible but incorrect reasoning (top), while our approach translates execution traces directly into natural language, making rationales verifiable against actual program behavior (bottom).}
