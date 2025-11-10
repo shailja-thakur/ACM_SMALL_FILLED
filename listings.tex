@@ -429,7 +429,124 @@
 
   \end{tcolorbox}
   {\footnotesize\textbf{(b) A backward CoT template.}}
-  \caption{Abstract examples for the generated bi-directional CoT data. Blue-shaded regions show the input prompt components (instruction, function, and question), while green-shaded regions show 
+  \caption{Abstract examples for the generated bi-directional CoT data. Blue-shaded regions show the input prompt components (instruction, function, and question), while green-shaded regions show
   the model's reasoning and output generation.}
   \label{fig:cot-templates}
   \end{figure}
+
+\begin{figure}[t!]
+  \centering
+
+  \begin{tcolorbox}[
+      enhanced,
+      fontupper=\ttfamily\scriptsize,
+      colback=lightgray,
+      colframe=darkgray,
+      boxrule=0.8pt,
+      arc=3pt,
+      enlarge top by=0.5mm,
+      enlarge bottom by=0.5mm,
+      title={\scriptsize\textbf{Function Signature Format}},
+      coltitle=white,
+      colbacktitle=darkgray,
+      boxsep=2pt,
+      left=4pt,
+      right=4pt,
+      top=2pt,
+      bottom=2pt,
+      nobeforeafter,
+  ]
+  Function: solution(freq\_list: list[tuple[str, int]]) \\
+  \hspace*{2em}-> dict[str, str]
+  \end{tcolorbox}
+  {\footnotesize\textbf{(a) Function signature format.}}
+
+  \vspace{3pt}
+
+  \begin{tcolorbox}[
+      enhanced,
+      fontupper=\ttfamily\scriptsize,
+      colback=lightgray,
+      colframe=darkgray,
+      boxrule=0.8pt,
+      arc=3pt,
+      enlarge top by=0.5mm,
+      enlarge bottom by=0.5mm,
+      title={\scriptsize\textbf{Class Signature Format}},
+      coltitle=white,
+      colbacktitle=darkgray,
+      boxsep=2pt,
+      left=4pt,
+      right=4pt,
+      top=2pt,
+      bottom=2pt,
+      nobeforeafter,
+  ]
+  Class: HuffmanTree; \_\_init\_\_(self, freq\_list: \\
+  \hspace*{2em}list[tuple[str, int]]) -> None; \\
+  \hspace*{1em}build\_tree(self) -> tuple; \\
+  \hspace*{1em}get\_encoding(self) -> dict[str, str]
+  \end{tcolorbox}
+  {\footnotesize\textbf{(b) Class signature format.}}
+  \caption{Signature format templates enforced via few-shot examples. These strict formats ensure type and naming consistency across candidate solutions and tests.}
+  \label{fig:signature-formats}
+\end{figure}
+
+\begin{figure}[t!]
+  \centering
+
+  \begin{tcolorbox}[
+      enhanced,
+      fontupper=\ttfamily\scriptsize,
+      colback=lightgreen,
+      colframe=darkgray,
+      boxrule=0.8pt,
+      arc=3pt,
+      enlarge top by=0.5mm,
+      enlarge bottom by=0.5mm,
+      title={\scriptsize\textbf{Correct Test Format}},
+      coltitle=white,
+      colbacktitle=darkgray,
+      boxsep=2pt,
+      left=4pt,
+      right=4pt,
+      top=2pt,
+      bottom=2pt,
+      nobeforeafter,
+  ]
+  def test\_basic\_functionality(): \\
+  \hspace*{1em}\# Test basic scenario \\
+  \hspace*{1em}assert solution([1, 2, 3], 2) == [1]
+  \end{tcolorbox}
+  {\footnotesize\textbf{(a) Correct: Direct function call in assert.}}
+
+  \vspace{3pt}
+
+  \begin{tcolorbox}[
+      enhanced,
+      fontupper=\ttfamily\scriptsize,
+      colback=lightgray,
+      colframe=red,
+      boxrule=0.8pt,
+      arc=3pt,
+      enlarge top by=0.5mm,
+      enlarge bottom by=0.5mm,
+      title={\scriptsize\textbf{Prohibited Test Format}},
+      coltitle=white,
+      colbacktitle=red,
+      boxsep=2pt,
+      left=4pt,
+      right=4pt,
+      top=2pt,
+      bottom=2pt,
+      nobeforeafter,
+  ]
+  def test\_basic\_functionality\_wrong(): \\
+  \hspace*{1em}\# Variable outside assert (prohibited) \\
+  \hspace*{1em}lst = [1, 2, 3] \\
+  \hspace*{1em}assert solution(lst, 2) == [1]
+  \end{tcolorbox}
+  {\footnotesize\textbf{(b) Prohibited: Variable assignment outside assert.}}
+  \caption{Test format requirements. The correct format enables clean I/O extraction for trace generation, while the prohibited format complicates trace analysis with intermediate variable assignments.}
+  \label{fig:test-formats}
+\end{figure}

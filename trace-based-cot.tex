@@ -448,18 +448,7 @@ For each high-quality concept, we synthesize a complete problem artifact set thr
 
 \textbf{Stage 1: Instruction Generation.} Given a concept and its description, we prompt the teacher model to generate 6 distinct natural language problem instructions. The prompt is engineered for diversity along three axes: (1) problem domain (mathematics, finance, data processing, algorithms), (2) computational approach (iterative, recursive, dynamic programming, functional), and (3) difficulty (3 "medium" targeting 30-60 LOC, 3 "hard" targeting 50-100+ LOC). The prompt includes explicit anti-overlap guidance to avoid paraphrased versions of the same problem.
 
-\textbf{Stage 2: Signature Generation.} Before generating any code or tests, we prompt the LLM to analyze the instruction and produce a formal signature skeleton specifying: (1) implementation type (standalone function vs. class), (2) function signature with parameter types and return type, or (3) class signature with constructor and methods. The signature prompt uses a strict formatting template enforced via few-shot examples. For instance, a function signature follows the format:
-\begin{verbatim}
-Function: solution(freq_list: list[tuple[str, int]])
-  -> dict[str, str]
-\end{verbatim}
-while a class signature follows:
-\begin{verbatim}
-Class: HuffmanTree; __init__(self, freq_list:
-  list[tuple[str, int]]) -> None;
-  build_tree(self) -> tuple;
-  get_encoding(self) -> dict[str, str]
-\end{verbatim}
+\textbf{Stage 2: Signature Generation.} Before generating any code or tests, we prompt the LLM to analyze the instruction and produce a formal signature skeleton specifying: (1) implementation type (standalone function vs. class), (2) function signature with parameter types and return type, or (3) class signature with constructor and methods. The signature prompt uses a strict formatting template enforced via few-shot examples, as shown in Figure~\ref{fig:signature-formats}.
 
 \textbf{Why Signature-First Design Prevents Hallucination.} Generating the signature before code and tests is deliberate: (1) \textit{Type consistency:} Once input/output types are fixed, candidates cannot hallucinate different types. (2) \textit{Naming consistency:} The function/method name is fixed, eliminating import failures during execution. (3) \textit{Parameter alignment:} Tests call the function with correct arity and parameter order, eliminating test-code misalignment.
 
@@ -467,19 +456,7 @@ Class: HuffmanTree; __init__(self, freq_list:
 
 \textbf{Stage 4: Test Scenario Identification.} We prompt the LLM to analyze the problem and produce a concise list of test scenarios (e.g., "Test basic functionality", "Test empty input"). This improves test coverage by encouraging reasoning about requirements before writing code.
 
-\textbf{Stage 5: Test Generation.} We generate unit tests (3 test suites per instruction, each with up to 10 test functions) using a meticulously engineered prompt enforcing: (1) \textit{Standalone test functions:} Each test is a top-level function, not a class method, simplifying parsing. (2) \textit{One assert per function:} Each test contains exactly one assert statement, critical for granular failure diagnostics in Stage B. (3) \textit{Direct function calls in asserts:} The assert must directly call the function with inline arguments, as variable assignments complicate trace generation. (4) \textit{Concrete expected outputs:} The model must calculate exact expected values, not placeholders. For example, a correct test follows this format:
-\begin{verbatim}
-def test_basic_functionality():
-    # Test basic scenario
-    assert solution([1, 2, 3], 2) == [1]
-\end{verbatim}
-while the following prohibited format would complicate trace extraction:
-\begin{verbatim}
-def test_basic_functionality_wrong():
-    # Variable outside assert (prohibited)
-    lst = [1, 2, 3]
-    assert solution(lst, 2) == [1]
-\end{verbatim}
+\textbf{Stage 5: Test Generation.} We generate unit tests (3 test suites per instruction, each with up to 10 test functions) using a meticulously engineered prompt enforcing: (1) \textit{Standalone test functions:} Each test is a top-level function, not a class method, simplifying parsing. (2) \textit{One assert per function:} Each test contains exactly one assert statement, critical for granular failure diagnostics in Stage B. (3) \textit{Direct function calls in asserts:} The assert must directly call the function with inline arguments, as variable assignments complicate trace generation. (4) \textit{Concrete expected outputs:} The model must calculate exact expected values, not placeholders. Figure~\ref{fig:test-formats} shows the correct format versus the prohibited format.
 
 \textbf{Why This Test Structure Matters for Dual Execution.} The constraints are motivated by Stage B requirements: (1) granular pass/fail signals enable fine-grained agreement clustering, (2) direct calls yield clean traces for Stage C, and (3) standalone functions enable parallel sandboxed execution.
 
