@@ -436,7 +436,7 @@
 
 \begin{figure}[t!]
   \centering
-
+  \begin{minipage}[t]{0.48\columnwidth}
   \begin{tcolorbox}[
       enhanced,
       fontupper=\ttfamily\scriptsize,
@@ -446,7 +446,7 @@
       arc=3pt,
       enlarge top by=0.5mm,
       enlarge bottom by=0.5mm,
-      title={\scriptsize\textbf{Function Signature Format}},
+      title={\scriptsize\textbf{Function Signature}},
       coltitle=white,
       colbacktitle=darkgray,
       boxsep=2pt,
@@ -456,13 +456,16 @@
       bottom=2pt,
       nobeforeafter,
   ]
-  Function: solution(freq\_list: list[tuple[str, int]]) \\
-  \hspace*{2em}-> dict[str, str]
+  Function: solution(\\
+  \hspace*{1em}freq\_list: \\
+  \hspace*{2em}list[tuple[\\
+  \hspace*{3em}str, int]]) \\
+  \hspace*{1em}-> dict[str, str]
   \end{tcolorbox}
-  {\footnotesize\textbf{(a) Function signature format.}}
-
-  \vspace{3pt}
-
+  {\footnotesize\textbf{(a) Function format.}}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[t]{0.48\columnwidth}
   \begin{tcolorbox}[
       enhanced,
       fontupper=\ttfamily\scriptsize,
@@ -472,7 +475,7 @@
       arc=3pt,
       enlarge top by=0.5mm,
       enlarge bottom by=0.5mm,
-      title={\scriptsize\textbf{Class Signature Format}},
+      title={\scriptsize\textbf{Class Signature}},
       coltitle=white,
       colbacktitle=darkgray,
       boxsep=2pt,
@@ -482,19 +485,26 @@
       bottom=2pt,
       nobeforeafter,
   ]
-  Class: HuffmanTree; \_\_init\_\_(self, freq\_list: \\
-  \hspace*{2em}list[tuple[str, int]]) -> None; \\
-  \hspace*{1em}build\_tree(self) -> tuple; \\
-  \hspace*{1em}get\_encoding(self) -> dict[str, str]
+  Class: HuffmanTree; \\
+  \_\_init\_\_(self, \\
+  \hspace*{1em}freq\_list: \\
+  \hspace*{2em}list[tuple[\\
+  \hspace*{3em}str, int]]) \\
+  \hspace*{1em}-> None; \\
+  build\_tree(self) \\
+  \hspace*{1em}-> tuple; \\
+  get\_encoding(self) \\
+  \hspace*{1em}-> dict[str, str]
   \end{tcolorbox}
-  {\footnotesize\textbf{(b) Class signature format.}}
+  {\footnotesize\textbf{(b) Class format.}}
+  \end{minipage}
   \caption{Signature format templates enforced via few-shot examples. These strict formats ensure type and naming consistency across candidate solutions and tests.}
   \label{fig:signature-formats}
 \end{figure}
 
 \begin{figure}[t!]
   \centering
-
+  \begin{minipage}[t]{0.48\columnwidth}
   \begin{tcolorbox}[
       enhanced,
       fontupper=\ttfamily\scriptsize,
@@ -504,7 +514,7 @@
       arc=3pt,
       enlarge top by=0.5mm,
       enlarge bottom by=0.5mm,
-      title={\scriptsize\textbf{Correct Test Format}},
+      title={\scriptsize\textbf{Correct Format}},
       coltitle=white,
       colbacktitle=darkgray,
       boxsep=2pt,
@@ -514,14 +524,17 @@
       bottom=2pt,
       nobeforeafter,
   ]
-  def test\_basic\_functionality(): \\
-  \hspace*{1em}\# Test basic scenario \\
-  \hspace*{1em}assert solution([1, 2, 3], 2) == [1]
+  def test\_basic(): \\
+  \hspace*{1em}\# Test basic \\
+  \hspace*{1em}assert \\
+  \hspace*{2em}solution([1, \\
+  \hspace*{3em}2, 3], 2) \\
+  \hspace*{2em}== [1]
   \end{tcolorbox}
-  {\footnotesize\textbf{(a) Correct: Direct function call in assert.}}
-
-  \vspace{3pt}
-
+  {\footnotesize\textbf{(a) Direct call in assert.}}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[t]{0.48\columnwidth}
   \begin{tcolorbox}[
       enhanced,
       fontupper=\ttfamily\scriptsize,
@@ -531,7 +544,7 @@
       arc=3pt,
       enlarge top by=0.5mm,
       enlarge bottom by=0.5mm,
-      title={\scriptsize\textbf{Prohibited Test Format}},
+      title={\scriptsize\textbf{Prohibited Format}},
       coltitle=white,
       colbacktitle=red,
       boxsep=2pt,
@@ -541,12 +554,16 @@
       bottom=2pt,
       nobeforeafter,
   ]
-  def test\_basic\_functionality\_wrong(): \\
-  \hspace*{1em}\# Variable outside assert (prohibited) \\
+  def test\_wrong(): \\
+  \hspace*{1em}\# Variable \\
+  \hspace*{1em}\# outside assert \\
   \hspace*{1em}lst = [1, 2, 3] \\
-  \hspace*{1em}assert solution(lst, 2) == [1]
+  \hspace*{1em}assert \\
+  \hspace*{2em}solution(lst, \\
+  \hspace*{3em}2) == [1]
   \end{tcolorbox}
-  {\footnotesize\textbf{(b) Prohibited: Variable assignment outside assert.}}
+  {\footnotesize\textbf{(b) Variable assignment.}}
+  \end{minipage}
   \caption{Test format requirements. The correct format enables clean I/O extraction for trace generation, while the prohibited format complicates trace analysis with intermediate variable assignments.}
   \label{fig:test-formats}
 \end{figure}
