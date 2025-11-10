@@ -371,10 +371,13 @@ Line 10: return 2
 \vspace{0.05cm}
 }}\\[0.08cm]
 \colorbox{correctgreen!8}{\parbox{0.96\linewidth}{\scriptsize
-\vspace{0.1cm}
-Starting with the full array [1,3,5,4,2], we initialize left=0 and right=4. The first iteration finds the midpoint at index 2 with value 5. Since arr[3]=4 is smaller, we know the peak is in the left half, so right becomes 2. Next iteration has mid=1 with value 3. Since arr[2]=5 is larger, the peak is ahead, so left moves to 2. Now left equals right at index 2, which holds our peak value 5.\\[0.1cm]
+\vspace{0.05cm}
+\colorbox{initcolor}{\parbox{0.94\linewidth}{\scriptsize Starting with array [1,3,5,4,2], we initialize left=0 and right=4.}}\\[0.03cm]
+\colorbox{processcolor}{\parbox{0.94\linewidth}{\scriptsize First iteration finds midpoint at index 2 (value 5). Comparing with arr[3]=4 shows we're past the peak, so we set right=2 to search the left portion.}}\\[0.03cm]
+\colorbox{processcolor}{\parbox{0.94\linewidth}{\scriptsize Second iteration has mid=1 (value 3). Comparing with arr[2]=5 shows the peak is ahead, so left moves to 2.}}\\[0.03cm]
+\colorbox{finalcolor}{\parbox{0.94\linewidth}{\scriptsize Boundaries converge at index 2, which holds our peak value of 5.}}\\[0.05cm]
 \textcolor{correctgreen}{\cmark\ Verified step-by-step}
-\vspace{0.1cm}
+\vspace{0.05cm}
 }}
 }
 \\

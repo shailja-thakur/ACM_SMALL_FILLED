@@ -393,11 +393,13 @@ solution(freq_list: list[tuple[str,int]])
   -> encoding: dict[str, str]
 \end{lstlisting}
 \vspace{-0.1cm}
-{\tiny\textbf{Metadata:}}\\
+{\tiny\textbf{Extracted Metadata:}}\\
 {\tiny
-\textbullet~Name: \texttt{solution}\\
-\textbullet~Input: \texttt{freq\_list: list[tuple[str,int]]}\\
-\textbullet~Output: \texttt{encoding: dict[str,str]}}
+\textbullet~Function: \texttt{solution}\\
+\textbullet~Param name: \texttt{freq\_list}\\
+\textbullet~Param type: \texttt{list[tuple[str,int]]}\\
+\textbullet~Return name: \texttt{encoding}\\
+\textbullet~Return type: \texttt{dict[str,str]}}
   \end{minipage}
   &
   \begin{minipage}[t]{0.46\columnwidth}
@@ -409,11 +411,12 @@ Class HuffmanTree:
   get_encoding(self) -> codes: dict[str,str]
 \end{lstlisting}
 \vspace{-0.1cm}
-{\tiny\textbf{Metadata:}}\\
+{\tiny\textbf{Extracted Metadata:}}\\
 {\tiny
 \textbullet~Class: \texttt{HuffmanTree}\\
-\textbullet~Methods: \texttt{\_\_init\_\_}, \texttt{build\_tree}, \texttt{get\_encoding}\\
-\textbullet~Returns: None, \texttt{tree:tuple}, \texttt{codes:dict}}
+\textbullet~Constructor param: \texttt{freq\_list: list[tuple[str,int]]}\\
+\textbullet~Method: \texttt{build\_tree}, returns \texttt{tree:tuple}\\
+\textbullet~Method: \texttt{get\_encoding}, returns \texttt{codes:dict[str,str]}}
   \end{minipage}
   \\
   \bottomrule
