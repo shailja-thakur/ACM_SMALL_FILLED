@@ -307,14 +307,12 @@ The remarkable success of Large Language Models (LLMs) in generating syntactical
 % To improve these reasoning capabilities, the research community has widely embraced fine-tuning models on Chain-of-Thought (CoT) data~\cite{wei2022chain}, which provides explicit, step-by-step rationales. However, sourcing this data for the domain of code is particularly challenging. Recent self-instruct methodologies use a powerful "teacher" model to generate massive datasets of code and explanations, but these suffer from a fundamental flaw: \textbf{the generated reasoning steps are not tethered to any ground truth}. The teacher model's explanation is often a plausible "hallucination" of the code's logic~\cite{turpin2023languagemodelsdontsay,beger2025coconutstructuralcodeunderstanding} rather than a factual account of its execution, leading to models being trained on subtly incorrect rationales.
 
 To bridge this gap, the research community has embraced fine-tuning models on Chain-of-Thought (CoT) data, which
-     provides explicit, step-by-step rationales to guide the model's reasoning process. However, the methods used to 
-     generate this data for code are often \textit{unsound}. A powerful "teacher" model generates the rationale, but 
-     these reasoning steps are not tethered to a program's actual execution trace. The result is a dataset of "logical 
-     hallucinations"—plausible but factually incorrect accounts of the program's logic. This lack of guaranteed logical
-     integrity is a critical barrier for high-stakes applications. For \textbf{debugging}, a rationale that 
-     misrepresents the state of variables is actively misleading. For \textbf{iterative self-refinement}, feeding a 
-     model its own flawed reasoning can cause compounding errors. For \textbf{agentic workflows}, a plan based on an 
-     unsound understanding of a previous step can derail an entire task.
+     provides explicit, step-by-step rationales to guide the model's reasoning process. However, the methods used to
+     generate this data for code are often \textit{unsound}. A powerful "teacher" model generates the rationale, but
+     these reasoning steps are not tethered to a program's actual execution trace. The result is a dataset of "logical
+     hallucinations"—plausible but factually incorrect accounts of the program's logic.
+
+This challenge is especially acute in code reasoning, where small logical errors cascade into flawed understanding. Consider a model trained on a rationale claiming "variable \texttt{count} is incremented in the loop"—when in fact, \texttt{count} is decremented. Such errors propagate during training, teaching the model to follow plausible but incorrect logical patterns. This lack of guaranteed soundness is a critical barrier for high-stakes applications. For \textbf{debugging}, a rationale that misrepresents variable state is actively misleading. For \textbf{iterative self-refinement}, feeding a model its own flawed reasoning causes compounding errors. For \textbf{agentic workflows}, a plan based on unsound understanding of a previous step can derail an entire task.
 
 % This challenge is particularly acute in code reasoning because small logical errors can cascade through multi-step reasoning processes, leading to flawed understanding. For instance, a model might correctly identify that a function performs a sorting operation but incorrectly reason about the intermediate steps, variable updates, or edge case handling. Such errors in reasoning data propagate during training, teaching models to follow superficially plausible but ultimately incorrect logical patterns. For instance, Other 
 %      execution-aware methods, used in benchmarks like HumanEval~\cite{chen2021evaluating} or by prior work like 
@@ -396,17 +394,17 @@ SemCoder~\cite{ding2024semcodertrainingcodelanguage} & \xmark & \cmark & \cmark 
 Our work builds upon several interconnected research areas in code reasoning, execution-based program understanding, and synthetic data generation. Chain-of-Thought (CoT) prompting~\cite{wei2022chain} has proven effective for improving reasoning, but its extension to code faces unique verification challenges. While methods like Program-of-Thought (PoT)~\cite{chen2022program} generate executable snippets, they lack systematic verification of the reasoning process itself.
 Building on this foundation, CodeI/O~\cite{li2025codeio} takes a significant step forward by transforming code patterns into natural language CoT rationales through input/output prediction tasks. By training models to predict inputs and outputs given code, CodeI/O exposes models to universal reasoning primitives while decoupling reasoning from syntax. However, CodeI/O focuses on prediction tasks rather than generating complete reasoning datasets from execution traces, which is the core contribution of our work.
 
-A central theme in recent work is "verification," but the term is often used ambiguously. To clarify our
-     contribution, we define a taxonomy of verification for code generation: 1) \textbf{Outcome Verification}, the most
-     common approach, validates only the final output of a program against a test case. Benchmarks like HumanEval and
-     methods like SemCoder use this, but it offers no guarantee about the logical integrity of the intermediate
-     reasoning steps. 2) \textbf{Formal Verification}, which uses mathematical proofs to guarantee program correctness
-     but is heavyweight and not typically used for LLM rationale generation. 3) \textbf{Rationale-Step Verification},
-     the method we introduce. By generating our rationale directly from a program's operational semantics captured in 
-     an execution trace, we can verify every step of the reasoning process itself. Our work is the first to 
-     systematically generate CoT data with this level of soundness.
+A central theme in recent work is "verification," but the term is often used ambiguously. To clarify our contribution within this landscape, we propose a taxonomy of verification for code generation data:
+\begin{itemize}[nosep]
+\item \textbf{Outcome Verification:} Validates only the final program output against expected results (e.g., HumanEval~\cite{chen2021evaluating}, rStar-Coder~\cite{liu2025rstarcoderscalingcompetitivecode}, SemCoder~\cite{ding2024semcodertrainingcodelanguage}). This is the most common approach but offers no guarantee about the logical integrity of intermediate reasoning steps.
+\item \textbf{Formal Verification:} Uses mathematical proofs to guarantee program correctness (e.g., symbolic execution, SMT solvers). While sound, this is computationally heavyweight and impractical for large-scale LLM training data generation.
+\item \textbf{Rationale-Step Verification:} Validates each reasoning step in the CoT chain (our contribution). By generating rationales directly from a program's operational semantics captured in execution traces, we verify the logical integrity of the entire reasoning process, not just the final outcome.
+\end{itemize}
+Our work is the first to systematically generate CoT data with rationale-step verification at scale.
      
-Recent work has increasingly recognized the value of program execution for creating training data. TRACED~\cite{ding2024traced} introduces execution-aware pre-training that incorporates dynamic program states, while Execution Tuning (E.T.)\citep{armengol2025execution} trains models on execution traces at different granularities. A highly relevant recent work, SemCoder~\cite{ding2024semcodertrainingcodelanguage}, also generates a synthetic dataset for fine-tuning. However, our methodology is fundamentally different in two key aspects. \textbf{First is the nature of the CoT verification.} Our pipeline performs a \textbf{direct translation of a program's execution trace} into a natural language rationale, making the reasoning process itself verifiable by construction. This contrasts with SemCoder, which relies on an \textbf{LLM generated CoT steps where only the final outcome is matched} against an execution result, leaving the intermediate reasoning steps unverified. \textbf{Second is the data generation philosophy.} Our pipeline follows a \textit{``concept-first''} approach, synthesizing problems from abstract concepts extracted from diverse sources like books and documentation. This provides fine-grained control over the complexity and diversity of the resulting data, a key advantage over the \textit{``code-first''} approach used by SemCoder, which is seeded by a fixed set of existing programs. Conceptually closest to our CoT generation step, Jung et al.\cite{jung2025codeexecutiongroundedsupervision} translate execution traces into natural language CoT. However, their work focuses on single-direction reasoning and does not systematically explore the bi-directional synthesis pipeline that we propose.
+Recent work has increasingly recognized the value of program execution for creating training data. TRACED~\cite{ding2024traced} introduces execution-aware pre-training that incorporates dynamic program states, while Execution Tuning (E.T.)\citep{armengol2025execution} trains models on execution traces at different granularities. A highly relevant recent work, SemCoder~\cite{ding2024semcodertrainingcodelanguage}, also generates a synthetic dataset for fine-tuning. However, our methodology is fundamentally different in two key aspects.
+
+\textbf{First is the nature of the CoT verification.} Our pipeline performs a \textbf{direct translation} of a program's execution trace into a natural language rationale, making the reasoning process itself verifiable by construction. More precisely, SemCoder generates rationales via an LLM's \textit{explanation} of code behavior, then verifies only that the final predicted output matches an execution result. In contrast, our pipeline performs a direct \textit{narration} of the execution trace into natural language, making each intermediate reasoning step verifiable against the trace log. This fundamental difference—narration vs. generation—is what eliminates logical hallucinations. \textbf{Second is the data generation philosophy.} Our pipeline follows a \textit{``concept-first''} approach, synthesizing problems from abstract concepts extracted from diverse sources like books and documentation. This provides fine-grained control over the complexity and diversity of the resulting data, a key advantage over the \textit{``code-first''} approach used by SemCoder, which is seeded by a fixed set of existing programs. Conceptually closest to our CoT generation step, Jung et al.\cite{jung2025codeexecutiongroundedsupervision} translate execution traces into natural language CoT. However, their work focuses on single-direction reasoning and does not systematically explore the bi-directional synthesis pipeline that we propose.
 
 The principle of bi-directional reasoning, central to our work, has been explored in code by CodeI/O~\cite{li2025codeio} through I/O prediction tasks, and more broadly in other domains by works like FOBAR~\cite{jiang2024forward} and REVTHINK~\cite{chen2024reverse}. However, these prior approaches either focus on prediction tasks rather than generating complete rationales, or operate in domains where verification is less systematic than with code execution. Similarly, other verification techniques like Self-Verification~\cite{weng2023large} and RCoT~\cite{xue2023rcot} often rely on complex, potentially error-prone checking procedures, a limitation our deterministic, trace-based method avoids.
 
@@ -450,7 +448,18 @@ For each high-quality concept, we synthesize a complete problem artifact set thr
 
 \textbf{Stage 1: Instruction Generation.} Given a concept and its description, we prompt the teacher model to generate 6 distinct natural language problem instructions. The prompt is engineered for diversity along three axes: (1) problem domain (mathematics, finance, data processing, algorithms), (2) computational approach (iterative, recursive, dynamic programming, functional), and (3) difficulty (3 "medium" targeting 30-60 LOC, 3 "hard" targeting 50-100+ LOC). The prompt includes explicit anti-overlap guidance to avoid paraphrased versions of the same problem.
 
-\textbf{Stage 2: Signature Generation.} Before generating any code or tests, we prompt the LLM to analyze the instruction and produce a formal signature skeleton specifying: (1) implementation type (standalone function vs. class), (2) function signature with parameter types and return type, or (3) class signature with constructor and methods. The signature prompt uses a strict formatting template enforced via few-shot examples.
+\textbf{Stage 2: Signature Generation.} Before generating any code or tests, we prompt the LLM to analyze the instruction and produce a formal signature skeleton specifying: (1) implementation type (standalone function vs. class), (2) function signature with parameter types and return type, or (3) class signature with constructor and methods. The signature prompt uses a strict formatting template enforced via few-shot examples. For instance, a function signature follows the format:
+\begin{verbatim}
+Function: solution(freq_list: list[tuple[str, int]])
+  -> dict[str, str]
+\end{verbatim}
+while a class signature follows:
+\begin{verbatim}
+Class: HuffmanTree; __init__(self, freq_list:
+  list[tuple[str, int]]) -> None;
+  build_tree(self) -> tuple;
+  get_encoding(self) -> dict[str, str]
+\end{verbatim}
 
 \textbf{Why Signature-First Design Prevents Hallucination.} Generating the signature before code and tests is deliberate: (1) \textit{Type consistency:} Once input/output types are fixed, candidates cannot hallucinate different types. (2) \textit{Naming consistency:} The function/method name is fixed, eliminating import failures during execution. (3) \textit{Parameter alignment:} Tests call the function with correct arity and parameter order, eliminating test-code misalignment.
 
@@ -458,7 +467,19 @@ For each high-quality concept, we synthesize a complete problem artifact set thr
 
 \textbf{Stage 4: Test Scenario Identification.} We prompt the LLM to analyze the problem and produce a concise list of test scenarios (e.g., "Test basic functionality", "Test empty input"). This improves test coverage by encouraging reasoning about requirements before writing code.
 
-\textbf{Stage 5: Test Generation.} We generate unit tests (3 test suites per instruction, each with up to 10 test functions) using a meticulously engineered prompt enforcing: (1) \textit{Standalone test functions:} Each test is a top-level function, not a class method, simplifying parsing. (2) \textit{One assert per function:} Each test contains exactly one assert statement, critical for granular failure diagnostics in Stage B. (3) \textit{Direct function calls in asserts:} The assert must directly call the function with inline arguments (\texttt{assert solution(1, 2) == 3}), as variable assignments complicate trace generation. (4) \textit{Concrete expected outputs:} The model must calculate exact expected values, not placeholders.
+\textbf{Stage 5: Test Generation.} We generate unit tests (3 test suites per instruction, each with up to 10 test functions) using a meticulously engineered prompt enforcing: (1) \textit{Standalone test functions:} Each test is a top-level function, not a class method, simplifying parsing. (2) \textit{One assert per function:} Each test contains exactly one assert statement, critical for granular failure diagnostics in Stage B. (3) \textit{Direct function calls in asserts:} The assert must directly call the function with inline arguments, as variable assignments complicate trace generation. (4) \textit{Concrete expected outputs:} The model must calculate exact expected values, not placeholders. For example, a correct test follows this format:
+\begin{verbatim}
+def test_basic_functionality():
+    # Test basic scenario
+    assert solution([1, 2, 3], 2) == [1]
+\end{verbatim}
+while the following prohibited format would complicate trace extraction:
+\begin{verbatim}
+def test_basic_functionality_wrong():
+    # Variable outside assert (prohibited)
+    lst = [1, 2, 3]
+    assert solution(lst, 2) == [1]
+\end{verbatim}
 
 \textbf{Why This Test Structure Matters for Dual Execution.} The constraints are motivated by Stage B requirements: (1) granular pass/fail signals enable fine-grained agreement clustering, (2) direct calls yield clean traces for Stage C, and (3) standalone functions enable parallel sandboxed execution.
 
@@ -487,7 +508,30 @@ This is implemented via hash-based grouping: we compute a fingerprint for each s
 \]
 This score captures two dimensions: (1) \textit{Solution agreement} ($|C_i|$): If many independently generated solutions have identical behavior, they likely implement the same correct algorithm. (2) \textit{Test coverage} ($|T_p(C_i)|$): If they pass many tests, the tests likely have correct expected outputs.
 
-\textbf{Best Cluster Selection.} For each task, we rank clusters by score and select the \textbf{single highest-scoring cluster}. We extract one canonical solution from this cluster (selecting the shortest or most readable) and its associated passing tests.
+\textbf{Best Cluster Selection.} For each task, we rank clusters by score and select the \textbf{single highest-scoring cluster}. We extract one canonical solution from this cluster (selecting the shortest or most readable) and its associated passing tests. Algorithm~\ref{alg:dual_agreement} formalizes this procedure.
+
+\begin{algorithm}[h]
+\caption{Dual Agreement Clustering}
+\label{alg:dual_agreement}
+\begin{algorithmic}[1]
+\Require Solutions $S = \{s_1, \ldots, s_m\}$, Tests $T = \{t_1, \ldots, t_n\}$
+\Ensure Verified solution $s^*$ and test suite $T^*$
+\State Execute all $m \times n$ pairs to build matrix $M \in \{0,1\}^{m \times n}$
+\State $\textit{clusters} \gets \emptyset$
+\For{each solution $s_i \in S$}
+    \State $\textit{pattern}_i \gets M[i, :]$ \Comment{Test pass/fail pattern}
+    \State Add $s_i$ to cluster with matching pattern in \textit{clusters}
+\EndFor
+\For{each cluster $C_i \in \textit{clusters}$}
+    \State $T_p(C_i) \gets \{t_j : \forall s \in C_i, M[s, j] = 1\}$ \Comment{Commonly passed tests}
+    \State $\textit{Score}(C_i) \gets |C_i| \times |T_p(C_i)|$
+\EndFor
+\State $C^* \gets \arg\max_{C_i} \textit{Score}(C_i)$ \Comment{Highest-scoring cluster}
+\State $s^* \gets$ Select canonical solution from $C^*$ (shortest/most readable)
+\State $T^* \gets T_p(C^*)$
+\State \Return $(s^*, T^*)$
+\end{algorithmic}
+\end{algorithm}
 
 \textbf{Why Dual Agreement Filters Noise.} This method addresses multiple noise sources: (1) \textit{Incorrect solutions:} A buggy solution typically fails many tests, landing in a low-scoring cluster (low $|T_p|$). (2) \textit{Malformed tests:} A test with wrong expected output causes correct solutions to fail it, reducing $|T_p|$ for the correct cluster, but correct tests pass correct solutions, increasing their $|T_p|$. (3) \textit{Ambiguous instructions:} If an instruction is ambiguous, solutions implement different interpretations, fragmenting into multiple small clusters (low $|C_i|$). The highest-scoring cluster represents the most common interpretation.
 
