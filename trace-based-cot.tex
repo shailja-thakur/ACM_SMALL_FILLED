@@ -765,41 +765,87 @@ We conducted a validation study on 5,000 programming problems for which we had g
 \subsubsection{Consensus Score Scaling with Candidates}
 Figure~\ref{fig:consensus_heatmap} shows a heatmap of the percentage of problems achieving high consensus scores (Score $> \tau$ threshold) as a function of the number of solutions (x-axis) and test cases (y-axis). The heatmap reveals a clear pattern: the bottom-right region (high solutions, high tests) shows consistently high consensus rates (70-90\% of problems), while the upper-left region (few solutions, few tests) shows near-zero consensus rates. This validates our hypothesis that \textit{both} multiple diverse solutions and comprehensive test suites are necessary for reliable verification. Notably, increasing solutions from 3 to 10 yields a 3x increase in problems with high consensus scores when test coverage is adequate ($\geq 7$ tests). This empirically confirms the theoretical exponential decay property: more candidates exponentially reduce the probability of false consensus.
 
+\begin{figure}[t!]
+    \centering
+    \includegraphics[width=0.85\columnwidth]{code_test_consensus.png}
+    \caption{Heatmap showing percentage of problems achieving high consensus scores as a function of number of candidate solutions (x-axis) and test cases (y-axis). The bottom-right region (many solutions, many tests) achieves 70-90\% consensus, while the top-left (few solutions, few tests) shows near-zero consensus, validating that both dimensions are necessary for reliable verification.}
+    \label{fig:consensus_heatmap}
+\end{figure}
+
 \subsubsection{Alignment with Ground Truth}
 Figure~\ref{fig:consensus_accuracy} demonstrates that high consensus scores correlate strongly with correctness. We computed the consensus rate (fraction of selected solutions matching ground truth) and plotted it against alignment with benchmark solutions. The results show a monotonic relationship: as consensus rate increases from 20\% to 90\%, alignment with ground truth increases from 30\% to 95\% (with 95\% confidence intervals shown as error bars). This provides empirical evidence that Dual Agreement's scoring mechanism effectively separates correct from incorrect artifacts. Based on this analysis, we set our selection threshold to require minimum cluster size $|C_i| \geq 3$ and test coverage $|T_p| \geq 5$, which yields 92\% alignment with ground truth in our validation set.
 
-\subsubsection{Alternative Verification Strategies}
-To contextualize the effectiveness of Dual Agreement, we compare it against four alternative verification strategies for synthetic data generation:
+\begin{figure}[t!]
+    \centering
+    \includegraphics[width=0.85\columnwidth]{consensus_rate.png}
+    \caption{Consensus rate versus alignment with ground truth. As the consensus rate increases from 20\% to 90\%, alignment with ground truth increases monotonically from 30\% to 95\% (95\% confidence intervals shown). This validates that Dual Agreement's scoring mechanism effectively identifies correct solutions.}
+    \label{fig:consensus_accuracy}
+\end{figure}
 
-\textbf{Single Execution Verification.} The simplest approach executes each generated solution against a single randomly selected test case. If the solution passes, it is accepted; otherwise, it is rejected. This is fast and deterministic but highly brittle: a single flaky test (due to floating-point precision, randomness, or environmental dependencies) causes false rejections, while a weak test allows buggy solutions through.
+% \subsubsection{Alternative Verification Strategies}
+% To contextualize the effectiveness of Dual Agreement, we compare it against four alternative verification strategies for synthetic data generation:
 
-\textbf{Formal Verification.} Formal methods use mathematical proofs to guarantee program correctness. Techniques like symbolic execution or SMT solvers can provide ironclad guarantees by exploring all possible execution paths. However, these methods are computationally expensive (often requiring minutes per program), struggle with complex control flow or library calls, and are impractical for large-scale data synthesis (85k problems).
+% \textbf{Single Execution Verification.} The simplest approach executes each generated solution against a single randomly selected test case. If the solution passes, it is accepted; otherwise, it is rejected. This is fast and deterministic but highly brittle: a single flaky test (due to floating-point precision, randomness, or environmental dependencies) causes false rejections, while a weak test allows buggy solutions through.
 
-\textbf{LLM-as-Judge.} An alternative is prompting a powerful LLM to analyze the code and judge whether it is correct. This is scalable and flexible but suffers from two critical limitations: (1) \textit{Non-deterministic}: Different sampling runs may yield different judgments, making reproducibility challenging. (2) \textit{Unsound}: The LLM may hallucinate correctness for plausible-looking but incorrect code, lacking grounding in actual execution.
+% \textbf{Formal Verification.} Formal methods use mathematical proofs to guarantee program correctness. Techniques like symbolic execution or SMT solvers can provide ironclad guarantees by exploring all possible execution paths. However, these methods are computationally expensive (often requiring minutes per program), struggle with complex control flow or library calls, and are impractical for large-scale data synthesis (85k problems).
 
-\textbf{CodeT (Outcome-Only Dual Agreement).} CodeT~\cite{chen2022codetcodegenerationgenerated} applies Dual Agreement to verify that generated \textit{code solutions} pass tests, achieving high accuracy through statistical consensus. However, it only verifies the final outcome, not the reasoning process. We extend this principle by generating CoT rationales from execution traces, thereby verifying the \textit{reasoning steps themselves}.
+% \textbf{LLM-as-Judge.} An alternative is prompting a powerful LLM to analyze the code and judge whether it is correct. This is scalable and flexible but suffers from two critical limitations: (1) \textit{Non-deterministic}: Different sampling runs may yield different judgments, making reproducibility challenging. (2) \textit{Unsound}: The LLM may hallucinate correctness for plausible-looking but incorrect code, lacking grounding in actual execution.
 
-\textbf{Comparison Results.} Table~\ref{tab:verification_comparison} compares these approaches on our 5k validation set. Dual Agreement achieves 92\% accuracy while remaining scalable and deterministic, substantially outperforming single execution (67\%) and LLM-as-Judge (74\%), while being practical at scale unlike formal verification. Figure~\ref{fig:consensus_heatmap} and Figure~\ref{fig:consensus_accuracy} provide detailed breakdowns showing how consensus scores scale with candidate diversity and correlate with ground-truth correctness.
+% \textbf{CodeT (Outcome-Only Dual Agreement).} CodeT~\cite{chen2022codetcodegenerationgenerated} applies Dual Agreement to verify that generated \textit{code solutions} pass tests, achieving high accuracy through statistical consensus. However, it only verifies the final outcome, not the reasoning process. We extend this principle by generating CoT rationales from execution traces, thereby verifying the \textit{reasoning steps themselves}.
 
-\begin{table}[h!]
-\centering
-\caption{Comparison of verification methods on 5k validation set. Dual Agreement achieves high accuracy while remaining scalable and deterministic.}
-\label{tab:verification_comparison}
-\begin{tabular}{lccc}
-\toprule
-\textbf{Verification Method} & \textbf{Accuracy} & \textbf{Scalable} & \textbf{Deterministic} \\
-\midrule
-Single Execution & 67\% & \cmark & \cmark \\
-LLM-as-Judge & 74\% & \cmark & \xmark \\
-CodeT (Outcome Only) & 89\% & \cmark & \cmark \\
-Dual Agreement (Ours) & \textbf{92\%} & \cmark & \cmark \\
-Formal Verification & $>$95\% & \xmark & \cmark \\
-\bottomrule
-\end{tabular}
-\end{table}
+% \textbf{Comparison Results.} Table~\ref{tab:verification_comparison} compares these approaches on our 5k validation set. Dual Agreement achieves 92\% accuracy while remaining scalable and deterministic, substantially outperforming single execution (67\%) and LLM-as-Judge (74\%), while being practical at scale unlike formal verification. Figure~\ref{fig:consensus_heatmap} and Figure~\ref{fig:consensus_accuracy} provide detailed breakdowns showing how consensus scores scale with candidate diversity and correlate with ground-truth correctness.
+
+% \begin{table}[h!]
+% \centering
+% \caption{Comparison of verification methods on 5k validation set. Dual Agreement achieves high accuracy while remaining scalable and deterministic.}
+% \label{tab:verification_comparison}
+% \begin{tabular}{lccc}
+% \toprule
+% \textbf{Verification Method} & \textbf{Accuracy} & \textbf{Scalable} & \textbf{Deterministic} \\
+% \midrule
+% Single Execution & 67\% & \cmark & \cmark \\
+% LLM-as-Judge & 74\% & \cmark & \xmark \\
+% CodeT (Outcome Only) & 89\% & \cmark & \cmark \\
+% Dual Agreement (Ours) & \textbf{92\%} & \cmark & \cmark \\
+% Formal Verification & $>$95\% & \xmark & \cmark \\
+% \bottomrule
+% \end{tabular}
+% \end{table}
+
+\subsection{Impact of Data Curation}
+Our first primary ablation investigates the impact of data quality and size by fine-tuning models on three forward-only data subsets: a complete 54k sample set, a higher-quality 25k set filtered for correctness, and a challenging 18k set filtered for difficulty.
+
+For the \texttt{Granite-3.3-8b} model, the results are definitive. As shown in Table \ref{tab:comprehensive-results}, the \textbf{25k correctness-filtered dataset} substantially outperforms the others across all benchmarks. On LiveCodeBench, it achieves a score of 44.9\%, an absolute gain of \textbf{+26.6} over the base model, and significantly outperforms the larger 54k set (34.1\%). This powerful improvement from a targeted, high-quality dataset strongly indicates that for complex reasoning, data verifiability is far more impactful than sheer volume.
+
+When repeating the experiment with \texttt{Qwen2.5-Coder-7B}, all three fine-tuned models dramatically outperform the base model. For instance, the 25k dataset boosts the LiveCodeBench score from 46.3\% to 67.0\% (\textbf{+20.7}). Unlike with Granite, the performance across the three data subsets is highly competitive. The 25k dataset achieves the highest score on LiveCodeBench, while the 54k dataset has a slight edge on the CruxEval benchmarks. Given the consistently strong performance of the 25k set, we selected it as the winning configuration for all subsequent experiments.
+
+
+
+\subsection{Impact of Reasoning Direction}
+Using the winning 25k dataset from the previous stage, we evaluated the impact of our novel bi-directional data format. We compared models trained on forward-only, backward-only, and the complete bi-directional datasets.
+
+For the \texttt{Granite-3.3-8b} model, the results in Table \ref{tab:comprehensive-results} highlight the benefits of bi-directional training. The model trained on the \textbf{bi-directional dataset} achieves the highest scores on both CruxEval Output (45.7\% pass@1) and Input (42.1\% pass@1). This represents a final performance gain of \textbf{+30.2} on CruxEval Output over the base model, demonstrating that teaching cause-to-effect and effect-to-cause reasoning provides a synergistic improvement.
+
+This finding is further confirmed with the \texttt{Qwen2.5-Coder-7B} model. The bi-directionally trained model once again emerges as the top performer, achieving the best results on LiveCodeBench (68.2\%) and CruxEval Input (61.9\% pass@1). This configuration's final score on LiveCodeBench represents a \textbf{+21.9} point gain over the base model. To contextualize this performance, Figure \ref{fig:sota-comparison} compares our best model against a range of competitive foundation models. Our fine-tuned model establishes a leading score on LiveCodeBench-Execution and demonstrates highly competitive performance across all reasoning benchmarks.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\columnwidth]{sota_comparison_final.png}
+    \caption{Performance comparison against SOTA baselines~\cite{ding2024semcodertrainingcodelanguage} Our model's results are highlighted with a hatch pattern. \textit{Abbreviations:} CL: CodeLlama, SC2: StarCoder2, DSCoder: DeepSeekCoder, MCoder: MagicCoder, -Py: Python, -Inst: Instruct.}
+    \label{fig:sota-comparison}
+    \vspace{-12pt}
+\end{figure}
+
+\begin{figure}[t!]
+    \centering
+    \includegraphics[width=0.7\linewidth]{clean_best_plots.png}
+    \caption[CoT quality analysis]{Chain-of-Thought quality analysis. Top: CoT-to-outcome consistency vs reasoning length with regression analysis. Bottom: Information content distributions. Verified CoT training shows superior consistency scaling ($R^2 = 0.122$ vs $0.011$) and 761\% higher information richness ($d = 7.93$, $p < 0.001$).}
+
+    \label{fig:cot-quality}
+\end{figure}
 
 \subsection{Impact of Verification Approach on Fine-Tuning}
-To understand how different verification methods affect downstream model performance, we conducted an ablation study where we fine-tuned models on data generated with different verification approaches. Using the same 25k problem set, we generated training data under six conditions: (1) \textbf{Base Model}: No fine-tuning, (2) \textbf{Few-Shot}: No fine-tuning, using 3-shot prompting with example problems, (3) \textbf{Q\&A Only}: Fine-tuning with question-answer pairs only—no CoT rationales in the training data, (4) \textbf{LLM-Generated CoT}: Fine-tuning with CoT rationales that are purely LLM-generated without execution grounding, (5) \textbf{Ours (Minimal Execution)}: Our trace-grounded CoT approach using only the first generated solution and first test case (1 solution, 1 test), and (6) \textbf{Our Full Approach}: Our complete pipeline with Dual Agreement verification (5 solutions, 10 tests) and trace-grounded rationales.
+To understand how different verification methods affect downstream model performance, we conducted an ablation study where we fine-tuned models on data generated with different verification approaches. Using the same 25k problem set from the data curation ablation, we generated training data under six conditions: (1) \textbf{Base Model}: No fine-tuning, (2) \textbf{Few-Shot}: No fine-tuning, using 3-shot prompting with example problems, (3) \textbf{Q\&A Only}: Fine-tuning with question-answer pairs only—no CoT rationales in the training data, (4) \textbf{LLM-Generated CoT}: Fine-tuning with CoT rationales that are purely LLM-generated without execution grounding, (5) \textbf{Ours (Minimal Execution)}: Our trace-grounded CoT approach using only the first generated solution and first test case (1 solution, 1 test), and (6) \textbf{Our Full Approach}: Our complete pipeline with Dual Agreement verification (5 solutions, 10 tests) and trace-grounded rationales.
 
 Table~\ref{tab:verification_ablation} presents the results. Our full approach achieves the highest performance across all benchmarks, with the \texttt{Qwen2.5-Coder-7B} model reaching 68.2\% on LiveCodeBench, 59.7\% on CruxEval Output, and 61.9\% on CruxEval Input. The minimal execution variant (64.1\% LiveCodeBench, -4.1 points) demonstrates that verification quality degrades without sufficient candidate diversity, confirming the value of Dual Agreement's statistical consensus. The LLM-Generated CoT approach performs substantially worse (59.3\% LiveCodeBench, -8.9 points), demonstrating that execution grounding is essential—LLM-generated explanations lack the factual accuracy guaranteed by trace translation. Notably, removing rationales entirely (Q\&A Only) causes a severe performance drop (52.7\% LiveCodeBench, -15.5 points), validating that trace-grounded reasoning chains provide crucial learning signal beyond input-output mappings. The few-shot baseline (48.1\%, 47.0\%, 48.8\%) performs only marginally better than the base model (46.3\%, 45.3\%, 47.5\%), highlighting the value of fine-tuning on verified data.
 
@@ -827,6 +873,11 @@ Dual Agree. (Small: 2S/3T) & 64.1 & 56.8 & 58.4 & +17.8 \\
 
 These results validate that Dual Agreement provides a practical, scalable, and empirically reliable verification method for large-scale synthetic data generation, and that verification quality directly impacts downstream model capabilities.
 
+The comprehensive results of all ablation experiments are presented in Table \ref{tab:comprehensive-results}.
+
+\subsection{Enhancing Instruction-Tuned Models}
+To confirm that our best-performing bi-directional data provides a specialized signal complementary to general instruction tuning, we fine-tuned existing instruct-tuned models. As shown in Figure \ref{fig:instruct-boost}, this provides a substantial boost, yielding a massive \textbf{+39.9} gain on CruxEval Input for \texttt{granite-3.3-8B-instruct} and a \textbf{+21.5} gain on CruxEval Output for the already strong \texttt{Qwen2.5-Coder-7B-Instruct}, demonstrating the value of our execution-grounded data.
+
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.8\columnwidth]{instruct_boost_single.png}
@@ -834,45 +885,6 @@ These results validate that Dual Agreement provides a practical, scalable, and e
     \label{fig:instruct-boost}
     \vspace{-10pt}
 \end{figure}
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=0.7\columnwidth]{sota_comparison_final.png}
-    \caption{Performance comparison against SOTA baselines~\cite{ding2024semcodertrainingcodelanguage} Our model's results are highlighted with a hatch pattern. \textit{Abbreviations:} CL: CodeLlama, SC2: StarCoder2, DSCoder: DeepSeekCoder, MCoder: MagicCoder, -Py: Python, -Inst: Instruct.}
-    \label{fig:sota-comparison}
-    \vspace{-12pt}
-\end{figure}
-The comprehensive results of these experiments are presented in Table \ref{tab:comprehensive-results}.
-
-\subsection{Impact of Data Curation}
-Our first primary ablation investigates the impact of data quality and size by fine-tuning models on three forward-only data subsets: a complete 54k sample set, a higher-quality 25k set filtered for correctness, and a challenging 18k set filtered for difficulty.
-
-For the \texttt{Granite-3.3-8b} model, the results are definitive. As shown in Table \ref{tab:comprehensive-results}, the \textbf{25k correctness-filtered dataset} substantially outperforms the others across all benchmarks. On LiveCodeBench, it achieves a score of 44.9\%, an absolute gain of \textbf{+26.6} over the base model, and significantly outperforms the larger 54k set (34.1\%). This powerful improvement from a targeted, high-quality dataset strongly indicates that for complex reasoning, data verifiability is far more impactful than sheer volume.
-
-When repeating the experiment with \texttt{Qwen2.5-Coder-7B}, all three fine-tuned models dramatically outperform the base model. For instance, the 25k dataset boosts the LiveCodeBench score from 46.3\% to 67.0\% (\textbf{+20.7}). Unlike with Granite, the performance across the three data subsets is highly competitive. The 25k dataset achieves the highest score on LiveCodeBench, while the 54k dataset has a slight edge on the CruxEval benchmarks. Given the consistently strong performance of the 25k set, we selected it as the winning configuration for all subsequent experiments.
-
-
-
-\subsection{Impact of Reasoning Direction}
-Using the winning 25k dataset from the previous stage, we evaluated the impact of our novel bi-directional data format. We compared models trained on forward-only, backward-only, and the complete bi-directional datasets.
-
-For the \texttt{Granite-3.3-8b} model, the results in Table \ref{tab:comprehensive-results} highlight the benefits of bi-directional training. The model trained on the \textbf{bi-directional dataset} achieves the highest scores on both CruxEval Output (45.7\% pass@1) and Input (42.1\% pass@1). This represents a final performance gain of \textbf{+30.2} on CruxEval Output over the base model, demonstrating that teaching cause-to-effect and effect-to-cause reasoning provides a synergistic improvement.
-
-This finding is further confirmed with the \texttt{Qwen2.5-Coder-7B} model. The bi-directionally trained model once again emerges as the top performer, achieving the best results on LiveCodeBench (68.2\%) and CruxEval Input (61.9\% pass@1). This configuration's final score on LiveCodeBench represents a \textbf{+21.9} point gain over the base model. To contextualize this performance, Figure \ref{fig:sota-comparison} compares our best model against a range of competitive foundation models. Our fine-tuned model establishes a leading score on LiveCodeBench-Execution and demonstrates highly competitive performance across all reasoning benchmarks.
-
-\begin{figure}[t!]
-    \centering
-    \includegraphics[width=0.7\linewidth]{clean_best_plots.png}
-    \caption[CoT quality analysis]{Chain-of-Thought quality analysis. Top: CoT-to-outcome consistency vs reasoning length with regression analysis. Bottom: Information content distributions. Verified CoT training shows superior consistency scaling ($R^2 = 0.122$ vs $0.011$) and 761\% higher information richness ($d = 7.93$, $p < 0.001$).}
-
-    \label{fig:cot-quality}
-\end{figure}
-
-\subsection{Enhancing Instruction-Tuned Models}
-To confirm that our best-performing bi-directional data provides a specialized signal complementary to general instruction tuning, we fine-tuned existing instruct-tuned models. As shown in Figure \ref{fig:instruct-boost}, this provides a substantial boost, yielding a massive \textbf{+39.9} gain on CruxEval Input for \texttt{granite-3.3-8B-instruct} and a \textbf{+21.5} gain on CruxEval Output for the already strong \texttt{Qwen2.5-Coder-7B-Instruct}, demonstrating the value of our execution-grounded data.
-
-
-
-
 
 \subsection{Chain-of-Thought Consistency and Quality Analysis}
 
