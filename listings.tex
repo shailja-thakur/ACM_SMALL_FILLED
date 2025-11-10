@@ -319,172 +319,67 @@
 
 \begin{figure}[t!]
   \centering
-
-  \begin{tcolorbox}[
-      enhanced,
-      fontupper=\ttfamily\scriptsize,
-      colback=lightgray,
-      colframe=darkgray,
-      boxrule=0.8pt,
-      arc=3pt,
-      enlarge top by=0.5mm,
-      enlarge bottom by=0.5mm,
-      title={\scriptsize\textbf{Forward Chain-of-Thought Example}},
-      coltitle=white,
-      colbacktitle=darkgray,
-      boxsep=2pt,
-      left=4pt,
-      right=4pt,
-      top=2pt,
-      bottom=2pt,
-      nobeforeafter,
-      before upper={\setlength{\parskip}{1pt}},
-  ]
-
-  \colorbox{lightblue}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{%
-  {\color{promptblue}\textbf{<Instruction>}}
-
-  Given a weighted graph, find the most cost-effective path between two nodes.
-
-  {\color{promptblue}\textbf{<Function>}}
-
-  [find\_cheapest\_path code]
-
-  {\color{promptblue}\textbf{<Question>}}
-
-  For the given network \texttt{graph}, what is the minimum cost and corresponding route from node 'A' to 'F'?
+  \footnotesize
+  \begin{tabular}{@{}p{0.48\columnwidth}@{\hspace{0.01\columnwidth}|}@{\hspace{0.01\columnwidth}}p{0.48\columnwidth}@{}}
+  \toprule
+  \textit{Forward CoT} (input$\rightarrow$output) & \textit{Backward CoT} (output$\rightarrow$input) \\
+  \midrule
+  \colorbox{lightblue}{\parbox{0.95\linewidth}{\scriptsize
+  \texttt{<Instruction>} Given weighted graph, find cheapest path.\\[0.05cm]
+  \texttt{<Function>} [find\_cheapest\_path]\\[0.05cm]
+  \texttt{<Question>} What is route from 'A' to 'F'?
   }}
-
-  \vspace{2pt}
-
-  \colorbox{lightgreen}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{%
-  {\color{promptblue}\textbf{<CoT>}}
-  \begin{enumerate}[leftmargin=8pt, itemsep=1pt, parsep=0pt]
-  \item Initialize distances: 'A' to 0, all others to infinity. Priority queue `pq` starts with `('A', 0)`.
-  \item Extract 'A' from `pq`. Update distances for neighbors 'B' and 'C'; add to `pq`.
-  \item \dots
-  \item Destination 'F' reached. Backtrack from predecessors to reconstruct path. Final cost is 7.
+  &
+  \colorbox{lightblue}{\parbox{0.95\linewidth}{\scriptsize
+  \texttt{<Instruction>} Given weighted graph, find start node.\\[0.05cm]
+  \texttt{<Function>} [find\_cheapest\_path]\\[0.05cm]
+  \texttt{<Question>} What start node gives cost 7 to 'F'?
+  }}
+  \\[0.2cm]
+  \colorbox{lightgreen}{\parbox{0.95\linewidth}{\scriptsize
+  \texttt{<CoT>}
+  \begin{enumerate}[leftmargin=8pt, itemsep=0.5pt, parsep=0pt, topsep=2pt]
+  \item Initialize distances: 'A'=0, others=$\infty$
+  \item Extract 'A', update neighbors 'B', 'C'
+  \item \dots (continue shortest path)
+  \item Reach 'F', backtrack to find path
   \end{enumerate}
-
-  {\color{promptblue}\textbf{<Predicted Output>}}
-
-  (['A', 'C', 'E', 'F'], 7)
+  \texttt{<Predicted Output>} (['A','C','E','F'], 7)
   }}
-
-  \end{tcolorbox}
-  {\footnotesize\textbf{(a) A forward CoT template.}}
-
-
-
-  \begin{tcolorbox}[
-      enhanced,
-      fontupper=\ttfamily\scriptsize,
-      colback=lightgray,
-      colframe=darkgray,
-      boxrule=0.8pt,
-      arc=3pt,
-      enlarge top by=0.5mm,
-      enlarge bottom by=0.5mm,
-      title={\scriptsize\textbf{Backward Chain-of-Thought Example}},
-      coltitle=white,
-      colbacktitle=darkgray,
-      boxsep=2pt,
-      left=4pt,
-      right=4pt,
-      top=2pt,
-      bottom=2pt,
-      nobeforeafter,
-      before upper={\setlength{\parskip}{1pt}},
-  ]
-
-  \colorbox{lightblue}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{%
-  {\color{promptblue}\textbf{<Instruction>}}
-
-  Given a weighted graph, find a starting node for a cost-effective path.
-
-  {\color{promptblue}\textbf{<Function>}}
-
-  [find\_cheapest\_path code]
-
-  {\color{promptblue}\textbf{<Question>}}
-
-  For the given \texttt{graph}, what start node could result in a path to 'F' with a total cost of 7?
-  }}
-
-  \vspace{2pt}
-
-  \colorbox{lightgreen}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{%
-  {\color{promptblue}\textbf{<CoT>}}
-  \begin{enumerate}[leftmargin=8pt, itemsep=1pt, parsep=0pt]
-  \item The final path to 'F' has a cost of 7. To deduce the start, we must trace predecessors backwards.
-  \item The predecessor of 'F' in a cost-7 path must be 'E'. The edge cost from 'E' to 'F' is 2, meaning the cost to reach 'E' must have been 5.
-  \item \dots
-  \item After backtracking through 'C', the trace confirms that starting at node 'A', only way to achieve specified total cost of 7 to reach 'F'.
+  &
+  \colorbox{lightgreen}{\parbox{0.95\linewidth}{\scriptsize
+  \texttt{<CoT>}
+  \begin{enumerate}[leftmargin=8pt, itemsep=0.5pt, parsep=0pt, topsep=2pt]
+  \item Final cost=7 to 'F', trace backwards
+  \item Predecessor of 'F' is 'E' (cost 2), so cost to 'E'=5
+  \item \dots (continue backtracking)
+  \item Backtrack through 'C' confirms start='A'
   \end{enumerate}
-
-  {\color{promptblue}\textbf{<Predicted Input>}}
-
-  'A'
+  \texttt{<Predicted Input>} 'A'
   }}
-
-  \end{tcolorbox}
-  {\footnotesize\textbf{(b) A backward CoT template.}}
-  \caption{Abstract examples for the generated bi-directional CoT data. Blue-shaded regions show the input prompt components (instruction, function, and question), while green-shaded regions show
-  the model's reasoning and output generation.}
+  \\
+  \bottomrule
+  \end{tabular}
+  \vspace{-0.1cm}
+  \caption{Bi-directional CoT data format examples. Blue regions show input prompt (instruction, function, question); green regions show model's trace-grounded reasoning and prediction. Forward samples reason from input to output, backward samples deduce input from output.}
   \label{fig:cot-templates}
   \end{figure}
 
 \begin{figure}[t!]
   \centering
-  \begin{minipage}[t]{0.48\columnwidth}
-  \begin{tcolorbox}[
-      enhanced,
-      fontupper=\ttfamily\scriptsize,
-      colback=lightgray,
-      colframe=darkgray,
-      boxrule=0.8pt,
-      arc=3pt,
-      enlarge top by=0.5mm,
-      enlarge bottom by=0.5mm,
-      title={\scriptsize\textbf{Function Signature}},
-      coltitle=white,
-      colbacktitle=darkgray,
-      boxsep=2pt,
-      left=4pt,
-      right=4pt,
-      top=2pt,
-      bottom=2pt,
-      nobeforeafter,
-  ]
+  \footnotesize
+  \begin{tabular}{@{}p{0.48\columnwidth}@{\hspace{0.01\columnwidth}|}@{\hspace{0.01\columnwidth}}p{0.48\columnwidth}@{}}
+  \toprule
+  \textit{Function Signature} & \textit{Class Signature} \\
+  \midrule
+  \ttfamily\scriptsize
   Function: solution(\\
   \hspace*{1em}freq\_list: \\
   \hspace*{2em}list[tuple[\\
   \hspace*{3em}str, int]]) \\
   \hspace*{1em}-> dict[str, str]
-  \end{tcolorbox}
-  {\footnotesize\textbf{(a) Function format.}}
-  \end{minipage}
-  \hfill
-  \begin{minipage}[t]{0.48\columnwidth}
-  \begin{tcolorbox}[
-      enhanced,
-      fontupper=\ttfamily\scriptsize,
-      colback=lightgray,
-      colframe=darkgray,
-      boxrule=0.8pt,
-      arc=3pt,
-      enlarge top by=0.5mm,
-      enlarge bottom by=0.5mm,
-      title={\scriptsize\textbf{Class Signature}},
-      coltitle=white,
-      colbacktitle=darkgray,
-      boxsep=2pt,
-      left=4pt,
-      right=4pt,
-      top=2pt,
-      bottom=2pt,
-      nobeforeafter,
-  ]
+  &
+  \ttfamily\scriptsize
   Class: HuffmanTree; \\
   \_\_init\_\_(self, \\
   \hspace*{1em}freq\_list: \\
@@ -495,65 +390,31 @@
   \hspace*{1em}-> tuple; \\
   get\_encoding(self) \\
   \hspace*{1em}-> dict[str, str]
-  \end{tcolorbox}
-  {\footnotesize\textbf{(b) Class format.}}
-  \end{minipage}
-  \caption{Signature format templates enforced via few-shot examples. These strict formats ensure type and naming consistency across candidate solutions and tests.}
+  \\
+  \bottomrule
+  \end{tabular}
+  \vspace{-0.1cm}
+  \caption{Signature format templates enforced via few-shot examples to ensure type and naming consistency across candidate solutions and tests.}
   \label{fig:signature-formats}
 \end{figure}
 
 \begin{figure}[t!]
   \centering
-  \begin{minipage}[t]{0.48\columnwidth}
-  \begin{tcolorbox}[
-      enhanced,
-      fontupper=\ttfamily\scriptsize,
-      colback=lightgreen,
-      colframe=darkgray,
-      boxrule=0.8pt,
-      arc=3pt,
-      enlarge top by=0.5mm,
-      enlarge bottom by=0.5mm,
-      title={\scriptsize\textbf{Correct Format}},
-      coltitle=white,
-      colbacktitle=darkgray,
-      boxsep=2pt,
-      left=4pt,
-      right=4pt,
-      top=2pt,
-      bottom=2pt,
-      nobeforeafter,
-  ]
+  \footnotesize
+  \begin{tabular}{@{}p{0.48\columnwidth}@{\hspace{0.01\columnwidth}|}@{\hspace{0.01\columnwidth}}p{0.48\columnwidth}@{}}
+  \toprule
+  \textit{Correct Format} \textcolor{correctgreen}{\cmark} & \textit{Prohibited Format} \textcolor{errorred}{\xmark} \\
+  \midrule
+  \colorbox{correctgreen!10}{\parbox{0.95\linewidth}{\ttfamily\scriptsize
   def test\_basic(): \\
   \hspace*{1em}\# Test basic \\
   \hspace*{1em}assert \\
   \hspace*{2em}solution([1, \\
   \hspace*{3em}2, 3], 2) \\
   \hspace*{2em}== [1]
-  \end{tcolorbox}
-  {\footnotesize\textbf{(a) Direct call in assert.}}
-  \end{minipage}
-  \hfill
-  \begin{minipage}[t]{0.48\columnwidth}
-  \begin{tcolorbox}[
-      enhanced,
-      fontupper=\ttfamily\scriptsize,
-      colback=lightgray,
-      colframe=red,
-      boxrule=0.8pt,
-      arc=3pt,
-      enlarge top by=0.5mm,
-      enlarge bottom by=0.5mm,
-      title={\scriptsize\textbf{Prohibited Format}},
-      coltitle=white,
-      colbacktitle=red,
-      boxsep=2pt,
-      left=4pt,
-      right=4pt,
-      top=2pt,
-      bottom=2pt,
-      nobeforeafter,
-  ]
+  }}
+  &
+  \colorbox{errorred!10}{\parbox{0.95\linewidth}{\ttfamily\scriptsize
   def test\_wrong(): \\
   \hspace*{1em}\# Variable \\
   \hspace*{1em}\# outside assert \\
@@ -561,9 +422,11 @@
   \hspace*{1em}assert \\
   \hspace*{2em}solution(lst, \\
   \hspace*{3em}2) == [1]
-  \end{tcolorbox}
-  {\footnotesize\textbf{(b) Variable assignment.}}
-  \end{minipage}
-  \caption{Test format requirements. The correct format enables clean I/O extraction for trace generation, while the prohibited format complicates trace analysis with intermediate variable assignments.}
+  }}
+  \\
+  \bottomrule
+  \end{tabular}
+  \vspace{-0.1cm}
+  \caption{Test format requirements. Correct format (left) enables clean I/O extraction for trace generation with direct function calls in assert statements, while prohibited format (right) complicates trace analysis with intermediate variable assignments.}
   \label{fig:test-formats}
 \end{figure}
