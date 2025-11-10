@@ -319,77 +319,94 @@
 
 \begin{figure}[t!]
   \centering
-  \footnotesize
+  \scriptsize
   \begin{tabular}{@{}p{0.48\columnwidth}@{\hspace{0.01\columnwidth}|}@{\hspace{0.01\columnwidth}}p{0.48\columnwidth}@{}}
   \toprule
   \textit{Forward CoT} (input$\rightarrow$output) & \textit{Backward CoT} (output$\rightarrow$input) \\
   \midrule
   \colorbox{lightblue}{\parbox{0.95\linewidth}{\scriptsize
-  \texttt{<Instruction>} Given weighted graph, find cheapest path.\\[0.05cm]
-  \texttt{<Function>} [find\_cheapest\_path]\\[0.05cm]
-  \texttt{<Question>} What is route from 'A' to 'F'?
+  {\color{promptblue}\textbf{<Instruction>}}\\
+  Given a weighted graph, find the most cost-effective path between two nodes.\\[0.1cm]
+
+  {\color{promptblue}\textbf{<Function>}}\\
+  \ttfamily def find\_cheapest\_path(graph, start, end): ...\\[0.1cm]
+  \normalfont
+
+  {\color{promptblue}\textbf{<Question>}}\\
+  For the given network, what is the minimum cost and route from node 'A' to 'F'?
   }}
   &
   \colorbox{lightblue}{\parbox{0.95\linewidth}{\scriptsize
-  \texttt{<Instruction>} Given weighted graph, find start node.\\[0.05cm]
-  \texttt{<Function>} [find\_cheapest\_path]\\[0.05cm]
-  \texttt{<Question>} What start node gives cost 7 to 'F'?
+  {\color{promptblue}\textbf{<Instruction>}}\\
+  Given a weighted graph, find a starting node for a cost-effective path.\\[0.1cm]
+
+  {\color{promptblue}\textbf{<Function>}}\\
+  \ttfamily def find\_cheapest\_path(graph, start, end): ...\\[0.1cm]
+  \normalfont
+
+  {\color{promptblue}\textbf{<Question>}}\\
+  What start node could result in a path to 'F' with total cost of 7?
   }}
-  \\[0.2cm]
+  \\[0.15cm]
   \colorbox{lightgreen}{\parbox{0.95\linewidth}{\scriptsize
-  \texttt{<CoT>}
+  {\color{promptblue}\textbf{<CoT>}}
   \begin{enumerate}[leftmargin=8pt, itemsep=0.5pt, parsep=0pt, topsep=2pt]
-  \item Initialize distances: 'A'=0, others=$\infty$
-  \item Extract 'A', update neighbors 'B', 'C'
-  \item \dots (continue shortest path)
-  \item Reach 'F', backtrack to find path
+  \item Initialize distances: 'A' to 0, all others to $\infty$. Priority queue starts with ('A', 0).
+  \item Extract 'A' from queue. Update distances for neighbors 'B' and 'C'; add to queue.
+  \item Continue extracting minimum, updating neighbors until destination 'F' reached.
+  \item Backtrack from predecessors to reconstruct path. Final cost is 7.
   \end{enumerate}
-  \texttt{<Predicted Output>} (['A','C','E','F'], 7)
+  \vspace{0.05cm}
+  {\color{promptblue}\textbf{<Predicted Output>}}\\
+  \ttfamily (['A', 'C', 'E', 'F'], 7)
   }}
   &
   \colorbox{lightgreen}{\parbox{0.95\linewidth}{\scriptsize
-  \texttt{<CoT>}
+  {\color{promptblue}\textbf{<CoT>}}
   \begin{enumerate}[leftmargin=8pt, itemsep=0.5pt, parsep=0pt, topsep=2pt]
-  \item Final cost=7 to 'F', trace backwards
-  \item Predecessor of 'F' is 'E' (cost 2), so cost to 'E'=5
-  \item \dots (continue backtracking)
-  \item Backtrack through 'C' confirms start='A'
+  \item The final path to 'F' has cost 7. To deduce start, trace predecessors backwards.
+  \item The predecessor of 'F' in cost-7 path must be 'E'. Edge cost from 'E' to 'F' is 2, so cost to reach 'E' is 5.
+  \item Continue backtracking through 'C', which confirms starting at 'A' achieves total cost of 7.
   \end{enumerate}
-  \texttt{<Predicted Input>} 'A'
+  \vspace{0.05cm}
+  {\color{promptblue}\textbf{<Predicted Input>}}\\
+  \ttfamily 'A'
   }}
   \\
   \bottomrule
   \end{tabular}
   \vspace{-0.1cm}
-  \caption{Bi-directional CoT data format examples. Blue regions show input prompt (instruction, function, question); green regions show model's trace-grounded reasoning and prediction. Forward samples reason from input to output, backward samples deduce input from output.}
+  \caption{Bi-directional CoT data format examples. Blue tags denote prompt components (instruction, function, question); green regions show model's trace-grounded reasoning and prediction. Code appears in \texttt{monospace}, reasoning in normal text.}
   \label{fig:cot-templates}
   \end{figure}
 
 \begin{figure}[t!]
   \centering
-  \footnotesize
+  \scriptsize
   \begin{tabular}{@{}p{0.48\columnwidth}@{\hspace{0.01\columnwidth}|}@{\hspace{0.01\columnwidth}}p{0.48\columnwidth}@{}}
   \toprule
   \textit{Function Signature} & \textit{Class Signature} \\
   \midrule
-  \ttfamily\scriptsize
+  {\ttfamily\scriptsize
   Function: solution(\\
   \hspace*{1em}freq\_list: \\
   \hspace*{2em}list[tuple[\\
   \hspace*{3em}str, int]]) \\
   \hspace*{1em}-> dict[str, str]
+  }
   &
-  \ttfamily\scriptsize
-  Class: HuffmanTree; \\
-  \_\_init\_\_(self, \\
-  \hspace*{1em}freq\_list: \\
+  {\ttfamily\scriptsize
+  Class: HuffmanTree;\\[0.1cm]
+  \_\_init\_\_(self,\\
+  \hspace*{1em}freq\_list:\\
   \hspace*{2em}list[tuple[\\
-  \hspace*{3em}str, int]]) \\
-  \hspace*{1em}-> None; \\
-  build\_tree(self) \\
-  \hspace*{1em}-> tuple; \\
-  get\_encoding(self) \\
+  \hspace*{3em}str, int]])\\
+  \hspace*{1em}-> None;\\[0.1cm]
+  build\_tree(self)\\
+  \hspace*{1em}-> tuple;\\[0.1cm]
+  get\_encoding(self)\\
   \hspace*{1em}-> dict[str, str]
+  }
   \\
   \bottomrule
   \end{tabular}

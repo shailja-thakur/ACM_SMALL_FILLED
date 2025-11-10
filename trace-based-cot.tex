@@ -328,41 +328,49 @@ This challenge is especially acute in code reasoning, where small logical errors
 \textit{Code} & \textit{LLM-Generated CoT (Hallucinated)} & \textit{Ours (Trace-Grounded)} \\
 \midrule
 \begin{lstlisting}[style=pythoncode, basicstyle=\ttfamily\footnotesize]
-def countdown(n):
-  count = n
-  while count > 0:
-    count -= 1
-  return count
+def find_peak(arr):
+  left, right = 0, len(arr)-1
+  while left < right:
+    mid = (left + right) // 2
+    if arr[mid] < arr[mid+1]:
+      left = mid + 1
+    else:
+      right = mid
+  return left
 \end{lstlisting}
 &
 \colorbox{errorred!8}{\parbox{0.98\linewidth}{\footnotesize
 \vspace{0.1cm}
-1. Initialize count=5\\
-2. Loop \textcolor{errorred}{\textbf{increments}} count\\
-3. Continue until count=10\\
-4. Return 10\\[0.1cm]
-\textcolor{errorred}{\xmark\ Incorrect logic}
+1. Initialize left=0, right=4\\
+2. Calculate mid=2\\
+3. Compare arr[2] with arr[1]\\
+4. Since arr[2] \textcolor{errorred}{\textbf{>}} arr[1], move \textcolor{errorred}{\textbf{right}}\\
+5. Continue until left=right\\
+6. Return peak index\\[0.1cm]
+\textcolor{errorred}{\xmark\ Wrong comparison \& direction}
 \vspace{0.1cm}
 }}
 &
 \parbox{0.98\linewidth}{
 \colorbox{gray!12}{\parbox{0.98\linewidth}{\ttfamily\scriptsize
 \vspace{0.05cm}
-count = 5\\
-count: 5 $\rightarrow$ 4\\
-count: 4 $\rightarrow$ 3\\
-count: 3 $\rightarrow$ 2\\
-count: 2 $\rightarrow$ 1\\
-count: 1 $\rightarrow$ 0\\
-return: 0
+arr = [1,3,5,4,2], left = 0, right = 4\\
+mid = 2\\
+arr[2] = 5, arr[3] = 4\\
+5 $>$ 4, so right = 2\\
+mid = 1, arr[1] = 3, arr[2] = 5\\
+3 $<$ 5, so left = 2\\
+left == right, return 2
 \vspace{0.05cm}
 }}\\[0.1cm]
 \colorbox{correctgreen!8}{\parbox{0.98\linewidth}{\footnotesize
 \vspace{0.1cm}
-1. Initialize count=5\\
-2. Loop \textcolor{correctgreen}{\textbf{decrements}} count\\
-3. Continue until count=0\\
-4. Return 0\\[0.1cm]
+1. Initialize left=0, right=4\\
+2. Calculate mid=2, arr[2]=5\\
+3. Compare arr[2] with arr[3]\\
+4. Since 5 \textcolor{correctgreen}{\textbf{>}} 4, move \textcolor{correctgreen}{\textbf{left}}\\
+5. Converge at index 2\\
+6. Return 2 (peak value 5)\\[0.1cm]
 \textcolor{correctgreen}{\cmark\ Verified by trace}
 \vspace{0.1cm}
 }}
@@ -371,7 +379,7 @@ return: 0
 \bottomrule
 \end{tabular}
 \vspace{-0.1cm}
-\caption{LLM-generated CoT hallucinates the loop logic (claims increment instead of decrement), while our trace-grounded approach produces rationales verifiable against actual execution traces.}
+\caption{LLM-generated CoT hallucinates the comparison logic and search direction, while our trace-grounded approach produces rationales verifiable against actual execution traces.}
 \label{fig:motivation}
 \end{figure*}
 
