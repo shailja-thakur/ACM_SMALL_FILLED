@@ -348,20 +348,24 @@ def countdown(n):
 }}
 &
 \colorbox{correctgreen!10}{\parbox{0.95\linewidth}{\scriptsize
-\textbf{Trace:}
-\begin{lstlisting}[style=tracestyle, basicstyle=\ttfamily\tiny]
-count = 5
-count: 5 -> 4
-count: 4 -> 3
-...
+\textbf{Trace:}\\
+\ttfamily\tiny
+\begin{tabular}{@{}l@{}}
+count = 5\\
+count: 5 -> 4\\
+count: 4 -> 3\\
+...\\
 return: 0
-\end{lstlisting}
-\vspace{-0.15cm}
+\end{tabular}
+
+\vspace{0.1cm}
+\normalfont\scriptsize
 \textbf{Step 1:} Initialize count=5\\
 \textbf{Step 2:} Loop \textcolor{correctgreen}{\textbf{decrements}} count\\
 \textbf{Step 3:} Continue until count=0\\
 \textbf{Step 4:} Return 0
 
+\vspace{0.05cm}
 \textcolor{correctgreen}{\textbf{\cmark\ VERIFIED}}
 }}
 \\
