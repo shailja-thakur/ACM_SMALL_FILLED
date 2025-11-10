@@ -327,51 +327,54 @@ To bridge this gap, the research community has embraced fine-tuning models on Ch
 
 This challenge is especially acute in code reasoning, where small logical errors cascade into flawed understanding. Consider a model trained on a rationale claiming "variable \texttt{count} is incremented in the loop"—when in fact, \texttt{count} is decremented. Such errors propagate during training, teaching the model to follow plausible but incorrect logical patterns. This lack of guaranteed soundness is a critical barrier for high-stakes applications. For \textbf{debugging}, a rationale that misrepresents variable state is actively misleading. For \textbf{iterative self-refinement}, feeding a model its own flawed reasoning causes compounding errors. For \textbf{agentic workflows}, a plan based on unsound understanding of a previous step can derail an entire task. Figure~\ref{fig:motivation} illustrates this critical problem concretely.
 
-\begin{figure}[t]
+\begin{figure*}[t]
 \centering
-\begin{tcolorbox}[enhanced, colback=errorred!8, colframe=errorred!80, title=\textbf{LLM-Generated CoT (Contains Hallucination)}, fonttitle=\bfseries, coltitle=white, colbacktitle=errorred!90, boxrule=0.8pt]
 \small
-\textbf{Code:}
-\begin{lstlisting}[style=pythoncode, basicstyle=\ttfamily\footnotesize]
+\begin{tabular}{@{}p{0.31\textwidth}@{\hspace{0.02\textwidth}}p{0.31\textwidth}@{\hspace{0.02\textwidth}}p{0.31\textwidth}@{}}
+\toprule
+\textbf{Code} & \textbf{LLM-Generated (Hallucinated)} & \textbf{Ours (Trace-Grounded)} \\
+\midrule
+\begin{lstlisting}[style=pythoncode, basicstyle=\ttfamily\scriptsize]
 def countdown(n):
-    count = n
-    while count > 0:
-        count -= 1  # Decrement
-    return count
+  count = n
+  while count > 0:
+    count -= 1
+  return count
 \end{lstlisting}
-\vspace{-0.1cm}
-\textbf{LLM-Generated Explanation:}\\
-\textit{"Starting with count=5, the loop} \textcolor{errorred}{\textbf{increments}} \textit{count until reaching 10, then returns 10."}
+&
+\colorbox{errorred!10}{\parbox{0.95\linewidth}{\scriptsize
+\textbf{Step 1:} Initialize count=5\\
+\textbf{Step 2:} Loop} \textcolor{errorred}{\textbf{increments}} \textit{count each iteration\\
+\textbf{Step 3:} Continue until count=10\\
+\textbf{Step 4:} Return 10}
 
 \vspace{0.1cm}
-\textcolor{errorred}{\textbf{\xmark\ HALLUCINATION}}: Claims increment when code decrements!
-\end{tcolorbox}
-
-\vspace{0.25cm}
-
-\begin{tcolorbox}[enhanced, colback=correctgreen!8, colframe=correctgreen!80, title=\textbf{Our Trace-Grounded CoT (Verifiable)}, fonttitle=\bfseries, coltitle=white, colbacktitle=correctgreen!90, boxrule=0.8pt]
-\small
-\textbf{Execution Trace:}
-\begin{lstlisting}[style=tracestyle]
-Line 2: count = 5
-Line 3: while count > 0: (True)
-Line 4: count -= 1  ->  count: 5 -> 4
-Line 3: while count > 0: (True)
-Line 4: count -= 1  ->  count: 4 -> 3
+\textcolor{errorred}{\textbf{\xmark\ WRONG}}: Claims increment!
+}}
+&
+\colorbox{correctgreen!10}{\parbox{0.95\linewidth}{\scriptsize
+\textbf{Trace:}
+\begin{lstlisting}[style=tracestyle, basicstyle=\ttfamily\tiny]
+count = 5
+count: 5 -> 4
+count: 4 -> 3
 ...
-Line 5: return count  ->  return: 0
+return: 0
 \end{lstlisting}
-\vspace{-0.1cm}
-\textbf{Our Generated Explanation:}\\
-\textit{"Starting with count=5, the loop} \textcolor{correctgreen}{\textbf{decrements}} \textit{count (5$\rightarrow$4$\rightarrow$3$\rightarrow$2$\rightarrow$1$\rightarrow$0) until reaching 0, then returns 0."}
+\vspace{-0.15cm}
+\textbf{Step 1:} Initialize count=5\\
+\textbf{Step 2:} Loop \textcolor{correctgreen}{\textbf{decrements}} count\\
+\textbf{Step 3:} Continue until count=0\\
+\textbf{Step 4:} Return 0
 
-\vspace{0.1cm}
-\textcolor{correctgreen}{\textbf{\cmark\ CORRECT}}: Variable values, state transitions, and control flow match trace!
-\end{tcolorbox}
-
-\caption{Comparison of LLM-generated vs trace-grounded CoT. Traditional CoT generation produces plausible but incorrect reasoning (top), while our approach translates execution traces directly into natural language, making rationales verifiable against actual program behavior (bottom).}
+\textcolor{correctgreen}{\textbf{\cmark\ VERIFIED}}
+}}
+\\
+\bottomrule
+\end{tabular}
+\caption{LLM-generated CoT hallucinates (claims increment), while our trace-grounded approach is verifiable.}
 \label{fig:motivation}
-\end{figure}
+\end{figure*}
 
 % This challenge is particularly acute in code reasoning because small logical errors can cascade through multi-step reasoning processes, leading to flawed understanding. For instance, a model might correctly identify that a function performs a sorting operation but incorrectly reason about the intermediate steps, variable updates, or edge case handling. Such errors in reasoning data propagate during training, teaching models to follow superficially plausible but ultimately incorrect logical patterns. For instance, Other 
 %      execution-aware methods, used in benchmarks like HumanEval~\cite{chen2021evaluating} or by prior work like 
