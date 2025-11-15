@@ -343,11 +343,11 @@ Furthermore, our \textit{concept-first} pipeline provides fine-grained control o
 Our contributions are fivefold:
 
 \begin{enumerate}
-    \item \textbf{An Execution-Grounded Synthesis Pipeline} that generates factually correct and verifiable CoT data directly from execution traces.
-    \item \textbf{A Concept-First Generation Approach} providing fine-grained control over the complexity and diversity of the synthesized data.
-    \item \textbf{A Novel Bi-Directional CoT Dataset} that teaches both forward (input-to-output) and backward (output-to-input) reasoning.
-    \item \textbf{A Systematic Investigation of Data Utility} through targeted SFT experiments and evaluation to identify optimal training configurations.
-    \item \textbf{An Open-Source Contribution} of our complete data synthesis pipeline to facilitate further research.
+    \item An Execution-Grounded Synthesis Pipeline
+    \item A Concept-First Generation Approach
+    \item A Novel Bi-Directional CoT Dataset
+    \item A Systematic Investigation of Data Utility
+    \item An Open-Source Contribution
 \end{enumerate}
 
 The remainder of this paper is organized as follows. We first review related work in code reasoning and synthetic data generation. Next, we detail our three-stage data synthesis pipeline, followed by our experimental design and a thorough analysis of the results. We conclude with a discussion of our findings and future research directions.
@@ -496,6 +496,9 @@ The foundation of our experiments is a large-scale, high-quality dataset generat
 \begin{enumerate}
     \item \textbf{Concept Sourcing and Scaling:} The pipeline began by ingesting a diverse set of permissively-licensed documents, including those from the "Free Programming Books" source in the StarCoder2-documentation dataset~\cite{starcoder2-doc} and curated lists of programming books. These sources cover a wide range of topics, from core Python language features and data structures to advanced algorithms. This process yielded an initial set of approximately 15,000 deduplicated concepts. From this seed, we hierarchically synthesized a large pool of programming problems: for each concept, we generated multiple distinct instructions, and for each instruction, multiple candidate solutions and unit tests.
 
+    \subsubsection{Hyperparameter Selection for Data Generation}
+    To determine the optimal number of candidate solutions and unit tests per problem, we conducted systematic experiments with varying configurations. We evaluated different numbers of candidate solutions (5, 10, 15, 20) and unit test cases (5, 10, 20, 30, 40, 50) per instruction. Based on our ablation studies balancing quality and computational cost, we selected 5 candidate solutions and 30 unit tests per problem. The 30 unit tests were generated in 3 sets of 10 unit tests each, as described in Section 3.1, ensuring comprehensive coverage of edge cases and core functionality while maintaining diversity through multiple independent generation rounds.
+
     \item \textbf{Verification and Deduplication:} This large, raw set of candidates was passed through our execution-based verification stage (Stage B), resulting in approximately 85,000 code-test pairs that were confirmed to be functionally correct. A final deduplication pass on similar code snippets and test logic yielded our initial master dataset.
 
     \textbf{CoT Formatting:} Each sample in the master set was formatted into three distinct reasoning structures. A \textbf{forward CoT} sample presents a question like \texttt{Given input X, what is the output?} followed by a trace-narrated rationale. A \textbf{backward CoT} sample asks \texttt{"What input could produce output Y?"} followed by a deductive, trace-grounded rationale, as shown in Figure~\ref{fig:cot-templates}. Finally, a \textbf{bi-directional} sample combines these into a single, multi-turn conversational format.
@@ -522,40 +525,40 @@ This curation process provides two key dimensions for our experiments: the data 
     \label{tab:comprehensive-results}
     \resizebox{\textwidth}{!}{%
     % Use the new C column type for the first two columns. Adjust the width as needed.
-    \begin{tabular}{C{2.5cm}|C{2.5cm}|l|c|c|c|cc|cc}
+    \begin{tabular}{C{2.5cm}|C{2.5cm}|l|c|c|c|c|cc|cc}
     \hline
     \multirow{2}{*}{\textbf{Experiment Stage}} & \multirow{2}{*}{\textbf{Model}} & \multirow{2}{*}{\textbf{Training Config}} & \multirow{2}{*}{\textbf{Data Subset}} & \multirow{2}{*}{\textbf{Data Config}} &
-    \textbf{LiveCodeBench-Exec} &
+    \textbf{HumanEval} & \textbf{LiveCodeBench-Exec} &
     \multicolumn{2}{c|}{\textbf{CruxEval Output}} & \multicolumn{2}{c}{\textbf{CruxEval Input}} \\
-     & & & & & \textbf{Pass@1} & \textbf{Pass@1} & \textbf{Pass@5} & \textbf{Pass@1} & \textbf{Pass@5} \\
+     & & & & & \textbf{Pass@1} & \textbf{Pass@1} & \textbf{Pass@1} & \textbf{Pass@5} & \textbf{Pass@1} & \textbf{Pass@5} \\
          \hline
     \hline
     % \multicolumn{9}{c}{\textit{Granite-3.3-8B Model Family}} \\
     % \hline
-    \parbox{2.5cm}{\centering Baselines} & \parbox{2.5cm}{\centering Granite-3.3-8B-base} & Base (default) & N/A & N/A & 18.3 & 15.5 & 25.3 & 14.3 & 28.4 \\
+    \parbox{2.5cm}{\centering Baselines} & \parbox{2.5cm}{\centering Granite-3.3-8B-base} & Base (default) & N/A & N/A & 20.1 & 18.3 & 15.5 & 25.3 & 14.3 & 28.4 \\
     \hline
-    \multirow{3}{*}{\parbox{2.5cm}{\centering Data Curation}} & \multirow{6}{*}{\parbox{2.5cm}{\centering Granite-3.3-8B (FT)}} & \multirow{3}{*}{Fwd} & 18k & Difficulty-Filt. & 43.5$_{\textcolor{blue}{(+25.2)}}$ & 36.1$_{\textcolor{blue}{(+20.6)}}$ & 58.2$_{\textcolor{blue}{(+32.9)}}$ & 35.8$_{\textcolor{blue}{(+21.5)}}$ & 57.9$_{\textcolor{blue}{(+29.5)}}$ \\
-     & & & 25k (best perf.) & Correctness-Filt. & \textbf{44.9}$_{\textcolor{blue}{(+26.6)}}$ & \textbf{42.7}$_{\textcolor{blue}{(+27.2)}}$ & \textbf{64.7}$_{\textcolor{blue}{(+39.4)}}$ & \textbf{40.2}$_{\textcolor{blue}{(+25.9)}}$ &
+    \multirow{3}{*}{\parbox{2.5cm}{\centering Data Curation}} & \multirow{6}{*}{\parbox{2.5cm}{\centering Granite-3.3-8B (FT)}} & \multirow{3}{*}{Fwd} & 18k & Difficulty-Filt. & 41.2$_{\textcolor{blue}{(+21.1)}}$ & 43.5$_{\textcolor{blue}{(+25.2)}}$ & 36.1$_{\textcolor{blue}{(+20.6)}}$ & 58.2$_{\textcolor{blue}{(+32.9)}}$ & 35.8$_{\textcolor{blue}{(+21.5)}}$ & 57.9$_{\textcolor{blue}{(+29.5)}}$ \\
+     & & & 25k (best perf.) & Correctness-Filt. & \textbf{43.8}$_{\textcolor{blue}{(+23.7)}}$ & \textbf{44.9}$_{\textcolor{blue}{(+26.6)}}$ & \textbf{42.7}$_{\textcolor{blue}{(+27.2)}}$ & \textbf{64.7}$_{\textcolor{blue}{(+39.4)}}$ & \textbf{40.2}$_{\textcolor{blue}{(+25.9)}}$ &
     \textbf{63.5}$_{\textcolor{blue}{(+35.1)}}$ \\
-     & & & 54k & Full Set & 34.1$_{\textcolor{blue}{(+15.8)}}$ & 28.9$_{\textcolor{blue}{(+13.4)}}$ & 55.2$_{\textcolor{blue}{(+29.9)}}$ & 28.8$_{\textcolor{blue}{(+14.5)}}$ & 54.9$_{\textcolor{blue}{(+26.5)}}$ \\
-    \cline{1-1}\cline{3-10}
-    \multirow{3}{*}{\parbox{2.5cm}{\centering Reasoning Direction}} & & Fwd & 25k & Correctness-Filt. & \cellcolor{highlightgray}{\textbf{44.9}$_{\textcolor{blue}{\textbf{(+26.6)}}}$} & 42.7$_{\textcolor{blue}{(+27.2)}}$ & 64.7$_{\textcolor{blue}{(+39.4)}}$ & 40.2$_{\textcolor{blue}{(+25.9)}}$ & 63.5$_{\textcolor{blue}{(+35.1)}}$ \\
-     & & Bwd & 25k & Correctness-Filt. & 35.4$_{\textcolor{blue}{(+17.1)}}$ & 39.3$_{\textcolor{blue}{(+23.8)}}$ & 61.3$_{\textcolor{blue}{(+36.0)}}$ & 41.5$_{\textcolor{blue}{(+27.2)}}$ & 64.8$_{\textcolor{blue}{(+36.4)}}$ \\
-     & & Bi-directional & 25k & Correctness-Filt. & 44.3$_{\textcolor{blue}{(+26.0)}}$ & \cellcolor{highlightgray}{\textbf{45.7}$_{\textcolor{blue}{\textbf{(+30.2)}}}$} & \cellcolor{highlightgray}{\textbf{67.4}$_{\textcolor{blue}{\textbf{(+42.1)}}}$} & \cellcolor{highlightgray}{\textbf{42.1}$_{\textcolor{blue}{\textbf{(+27.8)}}}$} & \cellcolor{highlightgray}{\textbf{65.2}$_{\textcolor{blue}{\textbf{(+36.8)}}}$} \\
+     & & & 54k & Full Set & 32.8$_{\textcolor{blue}{(+12.7)}}$ & 34.1$_{\textcolor{blue}{(+15.8)}}$ & 28.9$_{\textcolor{blue}{(+13.4)}}$ & 55.2$_{\textcolor{blue}{(+29.9)}}$ & 28.8$_{\textcolor{blue}{(+14.5)}}$ & 54.9$_{\textcolor{blue}{(+26.5)}}$ \\
+    \cline{1-1}\cline{3-11}
+    \multirow{3}{*}{\parbox{2.5cm}{\centering Reasoning Direction}} & & Fwd & 25k & Correctness-Filt. & 43.8$_{\textcolor{blue}{(+23.7)}}$ & \cellcolor{highlightgray}{\textbf{44.9}$_{\textcolor{blue}{\textbf{(+26.6)}}}$} & 42.7$_{\textcolor{blue}{(+27.2)}}$ & 64.7$_{\textcolor{blue}{(+39.4)}}$ & 40.2$_{\textcolor{blue}{(+25.9)}}$ & 63.5$_{\textcolor{blue}{(+35.1)}}$ \\
+     & & Bwd & 25k & Correctness-Filt. & 34.5$_{\textcolor{blue}{(+14.4)}}$ & 35.4$_{\textcolor{blue}{(+17.1)}}$ & 39.3$_{\textcolor{blue}{(+23.8)}}$ & 61.3$_{\textcolor{blue}{(+36.0)}}$ & 41.5$_{\textcolor{blue}{(+27.2)}}$ & 64.8$_{\textcolor{blue}{(+36.4)}}$ \\
+     & & Bi-directional & 25k & Correctness-Filt. & \cellcolor{highlightgray}{\textbf{45.3}$_{\textcolor{blue}{\textbf{(+25.2)}}}$} & 44.3$_{\textcolor{blue}{(+26.0)}}$ & \cellcolor{highlightgray}{\textbf{45.7}$_{\textcolor{blue}{\textbf{(+30.2)}}}$} & \cellcolor{highlightgray}{\textbf{67.4}$_{\textcolor{blue}{\textbf{(+42.1)}}}$} & \cellcolor{highlightgray}{\textbf{42.1}$_{\textcolor{blue}{\textbf{(+27.8)}}}$} & \cellcolor{highlightgray}{\textbf{65.2}$_{\textcolor{blue}{\textbf{(+36.8)}}}$} \\
     \hline
     \hline
     % \multicolumn{9}{c}{\textit{Qwen2.5-7B Model Family}} \\
     % \hline
-    \parbox{2.5cm}{\centering Baselines} & \parbox{2.5cm}{\centering Qwen2.5-Coder-7B} & Base (default) & N/A & N/A & 46.3 & 45.3 & 52.12 & 47.5 & 49 \\
+    \parbox{2.5cm}{\centering Baselines} & \parbox{2.5cm}{\centering Qwen2.5-Coder-7B} & Base (default) & N/A & N/A & 62.0 & 46.3 & 45.3 & 52.12 & 47.5 & 49 \\
     \hline
-    \multirow{3}{*}{\parbox{2.5cm}{\centering Data Curation}} & \multirow{6}{*}{\parbox{2.5cm}{\centering Qwen2.5-Coder-7B (FT)}} & \multirow{3}{*}{Fwd} & 18k & Difficulty-Filt. & 66.9$_{\textcolor{blue}{(+20.6)}}$ & 58.4$_{\textcolor{blue}{(+13.1)}}$ & 75.5$_{\textcolor{blue}{(+23.4)}}$ &
+    \multirow{3}{*}{\parbox{2.5cm}{\centering Data Curation}} & \multirow{6}{*}{\parbox{2.5cm}{\centering Qwen2.5-Coder-7B (FT)}} & \multirow{3}{*}{Fwd} & 18k & Difficulty-Filt. & 78.5$_{\textcolor{blue}{(+16.5)}}$ & 66.9$_{\textcolor{blue}{(+20.6)}}$ & 58.4$_{\textcolor{blue}{(+13.1)}}$ & 75.5$_{\textcolor{blue}{(+23.4)}}$ &
     57.2$_{\textcolor{blue}{(+9.7)}}$ & 69.4$_{\textcolor{blue}{(+20.4)}}$ \\
-     & & & 25k & Correctness-Filt. & \textbf{67.0}$_{\textcolor{blue}{(+20.7)}}$ & 57.5$_{\textcolor{blue}{(+12.2)}}$ & 73.9$_{\textcolor{blue}{(+21.8)}}$ & 59.8$_{\textcolor{blue}{(+12.3)}}$ & 67.5$_{\textcolor{blue}{(+18.5)}}$ \\
-     & & & 54k (best perf.)& Full Set & 66.5$_{\textcolor{blue}{(+20.2)}}$ & \textbf{58.6}$_{\textcolor{blue}{(+13.3)}}$ & \textbf{76.0}$_{\textcolor{blue}{(+23.9)}}$ & \textbf{60.5}$_{\textcolor{blue}{(+13.0)}}$ & \textbf{68.3}$_{\textcolor{blue}{(+19.3)}}$ \\
-    \cline{1-1}\cline{3-10}
-    \multirow{3}{*}{\parbox{2.5cm}{\centering Reasoning Direction}} & & Fwd & 25k & Correctness-Filt. & 67.0$_{\textcolor{blue}{(+20.7)}}$ & 57.5$_{\textcolor{blue}{(+12.2)}}$ & 73.9$_{\textcolor{blue}{(+21.8)}}$ & 59.8$_{\textcolor{blue}{(+12.3)}}$ & 67.5$_{\textcolor{blue}{(+18.5)}}$ \\
-     & & Bwd & 25k & Correctness-Filt. & 57.5$_{\textcolor{blue}{(+11.2)}}$ & 50.4$_{\textcolor{blue}{(+5.1)}}$ & 69.8$_{\textcolor{blue}{(+17.7)}}$ & 61.2$_{\textcolor{blue}{(+13.7)}}$ & 69.1$_{\textcolor{blue}{(+20.1)}}$ \\
-     & & Bi-directional & 25k & Correctness-Filt. & \cellcolor{highlightgray}{\textbf{68.2}$_{\textcolor{blue}{\textbf{(+21.9)}}}$} & \cellcolor{highlightgray}{\textbf{59.7}$_{\textcolor{blue}{\textbf{(+14.4)}}}$} & \cellcolor{highlightgray}{\textbf{75.4}$_{\textcolor{blue}{\textbf{(+23.3)}}}$} & \cellcolor{highlightgray}{\textbf{61.9}$_{\textcolor{blue}{\textbf{(+14.4)}}}$} & \cellcolor{highlightgray}{\textbf{70.2}$_{\textcolor{blue}{\textbf{(+21.2)}}}$} \\
+     & & & 25k & Correctness-Filt. & 79.2$_{\textcolor{blue}{(+17.2)}}$ & \textbf{67.0}$_{\textcolor{blue}{(+20.7)}}$ & 57.5$_{\textcolor{blue}{(+12.2)}}$ & 73.9$_{\textcolor{blue}{(+21.8)}}$ & 59.8$_{\textcolor{blue}{(+12.3)}}$ & 67.5$_{\textcolor{blue}{(+18.5)}}$ \\
+     & & & 54k (best perf.)& Full Set & \textbf{79.8}$_{\textcolor{blue}{(+17.8)}}$ & 66.5$_{\textcolor{blue}{(+20.2)}}$ & \textbf{58.6}$_{\textcolor{blue}{(+13.3)}}$ & \textbf{76.0}$_{\textcolor{blue}{(+23.9)}}$ & \textbf{60.5}$_{\textcolor{blue}{(+13.0)}}$ & \textbf{68.3}$_{\textcolor{blue}{(+19.3)}}$ \\
+    \cline{1-1}\cline{3-11}
+    \multirow{3}{*}{\parbox{2.5cm}{\centering Reasoning Direction}} & & Fwd & 25k & Correctness-Filt. & 79.2$_{\textcolor{blue}{(+17.2)}}$ & 67.0$_{\textcolor{blue}{(+20.7)}}$ & 57.5$_{\textcolor{blue}{(+12.2)}}$ & 73.9$_{\textcolor{blue}{(+21.8)}}$ & 59.8$_{\textcolor{blue}{(+12.3)}}$ & 67.5$_{\textcolor{blue}{(+18.5)}}$ \\
+     & & Bwd & 25k & Correctness-Filt. & 71.3$_{\textcolor{blue}{(+9.3)}}$ & 57.5$_{\textcolor{blue}{(+11.2)}}$ & 50.4$_{\textcolor{blue}{(+5.1)}}$ & 69.8$_{\textcolor{blue}{(+17.7)}}$ & 61.2$_{\textcolor{blue}{(+13.7)}}$ & 69.1$_{\textcolor{blue}{(+20.1)}}$ \\
+     & & Bi-directional & 25k & Correctness-Filt. & \cellcolor{highlightgray}{\textbf{81.5}$_{\textcolor{blue}{\textbf{(+19.5)}}}$} & \cellcolor{highlightgray}{\textbf{68.2}$_{\textcolor{blue}{\textbf{(+21.9)}}}$} & \cellcolor{highlightgray}{\textbf{59.7}$_{\textcolor{blue}{\textbf{(+14.4)}}}$} & \cellcolor{highlightgray}{\textbf{75.4}$_{\textcolor{blue}{\textbf{(+23.3)}}}$} & \cellcolor{highlightgray}{\textbf{61.9}$_{\textcolor{blue}{\textbf{(+14.4)}}}$} & \cellcolor{highlightgray}{\textbf{70.2}$_{\textcolor{blue}{\textbf{(+21.2)}}}$} \\
 
     \hline
     \end{tabular}%
@@ -682,7 +685,7 @@ Future work includes extending our language-agnostic pipeline to other languages
 %% If your work has an appendix, this is the place to put it.
 \appendix
 
-
+\input{appendix}
 
 \end{document}
 \endinput
