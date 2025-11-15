@@ -1878,7 +1878,7 @@ This prompt is used to extract programming concepts from source documents as des
     colback=blue!5!white,
     colframe=blue!20!white,
     boxrule=0.8pt, arc=3pt, boxsep=4pt,
-    title={\textbf{Concept Extraction Prompt}}
+    title={\textbf{Concept Extraction Prompt}}, coltitle=black
 ]
 You are a helpful assistant who is an expert in Python programming. Given a text chunk from technical documentation, identify key programming concepts that could inspire complex algorithmic problems. For each concept, provide:
 - Concept: The name of the concept
@@ -1900,7 +1900,7 @@ This prompt generates diverse programming instructions for each concept, as desc
     colback=blue!5!white,
     colframe=blue!20!white,
     boxrule=0.8pt, arc=3pt, boxsep=4pt,
-    title={\textbf{Instruction Synthesis Prompt}}
+    title={\textbf{Instruction Synthesis Prompt}}, coltitle=black
 ]
 \begin{lstlisting}[basicstyle=\ttfamily\tiny,breaklines=true]
 You are an expert in Python programming and instructional design. Given the concepts and examples below, generate six distinct instructions with complexity level: {difficulty}. Ensure the tasks are as non-overlapping as possible while covering diverse aspects of the concepts.
@@ -1937,7 +1937,7 @@ This prompt analyzes instructions and generates appropriate function or class si
     colback=blue!5!white,
     colframe=blue!20!white,
     boxrule=0.8pt, arc=3pt, boxsep=4pt,
-    title={\textbf{Signature Extraction Prompt}}
+    title={\textbf{Signature Extraction Prompt}}, coltitle=black
 ]
 \begin{lstlisting}[basicstyle=\ttfamily\tiny,breaklines=true]
 You are a Python programming expert. Given the instruction below, analyze how it should be implemented and provide the best signature skeleton.
@@ -1971,7 +1971,7 @@ These prompts generate multiple candidate solutions for each instruction. We use
     colback=ForestGreen!5!white,
     colframe=ForestGreen!20!white,
     boxrule=0.8pt, arc=3pt, boxsep=4pt,
-    title={\textbf{Function Solution Generation Prompt}}
+    title={\textbf{Function Solution Generation Prompt}}, coltitle=black
 ]
 \begin{lstlisting}[basicstyle=\ttfamily\tiny,breaklines=true]
 You are a Python programming expert. Generate 5 functionally correct Python code implementations adhering to these constraints:
@@ -1998,7 +1998,7 @@ Signature: {function_name}({input_params}) -> {return_type}
     colback=ForestGreen!5!white,
     colframe=ForestGreen!20!white,
     boxrule=0.8pt, arc=3pt, boxsep=4pt,
-    title={\textbf{Class Solution Generation Prompt}}
+    title={\textbf{Class Solution Generation Prompt}}, coltitle=black
 ]
 \begin{lstlisting}[basicstyle=\ttfamily\tiny,breaklines=true]
 Generate 5 functionally correct Python class implementations with:
@@ -2021,7 +2021,7 @@ These prompts generate comprehensive unit test suites for validating the candida
     colback=orange!5!white,
     colframe=orange!20!white,
     boxrule=0.8pt, arc=3pt, boxsep=4pt,
-    title={\textbf{Test Scenario Identification Prompt}}
+    title={\textbf{Test Scenario Identification Prompt}}, coltitle=black
 ]
 \begin{lstlisting}[basicstyle=\ttfamily\tiny,breaklines=true]
 You are an expert in Python testing. Given the instruction and signature details, identify up to 10 concise test scenarios to ensure comprehensive coverage.
@@ -2050,7 +2050,7 @@ Signature: {signature_details}
     colback=orange!5!white,
     colframe=orange!20!white,
     boxrule=0.8pt, arc=3pt, boxsep=4pt,
-    title={\textbf{Function Test Generation Prompt}}
+    title={\textbf{Function Test Generation Prompt}}, coltitle=black
 ]
 \begin{lstlisting}[basicstyle=\ttfamily\tiny,breaklines=true]
 Generate up to 10 isolated test cases following these CRITICAL GUIDELINES:
@@ -2075,7 +2075,7 @@ Required Test Scenarios: {required_tests}
     colback=orange!5!white,
     colframe=orange!20!white,
     boxrule=0.8pt, arc=3pt, boxsep=4pt,
-    title={\textbf{Class Test Generation Prompt}}
+    title={\textbf{Class Test Generation Prompt}}, coltitle=black
 ]
 \begin{lstlisting}[basicstyle=\ttfamily\tiny,breaklines=true]
 Generate up to 10 isolated test cases for class {class_name} with primary method {primary_method}.
