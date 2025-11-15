@@ -764,40 +764,40 @@ This curation process provides two key dimensions for our experiments: the data 
     \label{tab:comprehensive-results}
     \resizebox{\textwidth}{!}{%
     % Use the new C column type for the first two columns. Adjust the width as needed.
-    \begin{tabular}{C{2.5cm}|C{2.5cm}|l|c|c|cc|cc}
+    \begin{tabular}{C{2.5cm}|l|c|c|cc|cc}
     \hline
-    \multirow{2}{*}{\textbf{Experiment Stage}} & \multirow{2}{*}{\textbf{Model}} & \multirow{2}{*}{\textbf{Training Config}} & \multirow{2}{*}{\textbf{Data Subset}} &
-    \textbf{LiveCodeBench-Exec} &
+    \multirow{2}{*}{\textbf{Model}} & \multirow{2}{*}{\textbf{CoT Direc.}} & \multirow{2}{*}{\textbf{Data Subset}} &
+    \textbf{LCB-Exec} &
     \multicolumn{2}{c|}{\textbf{CruxEval Output}} & \multicolumn{2}{c}{\textbf{CruxEval Input}} \\
-     & & & & \textbf{Pass@1} & \textbf{Pass@1} & \textbf{Pass@5} & \textbf{Pass@1} & \textbf{Pass@5} \\
+     & & & \textbf{Pass@1} & \textbf{Pass@1} & \textbf{Pass@5} & \textbf{Pass@1} & \textbf{Pass@5} \\
          \hline
     \hline
     % \multicolumn{9}{c}{\textit{Granite-3.3-8B Model Family}} \\
     % \hline
-    \parbox{2.5cm}{\centering Baselines} & \parbox{2.5cm}{\centering Granite-3.3-8B-base} & Base (default) & N/A & 18.3 & 15.5 & 25.3 & 14.3 & 28.4 \\
+    \parbox{2.5cm}{\centering Granite-3.3-8B-base} & Base (default) & N/A & 18.3 & 15.5 & 25.3 & 14.3 & 28.4 \\
     \hline
-    \multirow{3}{*}{\parbox{2.5cm}{\centering Data Curation}} & \multirow{6}{*}{\parbox{2.5cm}{\centering Granite-3.3-8B (FT)}} & \multirow{3}{*}{Fwd} & 18k & 43.5$_{\textcolor{blue}{(+25.2)}}$ & 36.1$_{\textcolor{blue}{(+20.6)}}$ & 58.2$_{\textcolor{blue}{(+32.9)}}$ & 35.8$_{\textcolor{blue}{(+21.5)}}$ & 57.9$_{\textcolor{blue}{(+29.5)}}$ \\
-     & & & 25k (best perf.) & \textbf{44.9}$_{\textcolor{blue}{(+26.6)}}$ & \textbf{42.7}$_{\textcolor{blue}{(+27.2)}}$ & \textbf{64.7}$_{\textcolor{blue}{(+39.4)}}$ & \textbf{40.2}$_{\textcolor{blue}{(+25.9)}}$ &
+    \multirow{6}{*}{\parbox{2.5cm}{\centering Granite-3.3-8B (FT)}} & \multirow{3}{*}{Fwd} & 18k & 43.5$_{\textcolor{blue}{(+25.2)}}$ & 36.1$_{\textcolor{blue}{(+20.6)}}$ & 58.2$_{\textcolor{blue}{(+32.9)}}$ & 35.8$_{\textcolor{blue}{(+21.5)}}$ & 57.9$_{\textcolor{blue}{(+29.5)}}$ \\
+     & & 25k (best) & \textbf{44.9}$_{\textcolor{blue}{(+26.6)}}$ & \textbf{42.7}$_{\textcolor{blue}{(+27.2)}}$ & \textbf{64.7}$_{\textcolor{blue}{(+39.4)}}$ & \textbf{40.2}$_{\textcolor{blue}{(+25.9)}}$ &
     \textbf{63.5}$_{\textcolor{blue}{(+35.1)}}$ \\
-     & & & 54k & 34.1$_{\textcolor{blue}{(+15.8)}}$ & 28.9$_{\textcolor{blue}{(+13.4)}}$ & 55.2$_{\textcolor{blue}{(+29.9)}}$ & 28.8$_{\textcolor{blue}{(+14.5)}}$ & 54.9$_{\textcolor{blue}{(+26.5)}}$ \\
-    \cline{1-1}\cline{3-9}
-    \multirow{3}{*}{\parbox{2.5cm}{\centering Reasoning Direction}} & & Fwd & 25k & \cellcolor{highlightgray}{\textbf{44.9}$_{\textcolor{blue}{\textbf{(+26.6)}}}$} & 42.7$_{\textcolor{blue}{(+27.2)}}$ & 64.7$_{\textcolor{blue}{(+39.4)}}$ & 40.2$_{\textcolor{blue}{(+25.9)}}$ & 63.5$_{\textcolor{blue}{(+35.1)}}$ \\
-     & & Bwd & 25k & 35.4$_{\textcolor{blue}{(+17.1)}}$ & 39.3$_{\textcolor{blue}{(+23.8)}}$ & 61.3$_{\textcolor{blue}{(+36.0)}}$ & 41.5$_{\textcolor{blue}{(+27.2)}}$ & 64.8$_{\textcolor{blue}{(+36.4)}}$ \\
-     & & Bi-directional & 25k & 44.3$_{\textcolor{blue}{(+26.0)}}$ & \cellcolor{highlightgray}{\textbf{45.7}$_{\textcolor{blue}{\textbf{(+30.2)}}}$} & \cellcolor{highlightgray}{\textbf{67.4}$_{\textcolor{blue}{\textbf{(+42.1)}}}$} & \cellcolor{highlightgray}{\textbf{42.1}$_{\textcolor{blue}{\textbf{(+27.8)}}}$} & \cellcolor{highlightgray}{\textbf{65.2}$_{\textcolor{blue}{\textbf{(+36.8)}}}$} \\
+     & & 54k & 34.1$_{\textcolor{blue}{(+15.8)}}$ & 28.9$_{\textcolor{blue}{(+13.4)}}$ & 55.2$_{\textcolor{blue}{(+29.9)}}$ & 28.8$_{\textcolor{blue}{(+14.5)}}$ & 54.9$_{\textcolor{blue}{(+26.5)}}$ \\
+    \cline{2-8}
+     & Fwd & 25k & \cellcolor{highlightgray}{\textbf{44.9}$_{\textcolor{blue}{\textbf{(+26.6)}}}$} & 42.7$_{\textcolor{blue}{(+27.2)}}$ & 64.7$_{\textcolor{blue}{(+39.4)}}$ & 40.2$_{\textcolor{blue}{(+25.9)}}$ & 63.5$_{\textcolor{blue}{(+35.1)}}$ \\
+     & Bwd & 25k & 35.4$_{\textcolor{blue}{(+17.1)}}$ & 39.3$_{\textcolor{blue}{(+23.8)}}$ & 61.3$_{\textcolor{blue}{(+36.0)}}$ & 41.5$_{\textcolor{blue}{(+27.2)}}$ & 64.8$_{\textcolor{blue}{(+36.4)}}$ \\
+     & Bi-directional & 25k & 44.3$_{\textcolor{blue}{(+26.0)}}$ & \cellcolor{highlightgray}{\textbf{45.7}$_{\textcolor{blue}{\textbf{(+30.2)}}}$} & \cellcolor{highlightgray}{\textbf{67.4}$_{\textcolor{blue}{\textbf{(+42.1)}}}$} & \cellcolor{highlightgray}{\textbf{42.1}$_{\textcolor{blue}{\textbf{(+27.8)}}}$} & \cellcolor{highlightgray}{\textbf{65.2}$_{\textcolor{blue}{\textbf{(+36.8)}}}$} \\
     \hline
     \hline
     % \multicolumn{9}{c}{\textit{Qwen2.5-7B Model Family}} \\
     % \hline
-    \parbox{2.5cm}{\centering Baselines} & \parbox{2.5cm}{\centering Qwen2.5-Coder-7B} & Base (default) & N/A & 46.3 & 45.3 & 52.12 & 47.5 & 49 \\
+    \parbox{2.5cm}{\centering Qwen2.5-Coder-7B} & Base (default) & N/A & 46.3 & 45.3 & 52.12 & 47.5 & 49 \\
     \hline
-    \multirow{3}{*}{\parbox{2.5cm}{\centering Data Curation}} & \multirow{6}{*}{\parbox{2.5cm}{\centering Qwen2.5-Coder-7B (FT)}} & \multirow{3}{*}{Fwd} & 18k & 66.9$_{\textcolor{blue}{(+20.6)}}$ & 58.4$_{\textcolor{blue}{(+13.1)}}$ & 75.5$_{\textcolor{blue}{(+23.4)}}$ &
+    \multirow{6}{*}{\parbox{2.5cm}{\centering Qwen2.5-Coder-7B (FT)}} & \multirow{3}{*}{Fwd} & 18k & 66.9$_{\textcolor{blue}{(+20.6)}}$ & 58.4$_{\textcolor{blue}{(+13.1)}}$ & 75.5$_{\textcolor{blue}{(+23.4)}}$ &
     57.2$_{\textcolor{blue}{(+9.7)}}$ & 69.4$_{\textcolor{blue}{(+20.4)}}$ \\
-     & & & 25k & \textbf{67.0}$_{\textcolor{blue}{(+20.7)}}$ & 57.5$_{\textcolor{blue}{(+12.2)}}$ & 73.9$_{\textcolor{blue}{(+21.8)}}$ & 59.8$_{\textcolor{blue}{(+12.3)}}$ & 67.5$_{\textcolor{blue}{(+18.5)}}$ \\
-     & & & 54k (best perf.)& 66.5$_{\textcolor{blue}{(+20.2)}}$ & \textbf{58.6}$_{\textcolor{blue}{(+13.3)}}$ & \textbf{76.0}$_{\textcolor{blue}{(+23.9)}}$ & \textbf{60.5}$_{\textcolor{blue}{(+13.0)}}$ & \textbf{68.3}$_{\textcolor{blue}{(+19.3)}}$ \\
-    \cline{1-1}\cline{3-9}
-    \multirow{3}{*}{\parbox{2.5cm}{\centering Reasoning Direction}} & & Fwd & 25k & 67.0$_{\textcolor{blue}{(+20.7)}}$ & 57.5$_{\textcolor{blue}{(+12.2)}}$ & 73.9$_{\textcolor{blue}{(+21.8)}}$ & 59.8$_{\textcolor{blue}{(+12.3)}}$ & 67.5$_{\textcolor{blue}{(+18.5)}}$ \\
-     & & Bwd & 25k & 57.5$_{\textcolor{blue}{(+11.2)}}$ & 50.4$_{\textcolor{blue}{(+5.1)}}$ & 69.8$_{\textcolor{blue}{(+17.7)}}$ & 61.2$_{\textcolor{blue}{(+13.7)}}$ & 69.1$_{\textcolor{blue}{(+20.1)}}$ \\
-     & & Bi-directional & 25k & \cellcolor{highlightgray}{\textbf{68.2}$_{\textcolor{blue}{\textbf{(+21.9)}}}$} & \cellcolor{highlightgray}{\textbf{59.7}$_{\textcolor{blue}{\textbf{(+14.4)}}}$} & \cellcolor{highlightgray}{\textbf{75.4}$_{\textcolor{blue}{\textbf{(+23.3)}}}$} & \cellcolor{highlightgray}{\textbf{61.9}$_{\textcolor{blue}{\textbf{(+14.4)}}}$} & \cellcolor{highlightgray}{\textbf{70.2}$_{\textcolor{blue}{\textbf{(+21.2)}}}$} \\
+     & & 25k & \textbf{67.0}$_{\textcolor{blue}{(+20.7)}}$ & 57.5$_{\textcolor{blue}{(+12.2)}}$ & 73.9$_{\textcolor{blue}{(+21.8)}}$ & 59.8$_{\textcolor{blue}{(+12.3)}}$ & 67.5$_{\textcolor{blue}{(+18.5)}}$ \\
+     & & 54k (best) & 66.5$_{\textcolor{blue}{(+20.2)}}$ & \textbf{58.6}$_{\textcolor{blue}{(+13.3)}}$ & \textbf{76.0}$_{\textcolor{blue}{(+23.9)}}$ & \textbf{60.5}$_{\textcolor{blue}{(+13.0)}}$ & \textbf{68.3}$_{\textcolor{blue}{(+19.3)}}$ \\
+    \cline{2-8}
+     & Fwd & 25k & 67.0$_{\textcolor{blue}{(+20.7)}}$ & 57.5$_{\textcolor{blue}{(+12.2)}}$ & 73.9$_{\textcolor{blue}{(+21.8)}}$ & 59.8$_{\textcolor{blue}{(+12.3)}}$ & 67.5$_{\textcolor{blue}{(+18.5)}}$ \\
+     & Bwd & 25k & 57.5$_{\textcolor{blue}{(+11.2)}}$ & 50.4$_{\textcolor{blue}{(+5.1)}}$ & 69.8$_{\textcolor{blue}{(+17.7)}}$ & 61.2$_{\textcolor{blue}{(+13.7)}}$ & 69.1$_{\textcolor{blue}{(+20.1)}}$ \\
+     & Bi-directional & 25k & \cellcolor{highlightgray}{\textbf{68.2}$_{\textcolor{blue}{\textbf{(+21.9)}}}$} & \cellcolor{highlightgray}{\textbf{59.7}$_{\textcolor{blue}{\textbf{(+14.4)}}}$} & \cellcolor{highlightgray}{\textbf{75.4}$_{\textcolor{blue}{\textbf{(+23.3)}}}$} & \cellcolor{highlightgray}{\textbf{61.9}$_{\textcolor{blue}{\textbf{(+14.4)}}}$} & \cellcolor{highlightgray}{\textbf{70.2}$_{\textcolor{blue}{\textbf{(+21.2)}}}$} \\
 
     \hline
     \end{tabular}%
@@ -1778,40 +1778,40 @@ This curation process provides two key dimensions for our experiments: the data 
     \label{tab:comprehensive-results}
     \resizebox{\textwidth}{!}{%
     % Use the new C column type for the first two columns. Adjust the width as needed.
-    \begin{tabular}{C{2.5cm}|C{2.5cm}|l|c|c|cc|cc}
+    \begin{tabular}{C{2.5cm}|l|c|c|cc|cc}
     \hline
-    \multirow{2}{*}{\textbf{Experiment Stage}} & \multirow{2}{*}{\textbf{Model}} & \multirow{2}{*}{\textbf{Training Config}} & \multirow{2}{*}{\textbf{Data Subset}} &
-    \textbf{LiveCodeBench-Exec} &
+    \multirow{2}{*}{\textbf{Model}} & \multirow{2}{*}{\textbf{CoT Direc.}} & \multirow{2}{*}{\textbf{Data Subset}} &
+    \textbf{LCB-Exec} &
     \multicolumn{2}{c|}{\textbf{CruxEval Output}} & \multicolumn{2}{c}{\textbf{CruxEval Input}} \\
-     & & & & \textbf{Pass@1} & \textbf{Pass@1} & \textbf{Pass@5} & \textbf{Pass@1} & \textbf{Pass@5} \\
+     & & & \textbf{Pass@1} & \textbf{Pass@1} & \textbf{Pass@5} & \textbf{Pass@1} & \textbf{Pass@5} \\
          \hline
     \hline
     % \multicolumn{9}{c}{\textit{Granite-3.3-8B Model Family}} \\
     % \hline
-    \parbox{2.5cm}{\centering Baselines} & \parbox{2.5cm}{\centering Granite-3.3-8B-base} & Base (default) & N/A & 18.3 & 15.5 & 25.3 & 14.3 & 28.4 \\
+    \parbox{2.5cm}{\centering Granite-3.3-8B-base} & Base (default) & N/A & 18.3 & 15.5 & 25.3 & 14.3 & 28.4 \\
     \hline
-    \multirow{3}{*}{\parbox{2.5cm}{\centering Data Curation}} & \multirow{6}{*}{\parbox{2.5cm}{\centering Granite-3.3-8B (FT)}} & \multirow{3}{*}{Fwd} & 18k & 43.5$_{\textcolor{blue}{(+25.2)}}$ & 36.1$_{\textcolor{blue}{(+20.6)}}$ & 58.2$_{\textcolor{blue}{(+32.9)}}$ & 35.8$_{\textcolor{blue}{(+21.5)}}$ & 57.9$_{\textcolor{blue}{(+29.5)}}$ \\
-     & & & 25k (best perf.) & \textbf{44.9}$_{\textcolor{blue}{(+26.6)}}$ & \textbf{42.7}$_{\textcolor{blue}{(+27.2)}}$ & \textbf{64.7}$_{\textcolor{blue}{(+39.4)}}$ & \textbf{40.2}$_{\textcolor{blue}{(+25.9)}}$ &
+    \multirow{6}{*}{\parbox{2.5cm}{\centering Granite-3.3-8B (FT)}} & \multirow{3}{*}{Fwd} & 18k & 43.5$_{\textcolor{blue}{(+25.2)}}$ & 36.1$_{\textcolor{blue}{(+20.6)}}$ & 58.2$_{\textcolor{blue}{(+32.9)}}$ & 35.8$_{\textcolor{blue}{(+21.5)}}$ & 57.9$_{\textcolor{blue}{(+29.5)}}$ \\
+     & & 25k (best) & \textbf{44.9}$_{\textcolor{blue}{(+26.6)}}$ & \textbf{42.7}$_{\textcolor{blue}{(+27.2)}}$ & \textbf{64.7}$_{\textcolor{blue}{(+39.4)}}$ & \textbf{40.2}$_{\textcolor{blue}{(+25.9)}}$ &
     \textbf{63.5}$_{\textcolor{blue}{(+35.1)}}$ \\
-     & & & 54k & 34.1$_{\textcolor{blue}{(+15.8)}}$ & 28.9$_{\textcolor{blue}{(+13.4)}}$ & 55.2$_{\textcolor{blue}{(+29.9)}}$ & 28.8$_{\textcolor{blue}{(+14.5)}}$ & 54.9$_{\textcolor{blue}{(+26.5)}}$ \\
-    \cline{1-1}\cline{3-9}
-    \multirow{3}{*}{\parbox{2.5cm}{\centering Reasoning Direction}} & & Fwd & 25k & \cellcolor{highlightgray}{\textbf{44.9}$_{\textcolor{blue}{\textbf{(+26.6)}}}$} & 42.7$_{\textcolor{blue}{(+27.2)}}$ & 64.7$_{\textcolor{blue}{(+39.4)}}$ & 40.2$_{\textcolor{blue}{(+25.9)}}$ & 63.5$_{\textcolor{blue}{(+35.1)}}$ \\
-     & & Bwd & 25k & 35.4$_{\textcolor{blue}{(+17.1)}}$ & 39.3$_{\textcolor{blue}{(+23.8)}}$ & 61.3$_{\textcolor{blue}{(+36.0)}}$ & 41.5$_{\textcolor{blue}{(+27.2)}}$ & 64.8$_{\textcolor{blue}{(+36.4)}}$ \\
-     & & Bi-directional & 25k & 44.3$_{\textcolor{blue}{(+26.0)}}$ & \cellcolor{highlightgray}{\textbf{45.7}$_{\textcolor{blue}{\textbf{(+30.2)}}}$} & \cellcolor{highlightgray}{\textbf{67.4}$_{\textcolor{blue}{\textbf{(+42.1)}}}$} & \cellcolor{highlightgray}{\textbf{42.1}$_{\textcolor{blue}{\textbf{(+27.8)}}}$} & \cellcolor{highlightgray}{\textbf{65.2}$_{\textcolor{blue}{\textbf{(+36.8)}}}$} \\
+     & & 54k & 34.1$_{\textcolor{blue}{(+15.8)}}$ & 28.9$_{\textcolor{blue}{(+13.4)}}$ & 55.2$_{\textcolor{blue}{(+29.9)}}$ & 28.8$_{\textcolor{blue}{(+14.5)}}$ & 54.9$_{\textcolor{blue}{(+26.5)}}$ \\
+    \cline{2-8}
+     & Fwd & 25k & \cellcolor{highlightgray}{\textbf{44.9}$_{\textcolor{blue}{\textbf{(+26.6)}}}$} & 42.7$_{\textcolor{blue}{(+27.2)}}$ & 64.7$_{\textcolor{blue}{(+39.4)}}$ & 40.2$_{\textcolor{blue}{(+25.9)}}$ & 63.5$_{\textcolor{blue}{(+35.1)}}$ \\
+     & Bwd & 25k & 35.4$_{\textcolor{blue}{(+17.1)}}$ & 39.3$_{\textcolor{blue}{(+23.8)}}$ & 61.3$_{\textcolor{blue}{(+36.0)}}$ & 41.5$_{\textcolor{blue}{(+27.2)}}$ & 64.8$_{\textcolor{blue}{(+36.4)}}$ \\
+     & Bi-directional & 25k & 44.3$_{\textcolor{blue}{(+26.0)}}$ & \cellcolor{highlightgray}{\textbf{45.7}$_{\textcolor{blue}{\textbf{(+30.2)}}}$} & \cellcolor{highlightgray}{\textbf{67.4}$_{\textcolor{blue}{\textbf{(+42.1)}}}$} & \cellcolor{highlightgray}{\textbf{42.1}$_{\textcolor{blue}{\textbf{(+27.8)}}}$} & \cellcolor{highlightgray}{\textbf{65.2}$_{\textcolor{blue}{\textbf{(+36.8)}}}$} \\
     \hline
     \hline
     % \multicolumn{9}{c}{\textit{Qwen2.5-7B Model Family}} \\
     % \hline
-    \parbox{2.5cm}{\centering Baselines} & \parbox{2.5cm}{\centering Qwen2.5-Coder-7B} & Base (default) & N/A & 46.3 & 45.3 & 52.12 & 47.5 & 49 \\
+    \parbox{2.5cm}{\centering Qwen2.5-Coder-7B} & Base (default) & N/A & 46.3 & 45.3 & 52.12 & 47.5 & 49 \\
     \hline
-    \multirow{3}{*}{\parbox{2.5cm}{\centering Data Curation}} & \multirow{6}{*}{\parbox{2.5cm}{\centering Qwen2.5-Coder-7B (FT)}} & \multirow{3}{*}{Fwd} & 18k & 66.9$_{\textcolor{blue}{(+20.6)}}$ & 58.4$_{\textcolor{blue}{(+13.1)}}$ & 75.5$_{\textcolor{blue}{(+23.4)}}$ &
+    \multirow{6}{*}{\parbox{2.5cm}{\centering Qwen2.5-Coder-7B (FT)}} & \multirow{3}{*}{Fwd} & 18k & 66.9$_{\textcolor{blue}{(+20.6)}}$ & 58.4$_{\textcolor{blue}{(+13.1)}}$ & 75.5$_{\textcolor{blue}{(+23.4)}}$ &
     57.2$_{\textcolor{blue}{(+9.7)}}$ & 69.4$_{\textcolor{blue}{(+20.4)}}$ \\
-     & & & 25k & \textbf{67.0}$_{\textcolor{blue}{(+20.7)}}$ & 57.5$_{\textcolor{blue}{(+12.2)}}$ & 73.9$_{\textcolor{blue}{(+21.8)}}$ & 59.8$_{\textcolor{blue}{(+12.3)}}$ & 67.5$_{\textcolor{blue}{(+18.5)}}$ \\
-     & & & 54k (best perf.)& 66.5$_{\textcolor{blue}{(+20.2)}}$ & \textbf{58.6}$_{\textcolor{blue}{(+13.3)}}$ & \textbf{76.0}$_{\textcolor{blue}{(+23.9)}}$ & \textbf{60.5}$_{\textcolor{blue}{(+13.0)}}$ & \textbf{68.3}$_{\textcolor{blue}{(+19.3)}}$ \\
-    \cline{1-1}\cline{3-9}
-    \multirow{3}{*}{\parbox{2.5cm}{\centering Reasoning Direction}} & & Fwd & 25k & 67.0$_{\textcolor{blue}{(+20.7)}}$ & 57.5$_{\textcolor{blue}{(+12.2)}}$ & 73.9$_{\textcolor{blue}{(+21.8)}}$ & 59.8$_{\textcolor{blue}{(+12.3)}}$ & 67.5$_{\textcolor{blue}{(+18.5)}}$ \\
-     & & Bwd & 25k & 57.5$_{\textcolor{blue}{(+11.2)}}$ & 50.4$_{\textcolor{blue}{(+5.1)}}$ & 69.8$_{\textcolor{blue}{(+17.7)}}$ & 61.2$_{\textcolor{blue}{(+13.7)}}$ & 69.1$_{\textcolor{blue}{(+20.1)}}$ \\
-     & & Bi-directional & 25k & \cellcolor{highlightgray}{\textbf{68.2}$_{\textcolor{blue}{\textbf{(+21.9)}}}$} & \cellcolor{highlightgray}{\textbf{59.7}$_{\textcolor{blue}{\textbf{(+14.4)}}}$} & \cellcolor{highlightgray}{\textbf{75.4}$_{\textcolor{blue}{\textbf{(+23.3)}}}$} & \cellcolor{highlightgray}{\textbf{61.9}$_{\textcolor{blue}{\textbf{(+14.4)}}}$} & \cellcolor{highlightgray}{\textbf{70.2}$_{\textcolor{blue}{\textbf{(+21.2)}}}$} \\
+     & & 25k & \textbf{67.0}$_{\textcolor{blue}{(+20.7)}}$ & 57.5$_{\textcolor{blue}{(+12.2)}}$ & 73.9$_{\textcolor{blue}{(+21.8)}}$ & 59.8$_{\textcolor{blue}{(+12.3)}}$ & 67.5$_{\textcolor{blue}{(+18.5)}}$ \\
+     & & 54k (best) & 66.5$_{\textcolor{blue}{(+20.2)}}$ & \textbf{58.6}$_{\textcolor{blue}{(+13.3)}}$ & \textbf{76.0}$_{\textcolor{blue}{(+23.9)}}$ & \textbf{60.5}$_{\textcolor{blue}{(+13.0)}}$ & \textbf{68.3}$_{\textcolor{blue}{(+19.3)}}$ \\
+    \cline{2-8}
+     & Fwd & 25k & 67.0$_{\textcolor{blue}{(+20.7)}}$ & 57.5$_{\textcolor{blue}{(+12.2)}}$ & 73.9$_{\textcolor{blue}{(+21.8)}}$ & 59.8$_{\textcolor{blue}{(+12.3)}}$ & 67.5$_{\textcolor{blue}{(+18.5)}}$ \\
+     & Bwd & 25k & 57.5$_{\textcolor{blue}{(+11.2)}}$ & 50.4$_{\textcolor{blue}{(+5.1)}}$ & 69.8$_{\textcolor{blue}{(+17.7)}}$ & 61.2$_{\textcolor{blue}{(+13.7)}}$ & 69.1$_{\textcolor{blue}{(+20.1)}}$ \\
+     & Bi-directional & 25k & \cellcolor{highlightgray}{\textbf{68.2}$_{\textcolor{blue}{\textbf{(+21.9)}}}$} & \cellcolor{highlightgray}{\textbf{59.7}$_{\textcolor{blue}{\textbf{(+14.4)}}}$} & \cellcolor{highlightgray}{\textbf{75.4}$_{\textcolor{blue}{\textbf{(+23.3)}}}$} & \cellcolor{highlightgray}{\textbf{61.9}$_{\textcolor{blue}{\textbf{(+14.4)}}}$} & \cellcolor{highlightgray}{\textbf{70.2}$_{\textcolor{blue}{\textbf{(+21.2)}}}$} \\
 
     \hline
     \end{tabular}%
