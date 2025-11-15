@@ -1867,29 +1867,7 @@ Our evaluation is conducted using two established, public benchmarks designed to
 \end{itemize}
 
 \section*{Data Generation Prompts}
-This section provides the complete set of prompts used in our data synthesis pipeline. These prompts are referenced in Section 3 (Data Synthesis Pipeline) and are used throughout the hierarchical generation process in Stage A. The prompts are organized by their function in the pipeline, from concept generation through solution and test case synthesis.
-
-\subsection*{Concept Generation Prompt}
-This prompt is used to extract programming concepts from source documents as described in Section 3.1.
-
-\begin{tcolorbox}[
-    enhanced, breakable,
-    fontupper=\ttfamily\scriptsize,
-    colback=blue!5!white,
-    colframe=blue!20!white,
-    boxrule=0.8pt, arc=3pt, boxsep=4pt,
-    title={\textbf{Concept Extraction Prompt}}, coltitle=black
-]
-You are a helpful assistant who is an expert in Python programming. Given a text chunk from technical documentation, identify key programming concepts that could inspire complex algorithmic problems. For each concept, provide:
-- Concept: The name of the concept
-- Description: A brief explanation
-- Examples: Specific instances or use cases
-
-Format each concept as:
-'Concept': 'concept\_name', 'Description': 'description\_text', 'Examples': ['example1', 'example2', ...]
-
-\textbf{Input:} \{chunk\}
-\end{tcolorbox}
+This section provides the complete set of prompts used in our data synthesis pipeline. These prompts are referenced in Section 3 (Data Synthesis Pipeline) and are used throughout the hierarchical generation process in Stage A. The prompts are organized by their function in the pipeline, from instruction generation through solution and test case synthesis.
 
 \subsection*{Instruction Generation Prompt}
 This prompt generates diverse programming instructions for each concept, as described in Section 3.1.
@@ -1900,7 +1878,7 @@ This prompt generates diverse programming instructions for each concept, as desc
     colback=blue!5!white,
     colframe=blue!20!white,
     boxrule=0.8pt, arc=3pt, boxsep=4pt,
-    title={\textbf{Instruction Synthesis Prompt}}, coltitle=black
+    title={\textbf{instruction\_prompt}}, coltitle=black
 ]
 \begin{lstlisting}[basicstyle=\ttfamily\tiny,breaklines=true]
 You are an expert in Python programming and instructional design. Given the concepts and examples below, generate six distinct instructions with complexity level: {difficulty}. Ensure the tasks are as non-overlapping as possible while covering diverse aspects of the concepts.
@@ -1911,20 +1889,39 @@ COMPLEXITY GUIDELINES:
 
 INSTRUCTIONS FOR PROBLEM DIVERSITY:
 1. Create problems that are fundamentally different in:
-   - Problem domain: Include mathematics (e.g., algebra for equations and transformations, timing & durations for scheduling or sequencing, probabilities for statistical analysis, geometry for spatial computations), finance, data processing, algorithms, text processing, or system design.
+   - Problem domain: Include mathematics (e.g., algebra for equations and transformations, timing & durations for scheduling or sequencing, probabilities for statistical analysis, geometry for spatial computations), finance, data processing, algorithms, text processing, or system design. For 'hard' tasks, prioritize complex mathematical domains to ensure challenging synthesis.
    - Computational approach: Vary between iterative, recursive, dynamic programming, functional, or object-oriented programming.
-   - Algorithmic complexity: Target specific time complexities (e.g., O(n) for easy, O(n log n) for medium, O(n^2) or higher for hard).
+   - Algorithmic complexity: Target specific time complexities (e.g., O(n) for easy, O(n log n) for medium, O(n²) or higher for hard) appropriate to the difficulty, ensuring 'hard' tasks demand significant computational depth.
+2. Before generating, analyze the concept's core principles and identify unique problem-solving strategies that leverage these principles, especially for mathematical domains in 'hard' tasks to maximize complexity and clarity.
+3. Instructions may request either a standalone function named 'solution' or a class named 'Solution' with methods; indicate clearly if a class is required (e.g., 'implement a class') and specify the primary method name (e.g., 'compute') if applicable, otherwise assume 'compute' as the default primary method for classes.
 
-Concept: {concept}
-Description: {description}
-Examples: {examples}
+Concept:
+{concept}
 
-Generate your response in the following format:
+Description:
+{description}
+
+Examples:
+{examples}
+
+Instructions should contain only the instruction text. Generate your response in the following format:
 Instruction1:
-{}
+{{}}
+
 Instruction2:
-{}
-...
+{{}}
+
+Instruction3:
+{{}}
+
+Instruction4:
+{{}}
+
+Instruction5:
+{{}}
+
+Instruction6:
+{{}}
 \end{lstlisting}
 \end{tcolorbox}
 
@@ -1937,20 +1934,34 @@ This prompt analyzes instructions and generates appropriate function or class si
     colback=blue!5!white,
     colframe=blue!20!white,
     boxrule=0.8pt, arc=3pt, boxsep=4pt,
-    title={\textbf{Signature Extraction Prompt}}, coltitle=black
+    title={\textbf{signature\_prompt}}, coltitle=black
 ]
 \begin{lstlisting}[basicstyle=\ttfamily\tiny,breaklines=true]
-You are a Python programming expert. Given the instruction below, analyze how it should be implemented and provide the best signature skeleton.
+You are a Python programming expert. Given the instruction below, analyze how it should be implemented and provide the best signature skeleton. Follow these STRICT rules to determine the implementation type and format the output:
+1. Decide if the instruction requires a standalone function or a class:
+   - Choose a CLASS if the instruction EXPLICITLY says 'implement a class', 'create a class', or mentions methods like 'constructor', 'build_tree', etc., using the specified class name (e.g., 'HuffmanTree').
+   - Otherwise, default to a standalone FUNCTION named 'solution'.
+2. For a FUNCTION:
+   - Format EXACTLY as: 'Function: name(param1: type1, param2: type2) -> return_type'
+   - Include parameter names, types (infer if not specified), and return type (use 'unknown' if unclear).
+3. For a CLASS:
+   - Format EXACTLY as: 'Class: ClassName; __init__(self, param1: type1) -> return_type; method1(self, param2: type2) -> return_type; ...'
+   - Use semicolons (;) to separate class name and methods.
+   - Include '__init__' with parameters if implied, followed by all required methods.
+   - Specify the primary method (named in instruction or 'compute' if unspecified) for testing.
+   - Use 'unknown' for return types if not inferable.
+4. RULES FOR FORMATTING:
+   - Use ONLY spaces (no tabs, newlines, or escaped characters like '\').
+   - Use EXACTLY the syntax shown (e.g., '__init__', '->', commas between params).
+   - Do NOT add extra punctuation (e.g., colons after parentheses) or quotes around simple types (e.g., use 'Matrix', not '"Matrix"').
+   - Do NOT deviate from the template—any variation is invalid.
+   - Do NOT include explanations, prose, or multiple class definitions in one block—provide ONLY ONE signature skeleton.
+   - Ensure the response is complete (no truncation) and matches the template EXACTLY.
+5. Base your analysis ONLY on the instruction text, inferring types and outputs logically.
+Instruction:
+{instruction}
 
-RULES:
-1. Decide if the instruction requires a standalone function or a class
-2. For a FUNCTION: Format as 'Function: name(param1: type1, param2: type2) -> return_type'
-3. For a CLASS: Format as 'Class: ClassName; __init__(self, param1: type1) -> return_type; method1(self, param2: type2) -> return_type; ...'
-4. Use ONLY spaces (no tabs, newlines, or escaped characters)
-
-Instruction: {instruction}
-
-Return the signature skeleton INSIDE a code block:
+Return the signature skeleton INSIDE a code block, following the EXACT format below:
 ```text
 Function: solution(input1: type1, input2: type2) -> return_type
 ```
@@ -1958,6 +1969,25 @@ or
 ```text
 Class: ClassName; __init__(self, param1: type1) -> return_type; method1(self, param2: type2) -> return_type
 ```
+
+Examples of CORRECT output:
+```text
+Function: solution(freq_list: list[tuple[str, int]]) -> dict[str, str]
+```
+```text
+Class: HuffmanTree; __init__(self, freq_list: list[tuple[str, int]]) -> unknown; build_tree(self) -> tuple; get_encoding(self) -> dict[str, str]
+```
+Examples of INCORRECT output (DO NOT USE):
+```text
+Class: Matrix; **init**(self, data: list[list[int]]): add(self, other: "Matrix") -> "Matrix"
+```
+```text
+Class: Polynomial; \ __init__(self, coeffs: list[float]) -> None; \ evaluate(self, value: float) -> float
+```
+```text
+Class: Shape; area(self) -> float; Class: Circle; __init__(self, radius: float) -> None
+```
+Output MUST match the correct examples EXACTLY in format.
 \end{lstlisting}
 \end{tcolorbox}
 
@@ -1971,23 +2001,39 @@ These prompts generate multiple candidate solutions for each instruction. We use
     colback=ForestGreen!5!white,
     colframe=ForestGreen!20!white,
     boxrule=0.8pt, arc=3pt, boxsep=4pt,
-    title={\textbf{Function Solution Generation Prompt}}, coltitle=black
+    title={\textbf{code\_prompt\_function}}, coltitle=black
 ]
 \begin{lstlisting}[basicstyle=\ttfamily\tiny,breaklines=true]
-You are a Python programming expert. Generate 5 functionally correct Python code implementations adhering to these constraints:
+You are a Python programming expert. Given the instruction and signature details below, generate 5 functionally correct Python code adhering to these constraints:
+1. **HIGH PRIORITY**: Implement a standalone function with name '{function_name}', inputs '{input_params}', and return type '{return_type}' EXACTLY as provided. Do NOT deviate from this signature.
+2. Write all logic directly within '{function_name}'—do NOT define nested functions, even for multi-step problems; use variables or steps instead.
+3. The function MUST ALWAYS RETURN A VALUE matching '{return_type}'.
+4. Ensure the code is fully modular, self-contained, and does not rely on external code or global variables.
+5. Optimize for readability, following Python best practices, with clear variable names and comments where necessary.
+6. For hard difficulty, ensure the solution reflects the expected complexity: sophisticated long problems requiring complex algorithms and data structures (8-10 difficulty), spanning approximately 50-100+ lines with a difficulty score of 8-10 on a scale of 1-10.
+7. **HIGH PRIORITY**: Generate EXACTLY FIVE distinct implementations, all strictly adhering to the provided signature:
+   - Vary each implementation by:
+     - Computational approach: Use distinct methods like iterative loops, recursion, dynamic programming, list comprehensions, or functional programming (e.g., map/filter/reduce), as appropriate to the instruction and difficulty.
+     - Style: Alternate between verbose, step-by-step logic and concise, optimized solutions; use different commenting styles (e.g., inline vs. block comments).
+     - Variable names: Use unique, meaningful names for variables and parameters in each response.
+     - Complexity: Within the hard level, explore simpler vs. more intricate implementations (e.g., brute force vs. optimized algorithms).
+   - Analyze the instruction to identify multiple viable strategies before generating solutions.
+   - **ENSURE COMPLETENESS**: Each of the five implementations MUST be fully functional, including all required logic as specified in the instruction. Do NOT provide incomplete code (e.g., missing logic); generate all five implementations in full before terminating the response.
+Instruction:
+{instruction}
 
-1. Implement a standalone function with name '{function_name}', inputs '{input_params}', and return type '{return_type}' EXACTLY as provided.
-2. Write all logic directly within the function.
-3. The function MUST ALWAYS RETURN A VALUE matching the return type.
-4. Ensure the code is fully modular and self-contained.
-5. For hard difficulty, ensure solutions span approximately 50-100+ lines with complex algorithms and data structures.
-6. Generate EXACTLY FIVE distinct implementations varying by:
-   - Computational approach (iterative, recursive, dynamic programming, etc.)
-   - Style and complexity
-   - Variable names
+Signature Details:
+- Function Name: {function_name}
+- Inputs: {input_params}
+- Return Type: {return_type}
 
-Instruction: {instruction}
-Signature: {function_name}({input_params}) -> {return_type}
+Generate EXACTLY FIVE Python code blocks, all adhering to the provided signature, in this format:
+```python
+def {function_name}():  # Use the specified function name
+    # Write the solution logic directly here (no nested functions)
+    # Return the final output (MANDATORY)
+    return ...  # Replace with actual value
+```
 \end{lstlisting}
 \end{tcolorbox}
 
@@ -1998,16 +2044,56 @@ Signature: {function_name}({input_params}) -> {return_type}
     colback=ForestGreen!5!white,
     colframe=ForestGreen!20!white,
     boxrule=0.8pt, arc=3pt, boxsep=4pt,
-    title={\textbf{Class Solution Generation Prompt}}, coltitle=black
+    title={\textbf{code\_prompt\_class}}, coltitle=black
 ]
 \begin{lstlisting}[basicstyle=\ttfamily\tiny,breaklines=true]
-Generate 5 functionally correct Python class implementations with:
-- Class name: {class_name}
+You are a Python programming expert. Given the instruction and signature details below, generate 5 functionally correct Python code implementations adhering to these constraints:
+1. HIGH PRIORITY: Implement a class with name '{class_name}' and methods as specified in '{method_signatures}' (including inputs and return types) EXACTLY as provided. Do NOT deviate from these signature details.
+2. Include a constructor '{constructor_signature}' ONLY if explicitly provided in the signature details or if the instruction requires initialization of instance variables for the class to function correctly. Otherwise, omit the constructor.
+3. Define the class with all necessary methods as specified, avoiding a function template.
+4. Each method must be self-contained; each method MUST RETURN A VALUE matching its specified return type.
+5. Ensure the code is fully modular, self-contained, and does not rely on external code or global variables.
+6. Optimize for readability, following Python best practices, with clear variable names and comments where necessary.
+7. For hard difficulty, ensure the solution reflects the expected complexity: sophisticated long problems requiring complex algorithms and data structures (8-10 difficulty), spanning approximately 50-100+ lines with a difficulty score of 8-10 on a scale of 1-10.
+8. HIGH PRIORITY: Generate EXACTLY FIVE distinct implementations, all strictly adhering to the provided signature details:
+   - Vary each implementation by:
+     - Computational approach: Use distinct methods like iterative loops, recursion, dynamic programming, list comprehensions, or functional programming (e.g., map/filter/reduce), as appropriate to the instruction and difficulty.
+     - Style: Alternate between verbose, step-by-step logic and concise, optimized solutions; use different commenting styles (e.g., inline vs. block comments).
+     - Variable names: Use unique, meaningful names for variables and parameters in each response.
+     - Complexity: Within the hard level, explore simpler vs. more intricate implementations (e.g., brute force vs. optimized algorithms).
+   - Analyze the instruction to identify multiple viable strategies before generating solutions.
+   - ENSURE COMPLETENESS: Each of the five implementations MUST be fully functional, including all required methods or logic as specified in the instruction. Do NOT provide incomplete code (e.g., missing method bodies or logic); generate all five implementations in full before terminating the response.
+Instruction:
+{instruction}
+
+Signature Details:
+- Class Name: {class_name}
 - Constructor: {constructor_signature}
 - Methods: {method_signatures}
 
-Each method must be self-contained and return a value matching its specified return type.
-Generate EXACTLY FIVE distinct implementations varying approaches, styles, and complexity.
+Generate EXACTLY FIVE Python code blocks, all adhering to the provided signature details. Use this format when a constructor is needed:
+```python
+class {class_name}:  # Use the specified class name
+    def __init__(self, freq_list):  # Constructor with specified parameters, only if required
+        # Initialize attributes here
+        pass
+    def build_tree(self):  # Specified method
+        # Construct the Huffman tree
+        return ...  # Return as required
+    def get_encoding(self):  # Specified method
+        # Return the encoding dictionary (MANDATORY)
+        return ...  # Replace with actual value
+```
+If no constructor is required, use this simpler format:
+```python
+class {class_name}:  # Use the specified class name
+    def build_tree(self):  # Specified method
+        # Construct the Huffman tree
+        return ...  # Return as required
+    def get_encoding(self):  # Specified method
+        # Return the encoding dictionary (MANDATORY)
+        return ...  # Replace with actual value
+```
 \end{lstlisting}
 \end{tcolorbox}
 
@@ -2021,25 +2107,24 @@ These prompts generate comprehensive unit test suites for validating the candida
     colback=orange!5!white,
     colframe=orange!20!white,
     boxrule=0.8pt, arc=3pt, boxsep=4pt,
-    title={\textbf{Test Scenario Identification Prompt}}, coltitle=black
+    title={\textbf{identify\_tests\_prompt}}, coltitle=black
 ]
 \begin{lstlisting}[basicstyle=\ttfamily\tiny,breaklines=true]
-You are an expert in Python testing. Given the instruction and signature details, identify up to 10 concise test scenarios to ensure comprehensive coverage.
-
-Focus on:
-- Basic functionality of each method/function
-- Key behaviors from the instruction
-- Broad coverage including edge cases
-
-Return in this format:
+You are an expert in Python testing and requirements analysis. Given the instruction and signature details below, analyze the task and identify a list of up to 10 concise test scenarios to guide test case generation. Each scenario must be a short hint (e.g., 'Test basic addition', 'Test empty input') to ensure all methods and key behaviors are tested, avoiding excessive detail. Focus on:
+- Basic functionality of each method or function in the signature.
+- Key behaviors or operations from the instruction.
+- Broad coverage of the task's intent.
+Return the list in this EXACT format, with no extra text outside the text block:
 ```text
 Test scenario 1
 Test scenario 2
 ...
 ```
+Task Description:
+{instruction}
 
-Task: {instruction}
-Signature: {signature_details}
+Signature Details:
+{signature_details}
 \end{lstlisting}
 \end{tcolorbox}
 
@@ -2050,21 +2135,55 @@ Signature: {signature_details}
     colback=orange!5!white,
     colframe=orange!20!white,
     boxrule=0.8pt, arc=3pt, boxsep=4pt,
-    title={\textbf{Function Test Generation Prompt}}, coltitle=black
+    title={\textbf{test\_prompt\_function}}, coltitle=black
 ]
 \begin{lstlisting}[basicstyle=\ttfamily\tiny,breaklines=true]
-Generate up to 10 isolated test cases following these CRITICAL GUIDELINES:
+You are an expert in Python testing and requirements analysis. Generate up to 10 isolated test cases for the following programming task based on the task description and the provided list of required test scenarios. Follow these CRITICAL GUIDELINES:
+1. Each test case must be a standalone Python function (e.g., `def test_...():`), NOT defined within a class, to ensure easy parsing and execution.
+2. Each test function must contain EXACTLY ONE assert statement.
+3. Every assert statement MUST DIRECTLY call the function with specific inputs and compare its result to an expected value using a direct comparison (e.g., `==`, `is`, `in`, `!=`):
+   - The solution to the task is a standalone function named '{function_name}', use `assert {function_name}(...) == ...` with all inputs packed into the call.
+   - Do NOT:
+     - Use variables or initializations outside the assert (e.g., `x = [1, 2]; assert {function_name}(x) == ...`).
+     - Do NOT Use try-except blocks or check exceptions indirectly (e.g., `assert str(e) == ...`).
+     - Do NOT use vague assertions (e.g., `assert == True`).
+     - Use indirect comparisons (e.g., `.equals(...)`, timing checks).
+     - Rely on external values; pack all necessary logic into the assert statement.
+4. Generate up to 10 test cases, each corresponding to one of the required test scenarios provided below, ensuring each test directly calls the function with inputs matching the signature, all within the assert. If fewer than 10 scenarios are provided, generate only that number.
+5. Verify that each test aligns with the task requirements, signature details, and the specified test scenario; all inputs must match the provided signature.
+6. Ensure every assert statement is complete, specifying a concrete expected output value (e.g., a number, list, or string) and avoiding placeholders (e.g., '...'). Calculate the exact expected result based on the task description and signature for each test case.
+Task Description:
+{instruction}
 
-1. Each test must be a standalone function (def test_...():)
-2. Each test function contains EXACTLY ONE assert statement
-3. Every assert MUST DIRECTLY call the function with specific inputs:
-   assert {function_name}(...) == expected_value
-4. Do NOT use variables outside the assert
-5. Generate tests corresponding to the required scenarios below
+Signature Details:
+```python
+{function_signature}
+```
 
-Task: {instruction}
-Function Signature: {function_signature}
-Required Test Scenarios: {required_tests}
+Required Test Scenarios:
+{required_tests}
+
+Use the template based on the signature (examples show dos and don'ts):
+```python
+# Do this:
+def test_basic_functionality():
+    # Test basic scenario
+    assert {function_name}([1, 2, 3], 2) == 42
+
+# Don't do this:
+def test_basic_functionality_wrong():
+    # Incorrect: variable outside assert
+    lst = [1, 2, 3]
+    assert {function_name}(lst, 2) == 42
+
+# Don't do this:
+def test_multi_assert_case():
+    # Test scenario with multiple independent checks (not preferred)
+    # Test Case 1
+    assert {function_name}([1, 2], 1) == 10
+    # Test Case 2
+    assert {function_name}([3, 4], 1) == 20
+```
 \end{lstlisting}
 \end{tcolorbox}
 
@@ -2075,21 +2194,62 @@ Required Test Scenarios: {required_tests}
     colback=orange!5!white,
     colframe=orange!20!white,
     boxrule=0.8pt, arc=3pt, boxsep=4pt,
-    title={\textbf{Class Test Generation Prompt}}, coltitle=black
+    title={\textbf{test\_prompt\_class}}, coltitle=black
 ]
 \begin{lstlisting}[basicstyle=\ttfamily\tiny,breaklines=true]
-Generate up to 10 isolated test cases for class {class_name} with primary method {primary_method}.
+You are an expert in Python testing and requirements analysis. Generate up to 10 isolated test cases for the following programming task based solely on the task description and the provided list of required test scenarios, without seeing the implementation. Follow these CRITICAL GUIDELINES:
+1. Each test case must be a standalone Python function (e.g., `def test_...():`), NOT defined within a class, to ensure easy parsing and execution.
+2. Each test function must contain EXACTLY ONE assert statement, unless the solution is a class with multiple methods and multiple asserts are needed to call logically connected methods (e.g., setup methods) before the primary method; in such cases, separate each assert with a numbered comment like `# Test Case 1`, `# Test Case 2`, etc., to distinguish them. For connected methods, prefer chaining them within a single assert statement (e.g., `{class_name}().setup(...).{primary_method}(...) == ...`) unless multiple asserts are unavoidable.
+3. Every assert statement MUST DIRECTLY call the connected methods with specific inputs and compare its result to an expected value using a direct comparison (e.g., `==`, `is`, `in`, `!=`):
+   - The solution to the task is a class named '{class_name}'. The primary method to test is '{primary_method}'. Instantiate it as `{class_name}()` and call methods directly in the assert; for logically connected methods, chain them within one assert (e.g., `assert {class_name}().method1(...).method2(...) == ...`). Do NOT:
+     - Use variables or class instantiations outside the assert (e.g., `c = {class_name}(); assert c.method1(...).method2(...) == ...`).
+     - Use try-except blocks or check exceptions indirectly (e.g., `assert str(e) == ...`).
+     - Use vague assertions (e.g., `assert == True`).
+     - Use indirect comparisons (e.g., `.equals(...)`, timing checks).
+     - Rely on external values; pack all logic into the assert statement.
+4. Generate up to 10 test cases, each corresponding to one of the required test scenarios provided below, ensuring each test directly calls the relevant method(s) with inputs matching their signature, all within the assert. If fewer than 10 scenarios are provided, generate only that number.
+5. Verify that each test aligns with the task requirements, signature details, and the specified test scenario; all inputs must match the method signatures.
+6. Ensure every assert statement is complete, specifying a concrete expected output value (e.g., a number, list, or string) and avoiding placeholders (e.g., '...'). Calculate the exact expected result based on the task description and signature for each test case.
+Task Description:
+{instruction}
 
-Guidelines:
-1. Each test is a standalone function
-2. Each test contains EXACTLY ONE assert (unless multiple logically connected method calls are needed)
-3. Directly call methods in asserts: assert {class_name}().{primary_method}(...) == expected_value
-4. For connected methods, chain them: assert {class_name}().method1(...).method2(...) == expected_value
-
+Signature Details:
+```python
 Class: {class_name}
-Methods: {method_signatures}
+Class Methods:
+{method_signatures}
 Primary Method: {primary_method}
-Required Scenarios: {required_tests}
+```
+
+Required Test Scenarios:
+{required_tests}
+
+Generate test cases in this format, with each test in its own standalone function, using ONLY direct calls in asserts with complete expected values, packing all logic into the assert. Use the template based on the signature (examples show dos and don'ts):
+- For class-based solutions:
+```python
+# Do this:
+def test_basic_functionality():
+    # Test basic scenario
+    assert {class_name}().{primary_method}([1, 2, 3]) == 42
+
+# Do this for logically connected methods, ensuring instantiation and calls are in one assert:
+def test_connected_methods():
+    # Test scenario where object instantiation and connected method calls are all in one assert statement
+    assert {class_name}().setup([1, 2]).{primary_method}(3) == 42
+
+# Don't do this:
+def test_basic_functionality_wrong():
+    # Incorrect: multiple asserts for class without logical connection
+    assert {class_name}().{primary_method}([1, 2]) == 10
+    assert {class_name}().{primary_method}([3, 4]) == 20
+
+# Don't do this:
+def test_setup_wrong():
+    # Incorrect: setup outside assert
+    obj = {class_name}()
+    obj.setup([1, 2])
+    assert obj.{primary_method}(3) == 42
+```
 \end{lstlisting}
 \end{tcolorbox}
 
