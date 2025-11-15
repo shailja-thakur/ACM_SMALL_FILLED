@@ -90,7 +90,7 @@ Each sample is presented in a structured format that distinguishes the user prom
 % % --- Model Response Section ---
 % \begin{tcolorbox}[enhanced, colback=ForestGreen!5!white, boxsep=2pt, arc=2pt, boxrule=0.5pt, colframe=ForestGreen!20!white]
 % \textbf{\color{ForestGreen!60!black}Assistant Response }
-% \begin{lstlisting}[ frame=none, numbers=none, basicstyle={\ttfamily\scriptsize}]
+% \begin{lstlisting}[frame=none, numbers=none, basicstyle={\ttfamily\scriptsize}, breaklines=true]
 % ### Understand
 % The goal is to determine the output of the function `solution` when given the input `events = [('a', 0.5), ('b', 0.5)]`. The function's purpose is to compute two lists: the probability density function (PDF) and the cumulative distribution function (CDF) of the input probabilities. The function sorts the events by their probabilities, extracts the probabilities, normalizes them if necessary, and then calculates the PDF and CDF.
 
@@ -198,7 +198,7 @@ What output does the function return when given the input [('a', 0.5), ('b', 0.5
     boxrule=0.8pt, arc=3pt, boxsep=4pt
 ]
 \textbf{\color{ForestGreen!60!black}Assistant Response }
-\begin{lstlisting}[ frame=none, numbers=none, basicstyle={\ttfamily\scriptsize}]
+\begin{lstlisting}[frame=none, numbers=none, basicstyle={\ttfamily\scriptsize}, breaklines=true]
 ### Understand
 The goal is to determine the output of the function `solution` when given the input `events = [('a', 0.5), ('b', 0.5)]`. The function's purpose is to compute two lists: the probability density function (PDF) and the cumulative distribution function (CDF) of the input probabilities. The function sorts the events by their probabilities, extracts the probabilities, normalizes them if necessary, and then calculates the PDF and CDF.
 
@@ -314,7 +314,7 @@ What does the function return when given the input [(0, 0), (1, 1), (2, 2), (3, 
     boxrule=0.8pt, arc=3pt, boxsep=4pt
 ]
 \textbf{\color{ForestGreen!60!black}Assistant Response }
-\begin{lstlisting}[frame=none, numbers=none, basicstyle={\ttfamily\scriptsize}]
+\begin{lstlisting}[frame=none, numbers=none, basicstyle={\ttfamily\scriptsize}, breaklines=true]
 ### Understand
 The goal is to determine the output of the `solution` function when given the input `[(0, 0), (1, 1), (2, 2), (3, 3)]`. The function is designed to construct a route from a list of locations, starting from the first location, and then iteratively selecting the next location based on proximity, prioritizing those within 10 units. The function returns to the starting point after visiting all other locations. Key components include the `distance` function, the sorting mechanism for prioritizing locations, and the loop that builds the route.
 
@@ -475,7 +475,7 @@ What output does the `solution` function return when given the input `[(1, 2), (
     boxrule=0.8pt, arc=3pt, boxsep=4pt
 ]
 \textbf{\color{ForestGreen!60!black}Assistant Response }
-\begin{lstlisting}[ frame=none, numbers=none, basicstyle={\ttfamily\scriptsize}]
+\begin{lstlisting}[frame=none, numbers=none, basicstyle={\ttfamily\scriptsize}, breaklines=true]
 ### Understand
 The `solution` function is designed to find the closest pair of points from a list of 2D coordinates using Euclidean distance. The function employs a recursive approach to solve this problem efficiently, leveraging a divide-and-conquer strategy. The key components of the function include:
 
@@ -586,7 +586,7 @@ When I pass a list of probabilities to the `solution` function, does it return a
     boxrule=0.8pt, arc=3pt, boxsep=4pt
 ]
 \textbf{\color{ForestGreen!60!black}Assistant Response }
-\begin{lstlisting}[frame=none, numbers=none, basicstyle={\ttfamily\scriptsize}]
+\begin{lstlisting}[frame=none, numbers=none, basicstyle={\ttfamily\scriptsize}, breaklines=true]
 ### Understand
 The `solution` function is designed to compute a combined probability from a list of individual probabilities using the inclusion-exclusion principle. The function includes a helper function `combine_probs` that combines two probabilities using the formula \( p1 + p2 - (p1 \times p2) \). The main function uses a recursive approach with memoization to efficiently calculate the combined probability for the entire list. The recursion splits the list into halves until it reaches base cases of single probabilities, then combines them back up using the `combine_probs` function. The memoization helps avoid redundant calculations by storing results of subproblems.
 
@@ -691,7 +691,7 @@ When I provide the input `[("task1", 0, 0), ("task2", 2147483647, 2147483647)]` 
     boxrule=0.8pt, arc=3pt, boxsep=4pt
 ]
 \textbf{\color{ForestGreen!60!black}Assistant Response }
-\begin{lstlisting}[ frame=none, numbers=none, basicstyle={\ttfamily\scriptsize}]
+\begin{lstlisting}[frame=none, numbers=none, basicstyle={\ttfamily\scriptsize}, breaklines=true]
 ### Understand
 The goal is to determine if the `solution` function, when given the input `[("task1", 0, 0), ("task2", 2147483647, 2147483647)]`, will return `[('task1', 0, 0, 0), ('task2', 2147483647, 2147483647, 0)]`. The function appears to be solving a scheduling problem using dynamic programming (DP). It sorts tasks by their deadlines and calculates the earliest possible start time for each task, ensuring no task starts after its deadline. The DP table `dp` is used to store the minimum start time for scheduling a subset of tasks. The function then reconstructs the schedule to provide the start time for each task.
 
@@ -813,7 +813,7 @@ What input would produce the output {'mean': 2.0, 'median': 2, 'mode': 1} when p
     boxrule=0.8pt, arc=3pt, boxsep=4pt
 ]
 \textbf{\color{ForestGreen!60!black}Assistant Response }
-\begin{lstlisting}[ frame=none, numbers=none, basicstyle={\ttfamily\scriptsize}]
+\begin{lstlisting}[frame=none, numbers=none, basicstyle={\ttfamily\scriptsize}, breaklines=true]
 ### Understand
 The goal is to deduce the input(s) that produce the output `{'mean': 2.0, 'median': 2, 'mode': 1}` when passed to the `solution` function. The function calculates three statistical measures: mean, median, and mode from a list of integers. The mean is the average of the numbers, the median is the middle value when sorted, and the mode is the most frequent number (with ties broken by the smallest number). The function includes assertions to ensure the input is a non-empty list of integers.
 
@@ -956,7 +956,7 @@ What input matrix would produce the inverse `[[0.6, -0.7], [-0.2, 0.4]]` when pa
     boxrule=0.8pt, arc=3pt, boxsep=4pt
 ]
 \textbf{\color{ForestGreen!60!black}Assistant Response }
-\begin{lstlisting}[ frame=none, numbers=none, basicstyle={\ttfamily\scriptsize}]
+\begin{lstlisting}[frame=none, numbers=none, basicstyle={\ttfamily\scriptsize}, breaklines=true]
 ### Understand
 The goal is to determine the input matrix that, when passed to the `invert_matrix` function, produces the inverse matrix `[[0.6, -0.7], [-0.2, 0.4]]`. The function inverts a given square matrix using the method of cofactors, adjugate, and determinant. The key operations include calculating the determinant, cofactors, and adjugate, followed by dividing the adjugate by the determinant to get the inverse.
 
@@ -1073,7 +1073,7 @@ When we pass a list of DNA sequences where each sequence is composed of a varyin
     boxrule=0.8pt, arc=3pt, boxsep=4pt
 ]
 \textbf{\color{ForestGreen!60!black}Assistant Response }
-\begin{lstlisting}[ frame=none, numbers=none, basicstyle={\ttfamily\scriptsize}]
+\begin{lstlisting}[frame=none, numbers=none, basicstyle={\ttfamily\scriptsize}, breaklines=true]
 ### Understand
 The task is to determine if the given Python function `solution` sorts a list of DNA sequences by their GC-content from lowest to highest. Each sequence is composed of a varying number of 'G's followed by 'A's. The function calculates the GC-content for each sequence, validates the sequences, and sorts them based on GC-content and lexicographically. Key components include the `gc_content` function, the validation of sequences, and the sorting mechanism.
 
@@ -1130,7 +1130,7 @@ What kind of input list would result in the function returning a list of DNA seq
     boxrule=0.8pt, arc=3pt, boxsep=4pt
 ]
 \textbf{\color{ForestGreen!60!black}Assistant Response }
-\begin{lstlisting}[ frame=none, numbers=none, basicstyle={\ttfamily\scriptsize}]
+\begin{lstlisting}[frame=none, numbers=none, basicstyle={\ttfamily\scriptsize}, breaklines=true]
 ### Understand
 The goal is to determine what kind of input list would cause the function `solution` to return a list of DNA sequences sorted from those with 0% GC-content to those with 100% GC-content. The function sorts them primarily by GC-content in descending order. The final output is a list of sequences sorted in descending order of GC-content, which is the opposite of the desired order (ascending). Therefore, we need to reverse this logic to deduce the input that would result in the desired output.
 
@@ -1237,7 +1237,7 @@ What does the `solve\_polynomial` function return when given the input `[1] + [0
     boxrule=0.8pt, arc=3pt, boxsep=4pt
 ]
 \textbf{\color{ForestGreen!60!black}Assistant Response }
-\begin{lstlisting}[ frame=none, numbers=none, basicstyle={\ttfamily\scriptsize}]
+\begin{lstlisting}[frame=none, numbers=none, basicstyle={\ttfamily\scriptsize}, breaklines=true]
 ### Understand
 The `solve_polynomial` function is designed to find the roots of a polynomial equation using Newton's method. The input to the function is a list of coefficients representing a polynomial, where the index of each coefficient corresponds to the power of the variable (e.g., `[1, 0, 0, ..., -1]` represents \(x^{10} - 1\)). The function uses recursive Newton's method to approximate the roots and returns a list of unique roots found within a specified tolerance.
 
@@ -1311,7 +1311,7 @@ What input would produce the output `[-1.0, 1.0]` when passed to the `solve\_pol
     boxrule=0.8pt, arc=3pt, boxsep=4pt
 ]
 \textbf{\color{ForestGreen!60!black}Assistant Response }
-\begin{lstlisting}[ frame=none, numbers=none, basicstyle={\ttfamily\scriptsize}]
+\begin{lstlisting}[frame=none, numbers=none, basicstyle={\ttfamily\scriptsize}, breaklines=true]
 ### Understand
 The goal is to determine the input(s) for the `solve_polynomial` function that result in the output `[-1.0, 1.0]`. The function solves polynomial equations using Newton's method. It evaluates a polynomial and its derivative, then iteratively refines guesses for the roots. The polynomial is defined by its coefficients, and the function returns all unique roots found within a specified tolerance.
 
@@ -1421,7 +1421,7 @@ When I run the function `solution` with the input `[(1, 10), (2, 6), (8, 10), (1
     boxrule=0.8pt, arc=3pt, boxsep=4pt
 ]
 \textbf{\color{ForestGreen!60!black}Assistant Response }
-\begin{lstlisting}[ frame=none, numbers=none, basicstyle={\ttfamily\scriptsize}]
+\begin{lstlisting}[frame=none, numbers=none, basicstyle={\ttfamily\scriptsize}, breaklines=true]
 ### Understand
 The goal is to determine if the function `solution` correctly returns `[(1, 10), (15, 18)]` when given the input `[(1, 10), (2, 6), (8, 10), (15, 18)]`. The function is designed to merge overlapping intervals. It first sorts the intervals by their start times, then iteratively checks for overlaps, merging them if necessary, and finally returns the list of merged intervals. The key components influencing the reasoning are the sorting step, the loop that checks for overlaps, and the condition that determines whether intervals should be merged or added as separate intervals.
 
@@ -1485,7 +1485,7 @@ What input would make the function `solution` return the output `[(1, 10), (15, 
     boxrule=0.8pt, arc=3pt, boxsep=4pt
 ]
 \textbf{\color{ForestGreen!60!black}Assistant Response }
-\begin{lstlisting}[ frame=none, numbers=none, basicstyle={\ttfamily\scriptsize}]
+\begin{lstlisting}[frame=none, numbers=none, basicstyle={\ttfamily\scriptsize}, breaklines=true]
 ### Understand
 The goal is to determine what input to the function `solution` would result in the output `[(1, 10), (15, 18)]`. The function takes a list of intervals and merges overlapping intervals. The process involves sorting the intervals by their start times and then iterating through them to merge any overlapping intervals. The output `[(1, 10), (15, 18)]` suggests that there are two distinct, non-overlapping intervals in the final result. This implies that any intervals that could potentially merge into a single interval must either be non-overlapping or already merged in such a way that they result in the specified output.
 
@@ -1719,7 +1719,7 @@ What output does the `parallel\_sort` function return when given the input `[-2,
 \end{tcolorbox}
 \begin{tcolorbox}[enhanced, breakable, colback=ForestGreen!5!white, colframe=ForestGreen!20!white, boxrule=0.8pt, arc=3pt, boxsep=4pt]
 \textbf{\color{ForestGreen!60!black}Assistant Response }
-\begin{lstlisting}[ frame=none, numbers=none, basicstyle={\ttfamily\scriptsize}]
+\begin{lstlisting}[frame=none, numbers=none, basicstyle={\ttfamily\scriptsize}, breaklines=true]
 ### Understand
 The goal is to determine the output of the `parallel_sort` function when given the input `[-2, 3, -1, 0]` with 2 threads. The function is designed to sort a list of numbers using parallel processing by dividing the list into chunks, sorting each chunk in a separate thread, and then merging the sorted chunks into a final sorted list.
 
@@ -1777,7 +1777,7 @@ What input would produce the output `[-2, -1, 0, 3]` when using the `parallel\_s
 \end{tcolorbox}
 \begin{tcolorbox}[enhanced, breakable, colback=ForestGreen!5!white, colframe=ForestGreen!20!white, boxrule=0.8pt, arc=3pt, boxsep=4pt]
 \textbf{\color{ForestGreen!60!black}Assistant Response }
-\begin{lstlisting}[ frame=none, numbers=none, basicstyle={\ttfamily\scriptsize}]
+\begin{lstlisting}[frame=none, numbers=none, basicstyle={\ttfamily\scriptsize}, breaklines=true]
 ### Understand
 The goal is to determine the input(s) that would produce the output `[-2, -1, 0, 3]` when using the `parallel_sort` function. The function takes a list of integers and a number of threads as input. It divides the list into chunks, sorts each chunk in parallel using threads, merges the sorted chunks, and returns the fully sorted list. Key operations include list division, parallel sorting, and merging.
 
