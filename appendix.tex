@@ -1891,7 +1891,7 @@ INSTRUCTIONS FOR PROBLEM DIVERSITY:
 1. Create problems that are fundamentally different in:
    - Problem domain: Include mathematics (e.g., algebra for equations and transformations, timing & durations for scheduling or sequencing, probabilities for statistical analysis, geometry for spatial computations), finance, data processing, algorithms, text processing, or system design. For 'hard' tasks, prioritize complex mathematical domains to ensure challenging synthesis.
    - Computational approach: Vary between iterative, recursive, dynamic programming, functional, or object-oriented programming.
-   - Algorithmic complexity: Target specific time complexities (e.g., O(n) for easy, O(n log n) for medium, O(n²) or higher for hard) appropriate to the difficulty, ensuring 'hard' tasks demand significant computational depth.
+   - Algorithmic complexity: Target specific time complexities (e.g., O(n) for easy, O(n log n) for medium, O(n^2) or higher for hard) appropriate to the difficulty, ensuring 'hard' tasks demand significant computational depth.
 2. Before generating, analyze the concept's core principles and identify unique problem-solving strategies that leverage these principles, especially for mathematical domains in 'hard' tasks to maximize complexity and clarity.
 3. Instructions may request either a standalone function named 'solution' or a class named 'Solution' with methods; indicate clearly if a class is required (e.g., 'implement a class') and specify the primary method name (e.g., 'compute') if applicable, otherwise assume 'compute' as the default primary method for classes.
 
@@ -1954,8 +1954,8 @@ You are a Python programming expert. Given the instruction below, analyze how it
    - Use ONLY spaces (no tabs, newlines, or escaped characters like '\').
    - Use EXACTLY the syntax shown (e.g., '__init__', '->', commas between params).
    - Do NOT add extra punctuation (e.g., colons after parentheses) or quotes around simple types (e.g., use 'Matrix', not '"Matrix"').
-   - Do NOT deviate from the template—any variation is invalid.
-   - Do NOT include explanations, prose, or multiple class definitions in one block—provide ONLY ONE signature skeleton.
+   - Do NOT deviate from the template---any variation is invalid.
+   - Do NOT include explanations, prose, or multiple class definitions in one block---provide ONLY ONE signature skeleton.
    - Ensure the response is complete (no truncation) and matches the template EXACTLY.
 5. Base your analysis ONLY on the instruction text, inferring types and outputs logically.
 Instruction:
@@ -2006,7 +2006,7 @@ These prompts generate multiple candidate solutions for each instruction. We use
 \begin{lstlisting}[basicstyle=\ttfamily\tiny,breaklines=true]
 You are a Python programming expert. Given the instruction and signature details below, generate 5 functionally correct Python code adhering to these constraints:
 1. **HIGH PRIORITY**: Implement a standalone function with name '{function_name}', inputs '{input_params}', and return type '{return_type}' EXACTLY as provided. Do NOT deviate from this signature.
-2. Write all logic directly within '{function_name}'—do NOT define nested functions, even for multi-step problems; use variables or steps instead.
+2. Write all logic directly within '{function_name}'---do NOT define nested functions, even for multi-step problems; use variables or steps instead.
 3. The function MUST ALWAYS RETURN A VALUE matching '{return_type}'.
 4. Ensure the code is fully modular, self-contained, and does not rely on external code or global variables.
 5. Optimize for readability, following Python best practices, with clear variable names and comments where necessary.
